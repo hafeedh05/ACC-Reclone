@@ -35,7 +35,7 @@ resource "google_compute_region_network_endpoint_group" "web" {
   name                  = "${local.base_name}-web-neg"
   region                = var.region
   project               = var.project_id
-  network_endpoint_type  = "SERVERLESS"
+  network_endpoint_type = "SERVERLESS"
 
   cloud_run {
     service = google_cloud_run_service.web.name
@@ -46,7 +46,7 @@ resource "google_compute_region_network_endpoint_group" "api" {
   name                  = "${local.base_name}-api-neg"
   region                = var.region
   project               = var.project_id
-  network_endpoint_type  = "SERVERLESS"
+  network_endpoint_type = "SERVERLESS"
 
   cloud_run {
     service = google_cloud_run_service.api.name

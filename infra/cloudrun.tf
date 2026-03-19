@@ -8,7 +8,7 @@ resource "google_cloud_run_service" "web" {
   metadata {
     labels = local.labels
     annotations = {
-      "run.googleapis.com/ingress"            = "internal-and-cloud-load-balancing"
+      "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
     }
   }
 
@@ -144,7 +144,7 @@ resource "google_cloud_run_service" "api" {
         }
 
         env {
-          name  = "DATABASE_URL"
+          name = "DATABASE_URL"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.database_url.secret_id
@@ -154,7 +154,7 @@ resource "google_cloud_run_service" "api" {
         }
 
         env {
-          name  = "JWT_SECRET"
+          name = "JWT_SECRET"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.jwt_secret.secret_id
@@ -164,7 +164,7 @@ resource "google_cloud_run_service" "api" {
         }
 
         env {
-          name  = "WEBHOOK_SIGNING_SECRET"
+          name = "WEBHOOK_SIGNING_SECRET"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.webhook_signing_secret.secret_id
@@ -174,7 +174,7 @@ resource "google_cloud_run_service" "api" {
         }
 
         env {
-          name  = "OPENAI_API_KEY"
+          name = "OPENAI_API_KEY"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.openai_api_key.secret_id
@@ -184,7 +184,7 @@ resource "google_cloud_run_service" "api" {
         }
 
         env {
-          name  = "GEMINI_API_KEY"
+          name = "GEMINI_API_KEY"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.gemini_api_key.secret_id
@@ -300,7 +300,7 @@ resource "google_cloud_run_service" "orchestrator" {
         }
 
         env {
-          name  = "DATABASE_URL"
+          name = "DATABASE_URL"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.database_url.secret_id
@@ -406,7 +406,7 @@ resource "google_cloud_run_service" "workers" {
         }
 
         env {
-          name  = "DATABASE_URL"
+          name = "DATABASE_URL"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.database_url.secret_id
@@ -416,7 +416,7 @@ resource "google_cloud_run_service" "workers" {
         }
 
         env {
-          name  = "OPENAI_API_KEY"
+          name = "OPENAI_API_KEY"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.openai_api_key.secret_id
@@ -426,7 +426,7 @@ resource "google_cloud_run_service" "workers" {
         }
 
         env {
-          name  = "GEMINI_API_KEY"
+          name = "GEMINI_API_KEY"
           value_from {
             secret_key_ref {
               name = google_secret_manager_secret.gemini_api_key.secret_id

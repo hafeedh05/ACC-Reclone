@@ -5,7 +5,6 @@ resource "google_cloud_tasks_queue" "generate" {
 
   rate_limits {
     max_dispatches_per_second = 20
-    max_burst_size            = 100
   }
 
   retry_config {
@@ -24,7 +23,6 @@ resource "google_cloud_tasks_queue" "deliver" {
 
   rate_limits {
     max_dispatches_per_second = 10
-    max_burst_size            = 50
   }
 
   retry_config {
@@ -39,7 +37,7 @@ resource "google_cloud_tasks_queue" "deliver" {
 resource "google_cloud_tasks_queue_iam_member" "generate_enqueuer" {
   project  = var.project_id
   location = var.region
-  queue    = google_cloud_tasks_queue.generate.name
+  name     = google_cloud_tasks_queue.generate.name
   role     = "roles/cloudtasks.enqueuer"
   member   = "serviceAccount:${google_service_account.runtime.email}"
 }
@@ -47,7 +45,7 @@ resource "google_cloud_tasks_queue_iam_member" "generate_enqueuer" {
 resource "google_cloud_tasks_queue_iam_member" "deliver_enqueuer" {
   project  = var.project_id
   location = var.region
-  queue    = google_cloud_tasks_queue.deliver.name
+  name     = google_cloud_tasks_queue.deliver.name
   role     = "roles/cloudtasks.enqueuer"
   member   = "serviceAccount:${google_service_account.runtime.email}"
 }

@@ -27,17 +27,17 @@ locals {
   service_image_repo = "us-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.containers.repository_id}"
 
   image_refs = {
-    web         = "${local.service_image_repo}/web:${var.image_tag}"
-    api         = "${local.service_image_repo}/api:${var.image_tag}"
+    web          = "${local.service_image_repo}/web:${var.image_tag}"
+    api          = "${local.service_image_repo}/api:${var.image_tag}"
     orchestrator = "${local.service_image_repo}/orchestrator:${var.image_tag}"
-    workers     = "${local.service_image_repo}/workers:${var.image_tag}"
+    workers      = "${local.service_image_repo}/workers:${var.image_tag}"
   }
 
   service_names = {
-    web         = "${local.base_name}-web"
-    api         = "${local.base_name}-api"
+    web          = "${local.base_name}-web"
+    api          = "${local.base_name}-api"
     orchestrator = "${local.base_name}-orchestrator"
-    workers     = "${local.base_name}-workers"
+    workers      = "${local.base_name}-workers"
   }
 
   topic_names = {
@@ -87,4 +87,5 @@ locals {
 
   placeholder_openai_api_key = "REPLACE_WITH_OPENAI_API_KEY"
   placeholder_gemini_api_key = "REPLACE_WITH_GEMINI_API_KEY"
+  database_url               = "postgresql://${google_sql_user.app.name}:${random_password.database_password.result}@//cloudsql/${google_sql_database_instance.primary.connection_name}/${google_sql_database.app.name}?sslmode=disable"
 }

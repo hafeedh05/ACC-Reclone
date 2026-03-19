@@ -12,7 +12,7 @@ resource "google_secret_manager_secret" "database_url" {
   secret_id = "${local.base_name}-database-url"
 
   replication {
-    automatic = true
+    auto {}
   }
 
   labels = local.labels
@@ -27,7 +27,7 @@ resource "google_secret_manager_secret" "jwt_secret" {
   secret_id = "${local.base_name}-jwt-secret"
 
   replication {
-    automatic = true
+    auto {}
   }
 
   labels = local.labels
@@ -42,7 +42,7 @@ resource "google_secret_manager_secret" "webhook_signing_secret" {
   secret_id = "${local.base_name}-webhook-signing-secret"
 
   replication {
-    automatic = true
+    auto {}
   }
 
   labels = local.labels
@@ -57,7 +57,7 @@ resource "google_secret_manager_secret" "openai_api_key" {
   secret_id = "${local.base_name}-openai-api-key"
 
   replication {
-    automatic = true
+    auto {}
   }
 
   labels = local.labels
@@ -72,7 +72,7 @@ resource "google_secret_manager_secret" "gemini_api_key" {
   secret_id = "${local.base_name}-gemini-api-key"
 
   replication {
-    automatic = true
+    auto {}
   }
 
   labels = local.labels

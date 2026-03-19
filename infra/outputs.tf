@@ -8,10 +8,10 @@ output "cloud_sql_connection_name" {
 
 output "cloud_run_urls" {
   value = {
-    web         = google_cloud_run_service.web.status[0].url
-    api         = google_cloud_run_service.api.status[0].url
+    web          = google_cloud_run_service.web.status[0].url
+    api          = google_cloud_run_service.api.status[0].url
     orchestrator = google_cloud_run_service.orchestrator.status[0].url
-    workers     = google_cloud_run_service.workers.status[0].url
+    workers      = google_cloud_run_service.workers.status[0].url
   }
 }
 

@@ -18,7 +18,7 @@ resource "google_sql_database_instance" "primary" {
     disk_type         = "PD_SSD"
 
     backup_configuration {
-      enabled                       = true
+      enabled                        = true
       point_in_time_recovery_enabled = true
     }
 
@@ -28,8 +28,8 @@ resource "google_sql_database_instance" "primary" {
     }
 
     maintenance_window {
-      day         = 7
-      hour        = 3
+      day          = 7
+      hour         = 3
       update_track = "stable"
     }
   }

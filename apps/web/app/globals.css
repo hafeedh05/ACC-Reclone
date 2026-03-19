@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+:root {
+  --background: #07080d;
+  --foreground: #f5efe4;
+  --muted: #a59b8f;
+  --accent: #e4b06f;
+  --accent-strong: #f0c98a;
+  --surface: rgba(13, 14, 21, 0.84);
+  --surface-strong: rgba(20, 21, 31, 0.95);
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-surface: var(--surface);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-plex-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(228, 176, 111, 0.16), transparent 28%),
+    radial-gradient(circle at top right, rgba(98, 118, 255, 0.16), transparent 22%),
+    linear-gradient(180deg, #090a10 0%, #05060a 100%);
+  color: var(--foreground);
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(228, 176, 111, 0.35);
+  color: #fff8ef;
+}
+
+.glass-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+}
+
+.glass-panel-strong {
+  background: var(--surface-strong);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 28px 110px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(18px);
+}
+
+.ambient-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(12px);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.orb-gold {
+  background: radial-gradient(circle, rgba(240, 201, 138, 0.75), rgba(240, 201, 138, 0));
+}
+
+.orb-blue {
+  background: radial-gradient(circle, rgba(106, 132, 255, 0.5), rgba(106, 132, 255, 0));
+}
+
+.grid-fade {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.92), transparent);
+}
+
+.text-shadow-soft {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.drift-slow {
+  animation: drift 11s ease-in-out infinite;
+}
+
+.drift-medium {
+  animation: drift 8s ease-in-out infinite;
+}
+
+.shine {
+  background: linear-gradient(110deg, transparent 18%, rgba(255, 255, 255, 0.14) 35%, transparent 52%);
+  background-size: 220% 100%;
+  animation: sheen 5.2s linear infinite;
+}
+
+@keyframes drift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes sheen {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -20% 0;
+  }
+}

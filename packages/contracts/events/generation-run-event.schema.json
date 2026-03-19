@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ad-command-center.dev/contracts/generation-run-event.schema.json",
+  "title": "GenerationRunEvent",
+  "type": "object",
+  "required": [
+    "event_id",
+    "run_id",
+    "project_id",
+    "stage",
+    "step",
+    "status",
+    "attempt",
+    "actor",
+    "artifact_ids",
+    "message",
+    "progress",
+    "emitted_at"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "run_id": {
+      "type": "string"
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "ingest",
+        "normalize",
+        "writers_room",
+        "storyboard",
+        "clip_generation",
+        "clip_qc",
+        "edit_planning",
+        "assembly",
+        "delivery"
+      ]
+    },
+    "step": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "actor": {
+      "type": "string"
+    },
+    "artifact_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "message": {
+      "type": "string"
+    },
+    "progress": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "emitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

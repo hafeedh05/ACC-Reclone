@@ -1,0 +1,13 @@
+project_id                  = "azadea-bi"
+region                      = "us-central1"
+environment                 = "prod"
+name_prefix                 = "ad-command-center"
+artifact_registry_repo_id    = "ad-command-center"
+domain_name                 = "app.ad-command-center.example"
+image_tag                   = "latest"
+cloud_sql_tier              = "db-custom-4-16384"
+cloud_sql_disk_size_gb      = 200
+cloud_sql_database_name     = "ad_command_center"
+cloud_run_min_instances     = 1
+cloud_run_max_instances     = 20
+github_repository           = "ahmadyoussefrifai-dev/ad-command-center"

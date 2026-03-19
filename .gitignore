@@ -29,6 +29,8 @@ legacy/prototype/venv/
 legacy/prototype/generated_videos/
 legacy/prototype/helper/generated_videos/
 legacy/prototype/__pycache__/
+legacy/prototype/helper/__pycache__/
+legacy/prototype/helper/kie/__pycache__/
 
 # Local build artifacts
 coverage/

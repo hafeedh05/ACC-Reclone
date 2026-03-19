@@ -24,7 +24,7 @@ locals {
     "storage.googleapis.com",
   ])
 
-  service_image_repo = "us-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.containers.repository_id}"
+  service_image_repo = "us-central1-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.containers.repository_id}"
 
   image_refs = {
     web          = "${local.service_image_repo}/web:${var.image_tag}"

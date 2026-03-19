@@ -77,3 +77,15 @@ variable "github_repository" {
   type        = string
   default     = "your-org/ad-command-center"
 }
+
+variable "enable_edge_stack" {
+  description = "Whether to provision the external load balancer, managed certificate, and Cloud Armor edge stack."
+  type        = bool
+  default     = false
+}
+
+variable "manage_github_federation" {
+  description = "Whether this Terraform stack should create a GitHub deployer service account and Workload Identity Federation resources."
+  type        = bool
+  default     = false
+}

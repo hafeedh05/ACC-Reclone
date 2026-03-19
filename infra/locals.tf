@@ -1,5 +1,7 @@
 locals {
-  base_name = "${var.name_prefix}-${var.environment}"
+  base_name              = "${var.name_prefix}-${var.environment}"
+  public_service_ingress = var.enable_edge_stack ? "internal-and-cloud-load-balancing" : "all"
+  public_base_url        = var.enable_edge_stack ? "https://${var.domain_name}" : ""
 
   labels = {
     app         = var.name_prefix

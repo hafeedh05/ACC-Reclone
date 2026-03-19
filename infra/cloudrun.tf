@@ -8,7 +8,7 @@ resource "google_cloud_run_service" "web" {
   metadata {
     labels = local.labels
     annotations = {
-      "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+      "run.googleapis.com/ingress" = local.public_service_ingress
     }
   }
 
@@ -44,17 +44,12 @@ resource "google_cloud_run_service" "web" {
 
         env {
           name  = "NEXT_PUBLIC_BASE_URL"
-          value = "https://${var.domain_name}"
+          value = local.public_base_url
         }
 
         env {
           name  = "NEXT_PUBLIC_API_BASE_PATH"
           value = "/api"
-        }
-
-        env {
-          name  = "PORT"
-          value = "8080"
         }
 
         env {
@@ -98,8 +93,7 @@ resource "google_cloud_run_service" "api" {
   metadata {
     labels = local.labels
     annotations = {
-      "run.googleapis.com/ingress"            = "internal-and-cloud-load-balancing"
-      "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.primary.connection_name
+      "run.googleapis.com/ingress" = local.public_service_ingress
     }
   }
 
@@ -107,8 +101,9 @@ resource "google_cloud_run_service" "api" {
     metadata {
       labels = local.labels
       annotations = {
-        "autoscaling.knative.dev/minScale" = tostring(var.cloud_run_min_instances)
-        "autoscaling.knative.dev/maxScale" = tostring(var.cloud_run_max_instances)
+        "autoscaling.knative.dev/minScale"      = tostring(var.cloud_run_min_instances)
+        "autoscaling.knative.dev/maxScale"      = tostring(var.cloud_run_max_instances)
+        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.primary.connection_name
       }
     }
 
@@ -126,11 +121,6 @@ resource "google_cloud_run_service" "api" {
         env {
           name  = "APP_ENV"
           value = var.environment
-        }
-
-        env {
-          name  = "PORT"
-          value = "8080"
         }
 
         env {
@@ -254,8 +244,7 @@ resource "google_cloud_run_service" "orchestrator" {
   metadata {
     labels = local.labels
     annotations = {
-      "run.googleapis.com/ingress"            = "all"
-      "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.primary.connection_name
+      "run.googleapis.com/ingress" = "all"
     }
   }
 
@@ -263,8 +252,9 @@ resource "google_cloud_run_service" "orchestrator" {
     metadata {
       labels = local.labels
       annotations = {
-        "autoscaling.knative.dev/minScale" = tostring(var.cloud_run_min_instances)
-        "autoscaling.knative.dev/maxScale" = tostring(var.cloud_run_max_instances)
+        "autoscaling.knative.dev/minScale"      = tostring(var.cloud_run_min_instances)
+        "autoscaling.knative.dev/maxScale"      = tostring(var.cloud_run_max_instances)
+        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.primary.connection_name
       }
     }
 
@@ -282,11 +272,6 @@ resource "google_cloud_run_service" "orchestrator" {
         env {
           name  = "APP_ENV"
           value = var.environment
-        }
-
-        env {
-          name  = "PORT"
-          value = "8080"
         }
 
         env {
@@ -360,8 +345,7 @@ resource "google_cloud_run_service" "workers" {
   metadata {
     labels = local.labels
     annotations = {
-      "run.googleapis.com/ingress"            = "all"
-      "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.primary.connection_name
+      "run.googleapis.com/ingress" = "all"
     }
   }
 
@@ -369,8 +353,9 @@ resource "google_cloud_run_service" "workers" {
     metadata {
       labels = local.labels
       annotations = {
-        "autoscaling.knative.dev/minScale" = tostring(var.cloud_run_min_instances)
-        "autoscaling.knative.dev/maxScale" = tostring(var.cloud_run_max_instances)
+        "autoscaling.knative.dev/minScale"      = tostring(var.cloud_run_min_instances)
+        "autoscaling.knative.dev/maxScale"      = tostring(var.cloud_run_max_instances)
+        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.primary.connection_name
       }
     }
 
@@ -388,11 +373,6 @@ resource "google_cloud_run_service" "workers" {
         env {
           name  = "APP_ENV"
           value = var.environment
-        }
-
-        env {
-          name  = "PORT"
-          value = "8080"
         }
 
         env {

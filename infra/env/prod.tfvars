@@ -11,3 +11,5 @@ cloud_sql_database_name   = "ad_command_center"
 cloud_run_min_instances   = 1
 cloud_run_max_instances   = 20
 github_repository         = "ahmadyoussefrifai-dev/ad-command-center"
+enable_edge_stack         = false
+manage_github_federation  = false

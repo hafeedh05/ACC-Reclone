@@ -16,11 +16,11 @@ output "cloud_run_urls" {
 }
 
 output "public_load_balancer_ip" {
-  value = google_compute_global_address.public_ip.address
+  value = var.enable_edge_stack ? google_compute_global_address.public_ip[0].address : null
 }
 
 output "public_domain" {
-  value = var.domain_name
+  value = var.enable_edge_stack ? var.domain_name : null
 }
 
 output "storage_buckets" {
@@ -48,9 +48,9 @@ output "cloud_tasks_queues" {
 }
 
 output "github_workload_identity_provider" {
-  value = google_iam_workload_identity_pool_provider.github.name
+  value = var.manage_github_federation ? google_iam_workload_identity_pool_provider.github[0].name : null
 }
 
 output "github_deployer_service_account" {
-  value = google_service_account.deployer.email
+  value = var.manage_github_federation ? google_service_account.deployer[0].email : null
 }

@@ -4,6 +4,8 @@ resource "google_service_account" "runtime" {
 }
 
 resource "google_service_account" "deployer" {
+  count = var.manage_github_federation ? 1 : 0
+
   account_id   = "${var.name_prefix}-${var.environment}-deploy"
   display_name = "Terraform and GitHub deployer for ${local.base_name}"
 }
@@ -17,21 +19,25 @@ resource "google_project_iam_member" "runtime" {
 }
 
 resource "google_project_iam_member" "deployer" {
-  for_each = local.deployer_project_roles
+  for_each = var.manage_github_federation ? local.deployer_project_roles : toset([])
 
   project = var.project_id
   role    = each.value
-  member  = "serviceAccount:${google_service_account.deployer.email}"
+  member  = "serviceAccount:${google_service_account.deployer[0].email}"
 }
 
 resource "google_iam_workload_identity_pool" "github" {
+  count = var.manage_github_federation ? 1 : 0
+
   workload_identity_pool_id = replace("${var.name_prefix}-${var.environment}-github", "_", "-")
   display_name              = "GitHub Actions for ${local.base_name}"
   description               = "OIDC federation for GitHub Actions deploys."
 }
 
 resource "google_iam_workload_identity_pool_provider" "github" {
-  workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
+  count = var.manage_github_federation ? 1 : 0
+
+  workload_identity_pool_id          = google_iam_workload_identity_pool.github[0].workload_identity_pool_id
   workload_identity_pool_provider_id = "github"
   display_name                       = "GitHub provider"
 
@@ -52,7 +58,9 @@ resource "google_iam_workload_identity_pool_provider" "github" {
 }
 
 resource "google_service_account_iam_member" "github_wif" {
-  service_account_id = google_service_account.deployer.name
+  count = var.manage_github_federation ? 1 : 0
+
+  service_account_id = google_service_account.deployer[0].name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/projects/${data.google_project.current.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github.workload_identity_pool_id}/attribute.repository/${var.github_repository}"
+  member             = "principalSet://iam.googleapis.com/projects/${data.google_project.current.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool.github[0].workload_identity_pool_id}/attribute.repository/${var.github_repository}"
 }

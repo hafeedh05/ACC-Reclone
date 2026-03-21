@@ -30,27 +30,27 @@ const featuredOutput = sampleOutputs[1];
 const outputRail = sampleOutputs.filter((output) => output.slug !== featuredOutput.slug).slice(0, 3);
 
 const heroAssets = [
-  { id: "01", label: "Bottle", note: "Primary pack shot", tone: "amber" as const },
-  { id: "02", label: "Texture", note: "Proof detail", tone: "cobalt" as const },
-  { id: "03", label: "Routine", note: "Human scale", tone: "neutral" as const },
-  { id: "04", label: "Carton", note: "Offer support", tone: "amber" as const },
+  { id: "01", label: "Primary pack", note: "Front-facing hero crop", tone: "amber" as const },
+  { id: "02", label: "Serum texture", note: "Close detail for the opener", tone: "cobalt" as const },
+  { id: "03", label: "Routine crop", note: "Human-scale usage frame", tone: "neutral" as const },
+  { id: "04", label: "Outer carton", note: "Offer support detail", tone: "amber" as const },
 ];
 
 const workflowMoments = [
   {
     label: "Source set",
-    title: "Upload the assets and lock the brief before the expensive work starts.",
-    note: "The campaign only gets one production direction. Make it readable early.",
+    title: "Start with the assets, the offer, and one clean production direction.",
+    note: "The brief should settle the campaign before anything expensive starts moving.",
   },
   {
     label: "Creative package",
-    title: "Approve the script and storyboard while the run is still cheap to steer.",
-    note: "Hooks, benefit stack, and scene logic are compared before clips are generated.",
+    title: "Shape the script and storyboard while the work is still easy to steer.",
+    note: "The strongest angle, scene order, and claim hierarchy are locked before clips are made.",
   },
   {
     label: "Output family",
-    title: "Deliver four disciplined cuts from one shared pool instead of rebuilding per format.",
-    note: "Performance, brand, feature, and platform routes stay related without feeling duplicated.",
+    title: "Route one shared clip pool into the cuts the campaign actually needs.",
+    note: "Performance, brand, feature, and platform exports stay related without feeling duplicated.",
   },
 ];
 
@@ -126,8 +126,8 @@ export default function HomePage() {
           <p className="eyebrow">Workflow</p>
           <h2>One source set in. One disciplined output family out.</h2>
           <p>
-            The product works because the material, the creative package, and the final routing
-            each have a distinct moment instead of collapsing into one noisy dashboard.
+            The material, the creative package, and the finished exports each get their own clear
+            moment, so the run stays readable from first upload to final delivery.
           </p>
 
           <ol className="workflow-ledger">
@@ -187,15 +187,19 @@ export default function HomePage() {
 
       <section className="home-command-v2">
         <div className="home-command-v2__lead">
-          <p className="eyebrow">Command Center</p>
-          <h2>See the run while it is still steerable.</h2>
-          <p>
-            Review gates, live artifacts, route mapping, retries, and output status stay visible in
-            one operating surface instead of getting buried in status prose.
-          </p>
-          <ButtonLink href="/app/command-center" variant="secondary">
-            Open the screen
-          </ButtonLink>
+          <div className="home-command-v2__lead-copy">
+            <p className="eyebrow">Command Center</p>
+            <h2>See the run while it is still steerable.</h2>
+            <p>
+              Review gates, live artifacts, scene focus, route mapping, and fallback readiness stay
+              visible in one calm operating surface.
+            </p>
+          </div>
+          <div className="home-command-v2__lead-action">
+            <ButtonLink href="/app/command-center" variant="secondary">
+              Open the screen
+            </ButtonLink>
+          </div>
         </div>
         <CommandCenterShowcase compact />
       </section>
@@ -204,10 +208,10 @@ export default function HomePage() {
         <div className="home-proof-v2__studies">
           <div className="home-proof-v2__intro">
             <p className="eyebrow">Proof</p>
-            <h2>Commercial evidence, not feature paraphrase.</h2>
+            <h2>Two proof pages worth opening.</h2>
             <p>
-              The best proof pages show the brief, the constraints, the choices, and the delivered
-              outputs without turning the story into an internal product memo.
+              Show the brief, the constraints, the decisions, and the delivered cuts clearly enough
+              that the work sells itself.
             </p>
           </div>
 
@@ -293,9 +297,9 @@ function HeroConsole() {
           <h2>{heroRun.title}</h2>
           <p>{heroRun.summary}</p>
           <div className="chip-row">
-            <Chip tone="accent">{heroRun.industry}</Chip>
-            <Chip tone="cobalt">Reviewed creative</Chip>
-            <Chip>Multi-format delivery</Chip>
+            <span>{heroRun.industry}</span>
+            <span>Reviewed creative</span>
+            <span>Multi-format delivery</span>
           </div>
           <div className="hero-console__goals">
             {heroRun.selectedGoals.slice(0, 2).map((goal) => (
@@ -321,9 +325,9 @@ function HeroConsole() {
             ))}
           </div>
           <div className="hero-console__approvals">
-            <StatusBadge tone="success">Script approved</StatusBadge>
-            <StatusBadge tone="success">Storyboard approved</StatusBadge>
-            <StatusBadge tone="accent">Four cuts planned</StatusBadge>
+            <span>Script approved</span>
+            <span>Storyboard approved</span>
+            <span>Four cuts planned</span>
           </div>
         </aside>
 
@@ -331,7 +335,7 @@ function HeroConsole() {
           <div className="hero-preview__header">
             <div>
               <p className="eyebrow">Campaign preview</p>
-              <strong>Warm proof. Clean promise.</strong>
+              <strong>Warm launch framing. Clear offer.</strong>
             </div>
             <StatusBadge tone="accent">Scene 03 live</StatusBadge>
           </div>

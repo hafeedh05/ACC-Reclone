@@ -16,10 +16,10 @@ type AccentTone = "amber" | "cobalt" | "neutral";
 
 function filterButtonClass(active: boolean) {
   return [
-    "inline-flex items-center justify-center rounded-full border px-4 py-2 text-sm transition",
+    "inline-flex items-center justify-center rounded-full border-b px-1 py-2 text-sm transition",
     active
-      ? "border-[rgba(212,154,90,0.34)] bg-[rgba(212,154,90,0.12)] text-[color:var(--text-primary)]"
-      : "border-[color:var(--border-default)] bg-[rgba(246,242,234,0.03)] text-[color:var(--text-secondary)] hover:border-[color:var(--border-strong)] hover:text-[color:var(--text-primary)]",
+      ? "border-[rgba(212,154,90,0.34)] bg-transparent text-[color:var(--text-primary)]"
+      : "border-transparent bg-transparent text-[color:var(--text-secondary)] hover:border-[rgba(246,242,234,0.14)] hover:text-[color:var(--text-primary)]",
   ].join(" ");
 }
 
@@ -59,7 +59,7 @@ export default function SampleRunsPage() {
         <div className="sample-runs-hero__copy">
           <Chip tone="accent">Sample runs</Chip>
           <h1 className="hero-title max-w-[8ch]">
-            Campaign proof that changes with the category
+            Six campaigns. Six very different launch systems.
           </h1>
           <p className="hero-body">
             Each run keeps the brief, the selected source set, the approvals, and the final
@@ -79,10 +79,10 @@ export default function SampleRunsPage() {
               </button>
             ))}
           </div>
-          <div className="flex flex-wrap gap-3">
-            <StatusBadge tone="default">{atlas.length} live examples</StatusBadge>
-            <StatusBadge tone="accent">Brief, approvals, outputs</StatusBadge>
-            <StatusBadge tone="success">3 ratios / multi-cut packaging</StatusBadge>
+          <div className="page-meta-line">
+            <span>{atlas.length} live examples</span>
+            <span>Brief, approvals, outputs</span>
+            <span>3 ratios / multi-cut packaging</span>
           </div>
         </div>
 
@@ -119,11 +119,11 @@ export default function SampleRunsPage() {
           <div className="space-y-3">
             <p className="eyebrow">Archive</p>
             <h2 className="text-4xl leading-[0.98] tracking-[-0.05em] text-[color:var(--text-primary)]">
-              Compare the campaign systems, not a wall of exports.
+              Compare campaign systems side by side.
             </h2>
             <p className="max-w-3xl text-base leading-8 text-[color:var(--text-secondary)]">
-              Each run below keeps the creative angle, the approval logic, and the final cut
-              family visible enough to judge the work honestly.
+              Each run below keeps the angle, the approvals, and the delivered cut family visible
+              enough to judge the work quickly.
             </p>
           </div>
           <ButtonLink href="/contact" variant="secondary">
@@ -163,10 +163,10 @@ function RunAtlasBoard({
       <div className="sample-atlas__surface">
         <div className="sample-atlas__board">
           <div className="sample-atlas__focus">
-            <div className="sample-atlas__focus-header">
-              <p className="eyebrow">{activeRun.industry}</p>
-              <StatusBadge tone="accent">{activeRun.outputs.length} cuts</StatusBadge>
-            </div>
+          <div className="sample-atlas__focus-header">
+            <p className="eyebrow">{activeRun.industry}</p>
+            <StatusBadge tone="accent">{activeRun.outputs.length} cuts</StatusBadge>
+          </div>
             <p className="sample-atlas__focus-title">{activeRun.title}</p>
             <p className="sample-atlas__focus-copy">{activeRun.brief}</p>
             <div className="sample-atlas__preview">
@@ -244,11 +244,9 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
         </div>
         <div className="sample-proof-board__panel">
           <p className="eyebrow">Selected goals</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {run.selectedGoals.map((goal, index) => (
-              <Chip key={`${run.slug}-goal-${goal}`} tone={index === 0 ? "accent" : "default"}>
-                {goal}
-              </Chip>
+          <div className="page-meta-line mt-4">
+            {run.selectedGoals.map((goal) => (
+              <span key={`${run.slug}-goal-${goal}`}>{goal}</span>
             ))}
           </div>
         </div>
@@ -267,16 +265,16 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
 
       <div className="sample-proof-board__canvas">
         <div className="sample-proof-board__stage">
-          <div className="sample-proof-board__stage-header">
-            <div>
-              <p className="eyebrow">Active sequence</p>
-              <h3>Approved scene structure and output mapping</h3>
+            <div className="sample-proof-board__stage-header">
+              <div>
+                <p className="eyebrow">Active sequence</p>
+                <h3>Approved scene structure and output mapping</h3>
+              </div>
+              <div className="page-meta-line">
+                <span>Script approved</span>
+                <span>Storyboard approved</span>
+              </div>
             </div>
-            <div className="sample-proof-board__stage-badges">
-              <StatusBadge tone="success">Script approved</StatusBadge>
-              <StatusBadge tone="success">Storyboard approved</StatusBadge>
-            </div>
-          </div>
 
           <div className="sample-proof-board__stage-visual">
             <div className="sample-proof-board__scene-stack">

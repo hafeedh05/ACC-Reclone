@@ -1448,7 +1448,7 @@ export const projects: ProjectRecord[] = [
       "Use a controlled product-led story to introduce the serum and make the final package useful across paid, retail, and brand channels.",
     goals: ["Build premium perception", "Create reusable launch cuts", "Keep review points tight"],
     formats: ["9:16", "1:1", "16:9"],
-    assets: ["Hero bottle", "Application close-up", "Carton front"],
+    assets: ["Primary pack crop", "Usage detail crop", "Carton front detail"],
   },
 ];
 

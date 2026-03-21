@@ -6,7 +6,6 @@ import {
   MarketingHeader,
   PageShell,
   SiteFooter,
-  StatusBadge,
 } from "@/components/site-primitives";
 import { journalArticles } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
@@ -38,24 +37,17 @@ export default function JournalIndexPage() {
             storyboards, packaging output families, and keeping campaign production coherent
             after handoff.
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="page-meta-line">
             {topicLabels.map((item, index) => (
-              <span
-                key={item}
-                className={
-                  index === 0
-                    ? "inline-flex items-center rounded-full border border-[rgba(212,154,90,0.34)] bg-[rgba(212,154,90,0.12)] px-4 py-2 text-sm text-[color:var(--text-primary)]"
-                    : "inline-flex items-center rounded-full border border-[color:var(--border-default)] bg-[rgba(246,242,234,0.03)] px-4 py-2 text-sm text-[color:var(--text-secondary)]"
-                }
-              >
+              <span key={item} className={index === 0 ? "text-[color:var(--text-primary)]" : undefined}>
                 {item}
               </span>
             ))}
           </div>
-          <div className="flex flex-wrap gap-3">
-            <StatusBadge tone="default">{journalArticles.length} articles</StatusBadge>
-            <StatusBadge tone="accent">Essays, notes, and systems views</StatusBadge>
-            <StatusBadge tone="success">Linked to runs and case studies</StatusBadge>
+          <div className="page-meta-line">
+            <span>{journalArticles.length} articles</span>
+            <span>Essays, notes, and systems views</span>
+            <span>Linked to runs and case studies</span>
           </div>
         </div>
 
@@ -109,11 +101,11 @@ export default function JournalIndexPage() {
           <div className="space-y-3">
             <p className="eyebrow">Archive</p>
             <h2 className="text-4xl leading-[0.98] tracking-[-0.05em] text-[color:var(--text-primary)]">
-              Different angles, different density, one editorial standard.
+              Essays, notes, and sharp how-tos in one editorial system.
             </h2>
             <p className="max-w-3xl text-base leading-8 text-[color:var(--text-secondary)]">
-              Some pieces carry the big operating argument. Others solve one production problem
-              cleanly. The archive should read like a publication with a point of view.
+              Some pieces carry the broader operating argument. Others solve one production problem
+              cleanly. The archive should feel readable, varied, and useful.
             </p>
           </div>
           <ButtonLink href="/sample-runs" variant="secondary">
@@ -146,13 +138,13 @@ function FeaturedJournalBoard({ article }: { article: (typeof journalArticles)[n
         <p>{article.dek}</p>
         <div className="journal-lead__chips">
           {(article.summaryPoints ?? []).slice(0, 3).map((point) => (
-            <Chip key={point}>{point}</Chip>
+            <span key={point}>{point}</span>
           ))}
         </div>
-        <div className="journal-lead__meta">
-          <StatusBadge tone="default">{article.date}</StatusBadge>
-          <StatusBadge tone="accent">{article.readTime}</StatusBadge>
-          <StatusBadge tone="success">{article.author}</StatusBadge>
+        <div className="page-meta-line">
+          <span>{article.date}</span>
+          <span>{article.readTime}</span>
+          <span>{article.author}</span>
         </div>
       </div>
 
@@ -183,7 +175,7 @@ function LeadEssayCard({ article }: { article: (typeof journalArticles)[number] 
           <p className="eyebrow">{article.category}</p>
           <h2>{article.title}</h2>
         </div>
-        <StatusBadge tone="accent">{article.readTime}</StatusBadge>
+        <span className="journal-meta-pill">{article.readTime}</span>
       </div>
       <p className="journal-essay__dek">{article.dek}</p>
       <div className="journal-essay__grid">
@@ -216,9 +208,9 @@ function JournalNoteCard({
       <p className="eyebrow">{article.category}</p>
       <h3>{article.title}</h3>
       <p>{article.dek}</p>
-      <div className="journal-note__meta">
-        <StatusBadge tone="default">{article.date}</StatusBadge>
-        <StatusBadge tone="accent">{article.readTime}</StatusBadge>
+      <div className="page-meta-line">
+        <span>{article.date}</span>
+        <span>{article.readTime}</span>
       </div>
     </Link>
   );
@@ -255,7 +247,7 @@ function JournalArchiveRow({
 
       <div className="journal-archive-row__points">
         {(article.summaryPoints ?? []).slice(0, 2).map((point) => (
-          <Chip key={`${article.slug}-${point}`}>{point}</Chip>
+          <span key={`${article.slug}-${point}`}>{point}</span>
         ))}
       </div>
 

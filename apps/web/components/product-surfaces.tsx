@@ -171,37 +171,10 @@ const commandOutputRoutes = [
 ];
 
 const commandTelemetry = [
-  { label: "Run ID", value: "AC-184", note: "Aster House / launch" },
+  { label: "Run", value: "AC-184", note: "Aster House / launch" },
   { label: "Elapsed", value: "09:16", note: "Run clock live" },
   { label: "Scene focus", value: "03 / 04", note: "Reveal sequence active" },
   { label: "Route cover", value: "3 / 4", note: "Feature cut is the only queued export" },
-];
-
-const commandArtifacts = [
-  {
-    id: "script.v3",
-    route: "Head Writer -> Brand Voice Editor",
-    status: "Locked",
-    note: "Lead angle approved at 09:13 and released to storyboard prep.",
-  },
-  {
-    id: "scene.03.overlay",
-    route: "Brand Voice Editor -> Storyboard Lead",
-    status: "Live",
-    note: "Overlay language is active and attached to the reveal sequence.",
-  },
-  {
-    id: "route-map.performance",
-    route: "Variant Strategist -> Editor Desk",
-    status: "Mapped",
-    note: "Scene 03 is already routed into the performance, brand, and platform cuts.",
-  },
-  {
-    id: "fallback.still-pack",
-    route: "Clip Lab -> Editor Desk",
-    status: "Ready",
-    note: "Still-led assembly can take over without reopening approvals.",
-  },
 ];
 
 const commandRoleLedger = [
@@ -587,8 +560,10 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
   const currentScene = commandScenes.find((scene) => scene.status === "Live") ?? commandScenes[2];
   const currentStage = commandStages.find((stage) => stage.status === "Live") ?? commandStages[2];
   const visibleEvents = eventRows.slice(0, compact ? 4 : 5);
-  const visibleArtifacts = commandArtifacts.slice(0, compact ? 3 : commandArtifacts.length);
   const visibleTransfers = commandTransfers.slice(0, compact ? 3 : commandTransfers.length);
+  const visibleDependencies = commandDependencies.slice(0, compact ? 2 : commandDependencies.length);
+  const compactRoles = commandRoleLedger.slice(0, 3);
+  const compactRoutes = commandOutputRoutes.slice(0, 3);
 
   return (
     <div
@@ -638,40 +613,32 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
           ))}
         </div>
 
-        <div className="command-plane__body">
-          <aside className="command-plane__spine">
-            <div className="command-plane__spine-head">
-              <p className="eyebrow">Run spine</p>
-              <StatusBadge tone="accent">{currentStage.status}</StatusBadge>
-            </div>
-            <div className="command-plane__stage-list">
-              {commandStages.map((stage) => (
-                <article
-                  key={stage.name}
-                  className={[
-                    "command-plane__stage",
-                    stage.status === "Complete"
-                      ? "is-complete"
-                      : stage.status === "Live"
-                        ? "is-live"
-                        : stage.status === "Queued"
-                          ? "is-queued"
-                          : "",
-                  ].join(" ")}
-                >
-                  <span className="command-plane__stage-dot" />
-                  <div className="command-plane__stage-copy">
-                    <p>{stage.name}</p>
-                    <strong>{stage.theatrical}</strong>
-                    <span>{stage.status === "Live" ? stage.note : `${stage.progress}% prepared`}</span>
-                  </div>
-                  <b>{stage.progress}%</b>
-                </article>
-              ))}
-            </div>
-          </aside>
+        <div className="command-plane__stage-ribbon">
+          {commandStages.map((stage) => (
+            <article
+              key={stage.name}
+              className={[
+                "command-plane__stage",
+                stage.status === "Complete"
+                  ? "is-complete"
+                  : stage.status === "Live"
+                    ? "is-live"
+                    : stage.status === "Queued"
+                      ? "is-queued"
+                      : "",
+              ].join(" ")}
+            >
+              <div className="command-plane__stage-copy">
+                <p>{stage.name}</p>
+                <strong>{stage.theatrical}</strong>
+                <span>{stage.status === "Live" ? stage.note : `${stage.progress}% prepared`}</span>
+              </div>
+              <b>{stage.progress}%</b>
+            </article>
+          ))}
+        </div>
 
-          <article className="command-plane__artifact command-plane__artifact--rescued">
+        <article className="command-plane__artifact command-plane__artifact--rescued">
             <div className="command-plane__artifact-head">
               <div>
                 <p className="eyebrow">Active scene board</p>
@@ -716,7 +683,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
 
                 <div className="command-plane__artifact-side command-plane__artifact-side--rescued">
                   <div className="command-plane__dependency-row">
-                    {commandDependencies.map((item) => (
+                    {visibleDependencies.map((item) => (
                       <article key={item.label} className="command-plane__dependency">
                         <div>
                           <p>{item.label}</p>
@@ -757,7 +724,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
               </div>
 
               <div className="command-plane__route-list command-plane__route-list--rescued">
-                {commandOutputRoutes.map((route) => (
+                {(compact ? compactRoutes : commandOutputRoutes).map((route) => (
                   <article key={route.name} className="command-plane__route">
                     <div className="command-plane__route-head">
                       <div>
@@ -789,31 +756,57 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                 ))}
               </div>
 
-              <div className="command-plane__scene-row command-plane__scene-row--rescued">
-                {commandScenes.map((scene, index) => (
-                  <article
-                    key={scene.id}
-                    className={[
-                      "command-plane__scene",
-                      scene.id === currentScene.id ? "is-live" : scene.status === "Complete" ? "is-complete" : "",
-                    ].join(" ")}
-                  >
-                    <div className="command-plane__scene-head">
-                      <p>Scene {scene.id}</p>
-                      <StatusBadge tone={toneForStatus(scene.status)}>{scene.status}</StatusBadge>
+              {compact ? (
+                <div className="command-plane__compact-band">
+                  <article>
+                    <p className="eyebrow">Active roles</p>
+                    <div className="command-plane__compact-list">
+                      {compactRoles.map((role) => (
+                        <div key={role.name}>
+                          <strong>{role.name}</strong>
+                          <span>
+                            {role.status} · {role.updatedAt}
+                          </span>
+                        </div>
+                      ))}
                     </div>
-                    <div className={index === 2 ? "command-plane__scene-poster is-live" : "command-plane__scene-poster"} />
-                    <strong>{scene.title}</strong>
-                    <span>{scene.note}</span>
                   </article>
-                ))}
-              </div>
+
+                  <article>
+                    <p className="eyebrow">Latest movement</p>
+                    <div className="command-plane__compact-list">
+                      {visibleTransfers.slice(0, 2).map((transfer) => (
+                        <div key={`${transfer.time}-${transfer.artifact}`}>
+                          <strong>{transfer.artifact}</strong>
+                          <span>
+                            {transfer.from} to {transfer.to} · {transfer.time}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+
+                  <article>
+                    <p className="eyebrow">Output cover</p>
+                    <div className="command-plane__compact-list">
+                      {compactRoutes.map((route) => (
+                        <div key={route.name}>
+                          <strong>
+                            {route.name} · {route.aspect}
+                          </strong>
+                          <span>{route.state}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </article>
+                </div>
+              ) : null}
+
             </div>
           </article>
-        </div>
       </section>
 
-      <aside className="command-plane__ops command-plane__ops--rescued">
+      {!compact ? <aside className="command-plane__ops command-plane__ops--rescued">
         <section className="command-plane__ops-section command-plane__ops-section--roles">
           <div className="command-plane__ops-head">
             <p className="eyebrow">Role ledger</p>
@@ -830,25 +823,6 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                   <em>{role.updatedAt}</em>
                   <StatusBadge tone={toneForStatus(role.status)}>{role.status}</StatusBadge>
                 </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="command-plane__ops-section command-plane__ops-section--flow">
-          <div className="command-plane__ops-head">
-            <p className="eyebrow">Locked artifacts</p>
-            <StatusBadge tone="accent">{visibleArtifacts.length} tracked</StatusBadge>
-          </div>
-          <div className="command-plane__flow-list">
-            {visibleArtifacts.map((artifact) => (
-              <article key={artifact.id} className="command-plane__flow">
-                <div className="command-plane__flow-head">
-                  <p>{artifact.id}</p>
-                  <StatusBadge tone={toneForStatus(artifact.status)}>{artifact.status}</StatusBadge>
-                </div>
-                <strong>{artifact.route}</strong>
-                <span>{artifact.note}</span>
               </article>
             ))}
           </div>
@@ -886,7 +860,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
             can stay on schedule even if one motion beat needs a retry.
           </span>
         </section>
-      </aside>
+      </aside> : null}
     </div>
   );
 }
@@ -947,14 +921,12 @@ function CommandBriefRail() {
         </div>
         <div className="command-brief__formats">
           {["9:16", "1:1", "16:9"].map((format) => (
-            <Chip key={format} tone="accent">
-              {format}
-            </Chip>
+            <span key={format}>{format}</span>
           ))}
         </div>
         <div className="command-brief__approval-list">
-          <StatusBadge tone="success">Script approved</StatusBadge>
-          <StatusBadge tone="success">Storyboard approved</StatusBadge>
+          <span>Script approved</span>
+          <span>Storyboard approved</span>
         </div>
         <div className="command-brief__run-meta">
           <div>

@@ -6,7 +6,6 @@ import {
   MarketingHeader,
   PageShell,
   SiteFooter,
-  StatusBadge,
 } from "@/components/site-primitives";
 import { caseStudies } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
@@ -29,17 +28,17 @@ export default function CaseStudiesPage() {
         <div className="case-hero__copy">
           <Chip tone="accent">Case studies</Chip>
           <h1 className="hero-title max-w-[8ch]">
-            Case studies with the workflow still visible
+            Case studies built around the actual launch decisions
           </h1>
           <p className="hero-body">
             Brief, constraints, workflow choices, approval logic, output structure, and what
             changed commercially all stay together so the page proves the system instead of
             summarizing it.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <StatusBadge tone="success">{caseStudies.length} studies</StatusBadge>
-            <StatusBadge tone="accent">Before / after logic</StatusBadge>
-            <StatusBadge tone="default">Outputs tied to outcomes</StatusBadge>
+          <div className="page-meta-line">
+            <span>{caseStudies.length} studies</span>
+            <span>Before / after logic</span>
+            <span>Outputs tied to outcomes</span>
           </div>
         </div>
 
@@ -49,7 +48,7 @@ export default function CaseStudiesPage() {
       <section className="case-system">
         <aside className="case-system__rail">
           <div className="case-rail-panel">
-            <p className="eyebrow">What good proof answers</p>
+            <p className="eyebrow">What strong studies answer</p>
             <div className="mt-5 space-y-4">
               <ArchiveNote
                 label="Constraints"
@@ -105,13 +104,13 @@ function FeaturedCaseBoard({ study }: { study: (typeof caseStudies)[number] }) {
         <p>{study.dek}</p>
         <div className="case-lead__chips">
           {(study.constraints ?? []).slice(0, 3).map((item) => (
-            <Chip key={`${study.slug}-${item}`}>{item}</Chip>
+            <span key={`${study.slug}-${item}`}>{item}</span>
           ))}
         </div>
-        <div className="case-lead__meta">
-          <StatusBadge tone="default">{study.date}</StatusBadge>
-          <StatusBadge tone="accent">{study.readTime}</StatusBadge>
-          <StatusBadge tone="success">{study.author}</StatusBadge>
+        <div className="page-meta-line">
+          <span>{study.date}</span>
+          <span>{study.readTime}</span>
+          <span>{study.author}</span>
         </div>
 
         <div className="case-lead__logic">

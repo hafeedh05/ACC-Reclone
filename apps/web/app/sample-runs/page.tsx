@@ -10,6 +10,7 @@ import {
   SiteFooter,
   StatusBadge,
 } from "@/components/site-primitives";
+import { EditorialMediaFrame, mediaForRun } from "@/components/media-system";
 import { sampleRunFilters, sampleRuns, type SampleRun } from "@/components/site-data";
 
 type AccentTone = "amber" | "cobalt" | "neutral";
@@ -156,7 +157,7 @@ function RunAtlasBoard({
   activeSlug: string;
 }) {
   const activeRun = runs.find((run) => run.slug === activeSlug) ?? runs[0];
-  const perimeter = runs.filter((run) => run.slug !== activeRun.slug).slice(0, 5);
+  const perimeter = runs.filter((run) => run.slug !== activeRun.slug).slice(0, 4);
 
   return (
     <div className="sample-atlas">
@@ -175,8 +176,13 @@ function RunAtlasBoard({
                 <strong>{activeRun.selectedAssets[0]}</strong>
               </div>
               <div className="sample-atlas__preview-main">
-                <div className="sample-atlas__preview-glow" />
-                <div className="sample-atlas__preview-bottle" />
+                <EditorialMediaFrame
+                  asset={mediaForRun(activeRun.slug)}
+                  aspect="portrait"
+                  className="sample-atlas__preview-media"
+                  motion={activeRun.slug === "northstar-serum-launch"}
+                  sizes="(min-width: 1280px) 22vw, 60vw"
+                />
                 <div className="sample-atlas__preview-output">
                   <span>{activeRun.outputs[0]?.aspect}</span>
                   <strong>{activeRun.outputs[0]?.name}</strong>
@@ -207,9 +213,17 @@ function RunAtlasBoard({
                       : "sample-atlas__tile--neutral",
                 ].join(" ")}
               >
+                <div className="sample-atlas__tile-media">
+                  <EditorialMediaFrame
+                    asset={mediaForRun(run.slug)}
+                    aspect="landscape"
+                    className="sample-atlas__tile-media-frame"
+                    sizes="280px"
+                  />
+                </div>
                 <p>{run.industry}</p>
-                <strong>{run.summary}</strong>
-                <span>{run.outputs[0]?.name}</span>
+                <strong>{run.title}</strong>
+                <span>{run.outputs[0]?.name} · {run.outputs[0]?.aspect}</span>
               </Link>
             ))}
           </div>
@@ -288,8 +302,13 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
             </div>
 
             <div className="sample-proof-board__preview">
-              <div className="sample-proof-board__preview-glow" />
-              <div className="sample-proof-board__preview-core" />
+              <EditorialMediaFrame
+                asset={mediaForRun(run.slug)}
+                aspect="landscape"
+                className="sample-proof-board__preview-media"
+                motion={run.slug === "northstar-serum-launch"}
+                sizes="(min-width: 1280px) 34vw, 100vw"
+              />
               <div className="sample-proof-board__preview-label">
                 <span>Live preview</span>
                 <strong>{run.outputs[0]?.name}</strong>
@@ -364,6 +383,12 @@ function RunProofRow({
       ].join(" ")}
     >
       <div className="sample-proof-row__visual">
+        <EditorialMediaFrame
+          asset={mediaForRun(run.slug)}
+          aspect="landscape"
+          className="sample-proof-row__visual-media"
+          sizes="(min-width: 1280px) 32vw, 100vw"
+        />
         <div className="sample-proof-row__visual-ledger">
           <p>{run.industry}</p>
           <span>{run.outputs.length} cuts</span>
@@ -394,10 +419,6 @@ function RunProofRow({
           <div>
             <span>Brief</span>
             <p>{run.brief}</p>
-          </div>
-          <div>
-            <span>Approvals</span>
-            <p>{run.stages[1]?.status} script package, {run.stages[2]?.status?.toLowerCase()} storyboard.</p>
           </div>
           <div>
             <span>Output strategy</span>

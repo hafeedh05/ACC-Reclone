@@ -8,6 +8,13 @@ import {
   SiteFooter,
   StatusBadge,
 } from "@/components/site-primitives";
+import {
+  EditorialMediaFrame,
+  mediaForCaseStudy,
+  mediaForOutput,
+  mediaLibrary,
+  type MediaAsset,
+} from "@/components/media-system";
 import { CommandCenterShowcase } from "@/components/product-surfaces";
 import {
   caseStudies,
@@ -30,10 +37,34 @@ const featuredOutput = sampleOutputs[1];
 const outputRail = sampleOutputs.filter((output) => output.slug !== featuredOutput.slug).slice(0, 3);
 
 const heroAssets = [
-  { id: "01", label: "Primary pack", note: "Front-facing hero crop", tone: "amber" as const },
-  { id: "02", label: "Serum texture", note: "Close detail for the opener", tone: "cobalt" as const },
-  { id: "03", label: "Routine crop", note: "Human-scale usage frame", tone: "neutral" as const },
-  { id: "04", label: "Outer carton", note: "Offer support detail", tone: "amber" as const },
+  {
+    id: "01",
+    label: "Primary pack",
+    note: "Front-facing hero crop",
+    tone: "amber" as const,
+    media: mediaLibrary.heroSerum,
+  },
+  {
+    id: "02",
+    label: "Offer tray",
+    note: "Controlled support composition",
+    tone: "cobalt" as const,
+    media: mediaLibrary.ecommerceTray,
+  },
+  {
+    id: "03",
+    label: "Travel kit",
+    note: "Accessory cue for compact cuts",
+    tone: "neutral" as const,
+    media: mediaLibrary.chargerStill,
+  },
+  {
+    id: "04",
+    label: "Interior proof",
+    note: "Space-led backdrop for wider exports",
+    tone: "amber" as const,
+    media: mediaLibrary.residentialStill,
+  },
 ];
 
 const workflowMoments = [
@@ -147,6 +178,7 @@ export default function HomePage() {
         <div className="home-sequence-v2__proof">
           <article className="featured-output">
             <MediaPlate
+              asset={mediaForOutput(featuredOutput.slug)}
               tone="amber"
               ratio={featuredOutput.aspect.split(" / ")[0]}
               title={featuredOutput.title}
@@ -168,6 +200,7 @@ export default function HomePage() {
             {outputRail.map((output, index) => (
               <Link key={output.slug} href="/gallery" className="output-rail-v2__item">
                 <MediaPlate
+                  asset={mediaForOutput(output.slug)}
                   tone={index === 0 ? "cobalt" : index === 1 ? "neutral" : "amber"}
                   ratio={output.aspect.split(" / ")[0]}
                   title={output.title}
@@ -219,6 +252,7 @@ export default function HomePage() {
             {proofStudies.map((study, index) => (
               <Link key={study.slug} href={`/case-studies/${study.slug}`} className="case-strip-v2__item">
                 <MediaPlate
+                  asset={mediaForCaseStudy(study.slug)}
                   tone={index === 0 ? "amber" : "cobalt"}
                   ratio="16:9"
                   title={study.title}
@@ -318,8 +352,12 @@ function HeroConsole() {
             {heroAssets.slice(0, 3).map((asset) => (
               <article key={asset.id} className={`hero-asset hero-asset--open hero-asset--${asset.tone}`}>
                 <div className="hero-asset__thumb" aria-hidden="true">
-                  <span />
-                  <span />
+                  <EditorialMediaFrame
+                    asset={asset.media}
+                    aspect="square"
+                    className="hero-asset__media"
+                    sizes="140px"
+                  />
                 </div>
                 <div className="hero-asset__copy">
                   <p>{asset.id}</p>
@@ -347,9 +385,14 @@ function HeroConsole() {
           </div>
 
           <div className="hero-canvas__stage">
-            <div className="hero-canvas__glow" />
-            <div className="hero-canvas__beam" />
-            <div className="hero-canvas__subject" />
+            <EditorialMediaFrame
+              asset={mediaLibrary.heroSerum}
+              aspect="landscape"
+              className="hero-canvas__media"
+              motion
+              priority
+              sizes="(min-width: 1280px) 38vw, 100vw"
+            />
             <div className="hero-canvas__caption">
               <p className="eyebrow">Performance cut</p>
               <h3>Soft light, tighter claim stack, and a cleaner retail close.</h3>
@@ -389,6 +432,7 @@ function HeroConsole() {
             {heroOutputs.map((output, index) => (
               <article key={`${output.name}-${output.aspect}`} className="hero-family__item">
                 <MediaPlate
+                  asset={mediaLibrary.heroSerum}
                   tone={index === 0 ? "amber" : index === 1 ? "cobalt" : "neutral"}
                   ratio={output.aspect}
                   title={output.name}
@@ -410,6 +454,7 @@ function HeroConsole() {
 }
 
 function MediaPlate({
+  asset,
   tone,
   ratio,
   title,
@@ -417,6 +462,7 @@ function MediaPlate({
   highlight,
   compact = false,
 }: {
+  asset: MediaAsset;
   tone: "amber" | "cobalt" | "neutral";
   ratio: string;
   title: string;
@@ -427,8 +473,13 @@ function MediaPlate({
   return (
     <div className={["media-plate", `media-plate--${tone}`, compact ? "is-compact" : ""].join(" ")}>
       <div className="media-plate__shell">
-        <div className="media-plate__glow" />
-        <div className="media-plate__subject" />
+        <EditorialMediaFrame
+          asset={asset}
+          aspect={ratio === "9:16" ? "portrait" : ratio === "1:1" ? "square" : "landscape"}
+          className="media-plate__media"
+          motion={Boolean(asset.videoSrc && !compact)}
+          sizes={compact ? "220px" : "420px"}
+        />
         <div className="media-plate__meta">
           <span>{ratio}</span>
           <b>{highlight}</b>

@@ -7,6 +7,7 @@ import {
   PageShell,
   SiteFooter,
 } from "@/components/site-primitives";
+import { EditorialMediaFrame, mediaForCaseStudy } from "@/components/media-system";
 import { caseStudies } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
 
@@ -129,6 +130,15 @@ function FeaturedCaseBoard({ study }: { study: (typeof caseStudies)[number] }) {
         </div>
       </div>
 
+      <div className="case-lead__media">
+        <EditorialMediaFrame
+          asset={mediaForCaseStudy(study.slug)}
+          aspect="landscape"
+          className="case-lead__media-frame"
+          sizes="(min-width: 1280px) 28vw, 100vw"
+        />
+      </div>
+
       <div className="case-lead__sidebar">
         {(study.metrics ?? []).slice(0, 3).map((metric, index) => (
           <article
@@ -168,6 +178,12 @@ function CaseStudyRow({
       ].join(" ")}
     >
       <div className="case-row__visual">
+        <EditorialMediaFrame
+          asset={mediaForCaseStudy(study.slug)}
+          aspect="landscape"
+          className="case-row__visual-media"
+          sizes="(min-width: 1280px) 28vw, 100vw"
+        />
         <div className="case-row__visual-top">
           <p>{study.category}</p>
           <span>{study.metrics?.[0]?.value ?? "Case study"}</span>

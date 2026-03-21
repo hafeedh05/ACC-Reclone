@@ -17,6 +17,7 @@ import {
   SectionIntro,
   StatusBadge,
 } from "./site-primitives";
+import { EditorialMediaFrame, mediaForRun } from "./media-system";
 
 type FrameTone = "amber" | "cobalt" | "neutral";
 type FrameAspect = "browser" | "square" | "portrait" | "landscape";
@@ -663,9 +664,12 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
 
             <div className="command-plane__scene-canvas">
               <div className="command-plane__canvas command-plane__canvas--rescued command-plane__canvas--open">
-                <div className="command-plane__canvas-wash" />
-                <div className="command-plane__canvas-plinth" />
-                <div className="command-plane__canvas-subject" />
+                <EditorialMediaFrame
+                  asset={mediaForRun("aster-house-launch")}
+                  aspect="portrait"
+                  className="command-plane__canvas-media"
+                  sizes="(min-width: 1280px) 22vw, 100vw"
+                />
                 <div className="command-plane__canvas-overlay command-plane__canvas-overlay--open">
                   <p className="eyebrow">Overlay</p>
                   <h4>{currentScene.overlay}</h4>

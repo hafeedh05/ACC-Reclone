@@ -7,6 +7,7 @@ import {
   PageShell,
   SiteFooter,
 } from "@/components/site-primitives";
+import { EditorialMediaFrame, mediaForJournal } from "@/components/media-system";
 import { journalArticles } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
 
@@ -148,6 +149,15 @@ function FeaturedJournalBoard({ article }: { article: (typeof journalArticles)[n
         </div>
       </div>
 
+      <div className="journal-lead__media">
+        <EditorialMediaFrame
+          asset={mediaForJournal(article.slug)}
+          aspect="landscape"
+          className="journal-lead__media-frame"
+          sizes="(min-width: 1280px) 26vw, 100vw"
+        />
+      </div>
+
       <div className="journal-lead__sidebar">
         {(article.metrics ?? []).slice(0, 3).map((metric, index) => (
           <article
@@ -170,6 +180,12 @@ function FeaturedJournalBoard({ article }: { article: (typeof journalArticles)[n
 function LeadEssayCard({ article }: { article: (typeof journalArticles)[number] }) {
   return (
     <Link href={`/journal/${article.slug}`} className="journal-essay">
+      <EditorialMediaFrame
+        asset={mediaForJournal(article.slug)}
+        aspect="wide"
+        className="journal-essay__media"
+        sizes="(min-width: 1280px) 48vw, 100vw"
+      />
       <div className="journal-essay__top">
         <div>
           <p className="eyebrow">{article.category}</p>
@@ -205,6 +221,12 @@ function JournalNoteCard({
         accent === "amber" ? "journal-note--amber" : "journal-note--cobalt",
       ].join(" ")}
     >
+      <EditorialMediaFrame
+        asset={mediaForJournal(article.slug)}
+        aspect="landscape"
+        className="journal-note__media"
+        sizes="(min-width: 1280px) 22vw, 100vw"
+      />
       <p className="eyebrow">{article.category}</p>
       <h3>{article.title}</h3>
       <p>{article.dek}</p>
@@ -235,6 +257,14 @@ function JournalArchiveRow({
             : "journal-archive-row--neutral",
       ].join(" ")}
     >
+      <div className="journal-archive-row__media">
+        <EditorialMediaFrame
+          asset={mediaForJournal(article.slug)}
+          aspect="landscape"
+          className="journal-archive-row__media-frame"
+          sizes="(min-width: 1280px) 22vw, 100vw"
+        />
+      </div>
       <div className="journal-archive-row__intro">
         <p className="eyebrow">{article.category}</p>
         <span>{article.date}</span>

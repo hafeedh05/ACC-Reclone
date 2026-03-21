@@ -284,24 +284,28 @@ export default function HomePage() {
 
 function HeroConsole() {
   return (
-    <div className="hero-console" style={{ containerType: "inline-size" }}>
-      <div className="hero-console__bar">
+    <div className="hero-console hero-console--open" style={{ containerType: "inline-size" }}>
+      <div className="hero-console__meta-line">
         <span>Northstar / run live</span>
+        <span>Reviewed creative</span>
         <span>Script approved 09:13</span>
         <span>4 cuts mapped</span>
       </div>
 
-      <div className="hero-console__grid">
-        <aside className="hero-console__brief">
-          <p className="eyebrow">Brief</p>
-          <h2>{heroRun.title}</h2>
-          <p>{heroRun.summary}</p>
-          <div className="chip-row">
-            <span>{heroRun.industry}</span>
-            <span>Reviewed creative</span>
-            <span>Multi-format delivery</span>
+      <div className="hero-console__open-grid">
+        <aside className="hero-console__rail">
+          <div className="hero-console__rail-intro">
+            <p className="eyebrow">Brief</p>
+            <h2>{heroRun.title}</h2>
+            <p>{heroRun.summary}</p>
+            <div className="hero-console__meta-stack">
+              <span>{heroRun.industry}</span>
+              <span>Reviewed creative</span>
+              <span>Multi-format delivery</span>
+            </div>
           </div>
-          <div className="hero-console__goals">
+
+          <div className="hero-console__goal-line">
             {heroRun.selectedGoals.slice(0, 2).map((goal) => (
               <div key={goal}>
                 <span />
@@ -309,9 +313,10 @@ function HeroConsole() {
               </div>
             ))}
           </div>
-          <div className="hero-console__assets">
+
+          <div className="hero-console__asset-column">
             {heroAssets.slice(0, 3).map((asset) => (
-              <article key={asset.id} className={`hero-asset hero-asset--${asset.tone}`}>
+              <article key={asset.id} className={`hero-asset hero-asset--open hero-asset--${asset.tone}`}>
                 <div className="hero-asset__thumb" aria-hidden="true">
                   <span />
                   <span />
@@ -324,15 +329,16 @@ function HeroConsole() {
               </article>
             ))}
           </div>
-          <div className="hero-console__approvals">
+
+          <div className="hero-console__approval-line">
             <span>Script approved</span>
             <span>Storyboard approved</span>
             <span>Four cuts planned</span>
           </div>
         </aside>
 
-        <div className="hero-preview">
-          <div className="hero-preview__header">
+        <section className="hero-canvas">
+          <div className="hero-canvas__head">
             <div>
               <p className="eyebrow">Campaign preview</p>
               <strong>Warm launch framing. Clear offer.</strong>
@@ -340,50 +346,63 @@ function HeroConsole() {
             <StatusBadge tone="accent">Scene 03 live</StatusBadge>
           </div>
 
-          <div className="hero-preview__frame">
-            <div className="hero-preview__ambient" />
-            <div className="hero-preview__device">
-              <div className="hero-preview__device-bar">
-                <span />
-                <span />
-                <span />
-              </div>
-              <div className="hero-preview__poster">
-                <div className="hero-preview__bottle" />
-                <div className="hero-preview__caption">
-                  <p>Performance cut</p>
-                  <strong>Scene 03 is feeding paid, brand, and platform routes.</strong>
-                  <span>Hook approved 09:13 · overlay locked · fallback prepared</span>
-                </div>
-              </div>
+          <div className="hero-canvas__stage">
+            <div className="hero-canvas__glow" />
+            <div className="hero-canvas__beam" />
+            <div className="hero-canvas__subject" />
+            <div className="hero-canvas__caption">
+              <p className="eyebrow">Performance cut</p>
+              <h3>Soft light, tighter claim stack, and a cleaner retail close.</h3>
+              <span>Scene 03 is already feeding paid, brand, and platform routes.</span>
             </div>
-            <div className="hero-preview__timeline">
-              {["01", "02", "03", "04"].map((scene) => (
-                <span key={scene} className={scene === "03" ? "is-live" : scene === "04" ? "is-queued" : "is-on"}>
-                  {scene}
-                </span>
-              ))}
+            <div className="hero-canvas__status">
+              <span>Hook approved 09:13</span>
+              <span>Overlay locked</span>
+              <span>Fallback prepared</span>
             </div>
           </div>
-        </div>
 
-        <aside className="hero-output-family">
-          {heroOutputs.map((output, index) => (
-            <article key={`${output.name}-${output.aspect}`} className="hero-output-card">
-              <MediaPlate
-                tone={index === 0 ? "amber" : index === 1 ? "cobalt" : "neutral"}
-                ratio={output.aspect}
-                title={output.name}
-                label="Output"
-                highlight={index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}
-                compact
-              />
-              <div>
-                <strong>{output.name}</strong>
-                <p>{output.note}</p>
+          <div className="hero-canvas__scene-strip">
+            {[
+              { id: "01", label: "Arrival", state: "on" },
+              { id: "02", label: "Texture", state: "on" },
+              { id: "03", label: "Reveal", state: "live" },
+              { id: "04", label: "Close", state: "queued" },
+            ].map((scene) => (
+              <div
+                key={scene.id}
+                className={[
+                  "hero-canvas__scene",
+                  scene.state === "live" ? "is-live" : scene.state === "queued" ? "is-queued" : "is-on",
+                ].join(" ")}
+              >
+                <b>{scene.id}</b>
+                <span>{scene.label}</span>
               </div>
-            </article>
-          ))}
+            ))}
+          </div>
+        </section>
+
+        <aside className="hero-family">
+          <p className="eyebrow">Output family</p>
+          <div className="hero-family__list">
+            {heroOutputs.map((output, index) => (
+              <article key={`${output.name}-${output.aspect}`} className="hero-family__item">
+                <MediaPlate
+                  tone={index === 0 ? "amber" : index === 1 ? "cobalt" : "neutral"}
+                  ratio={output.aspect}
+                  title={output.name}
+                  label="Output"
+                  highlight={index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}
+                  compact
+                />
+                <div>
+                  <strong>{output.name}</strong>
+                  <p>{output.note}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </aside>
       </div>
     </div>

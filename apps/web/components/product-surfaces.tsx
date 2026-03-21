@@ -567,246 +567,257 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
 
   return (
     <div
-      className={["command-plane", "command-plane--rescued", compact ? "is-compact" : ""].join(" ")}
+      className={["command-plane", "command-plane--rescued", "command-plane--open", compact ? "is-compact" : ""].join(" ")}
       style={{ containerType: "inline-size" }}
     >
       {!compact ? <CommandBriefRail /> : null}
 
-      <section className="command-plane__core">
-        <header className="command-plane__header command-plane__header--rescued">
-          <div className="command-plane__header-copy">
+      <section className="command-plane__core command-plane__core--open">
+        <header className="command-plane__hero">
+          <div className="command-plane__hero-copy">
             <p className="eyebrow">Command Center</p>
             <h2>Run state, active scene, and delivery routes stay visible in one operational board.</h2>
-            <p className="command-plane__summary">
-              AC-184 live / script locked 09:13 / scene 03 routed into three exports / fallback armed
-            </p>
           </div>
-          <div className="command-plane__signals">
-            <CommandSignal
-              label="Current stage"
-              value={currentStage.name}
-              note={currentStage.theatrical}
-              tone="accent"
-            />
-            <CommandSignal
-              label="Active role"
-              value="Brand Voice Editor"
-              note="Language pass is live on scene 03"
-              tone="default"
-            />
-            <CommandSignal
-              label="Fallback"
-              value="Ready"
-              note="Still-led assembly can take over without reopening approvals"
-              tone="warning"
-            />
+          <div className="command-plane__hero-meta">
+            <span>AC-184 live</span>
+            <span>script locked 09:13</span>
+            <span>scene 03 routed into three exports</span>
+            <span>fallback armed</span>
           </div>
         </header>
 
-        <div className="command-plane__telemetry">
-          {commandTelemetry.map((item) => (
-            <article key={item.label} className="command-plane__telemetry-item">
-              <p>{item.label}</p>
-              <strong>{item.value}</strong>
-              <span>{item.note}</span>
+        {compact ? (
+          <div className="command-plane__mini-overview">
+            <article>
+              <p className="eyebrow">Stage</p>
+              <strong>{currentStage.name}</strong>
+              <span>{currentStage.theatrical}</span>
             </article>
-          ))}
-        </div>
-
-        <div className="command-plane__stage-ribbon">
-          {commandStages.map((stage) => (
-            <article
-              key={stage.name}
-              className={[
-                "command-plane__stage",
-                stage.status === "Complete"
-                  ? "is-complete"
-                  : stage.status === "Live"
-                    ? "is-live"
-                    : stage.status === "Queued"
-                      ? "is-queued"
-                      : "",
-              ].join(" ")}
-            >
-              <div className="command-plane__stage-copy">
-                <p>{stage.name}</p>
-                <strong>{stage.theatrical}</strong>
-                <span>{stage.status === "Live" ? stage.note : `${stage.progress}% prepared`}</span>
-              </div>
-              <b>{stage.progress}%</b>
+            <article>
+              <p className="eyebrow">Scene focus</p>
+              <strong>
+                {currentScene.id} / {currentScene.title}
+              </strong>
+              <span>{currentScene.status} with fallback prepared</span>
             </article>
-          ))}
-        </div>
+            <article>
+              <p className="eyebrow">Route cover</p>
+              <strong>{compactRoutes.length} live export paths</strong>
+              <span>Performance, brand, and feature are already mapped.</span>
+            </article>
+          </div>
+        ) : (
+          <>
+            <div className="command-plane__telemetry command-plane__telemetry--open">
+              {commandTelemetry.map((item) => (
+                <article key={item.label} className="command-plane__telemetry-item">
+                  <p>{item.label}</p>
+                  <strong>{item.value}</strong>
+                  <span>{item.note}</span>
+                </article>
+              ))}
+            </div>
 
-        <article className="command-plane__artifact command-plane__artifact--rescued">
-            <div className="command-plane__artifact-head">
+            <div className="command-plane__stage-ribbon command-plane__stage-ribbon--open">
+              {commandStages.map((stage) => (
+                <article
+                  key={stage.name}
+                  className={[
+                    "command-plane__stage",
+                    stage.status === "Complete"
+                      ? "is-complete"
+                      : stage.status === "Live"
+                        ? "is-live"
+                        : stage.status === "Queued"
+                          ? "is-queued"
+                          : "",
+                  ].join(" ")}
+                >
+                  <div className="command-plane__stage-copy">
+                    <p>{stage.name}</p>
+                    <strong>{stage.theatrical}</strong>
+                    <span>{stage.status === "Live" ? stage.note : `${stage.progress}% prepared`}</span>
+                  </div>
+                  <b>{stage.progress}%</b>
+                </article>
+              ))}
+            </div>
+          </>
+        )}
+
+        <article className="command-plane__board">
+          <section className="command-plane__scene-panel">
+            <div className="command-plane__scene-headline">
               <div>
-                <p className="eyebrow">Active scene board</p>
+                <p className="eyebrow">Active scene</p>
                 <h3>
                   Scene {currentScene.id} · {currentScene.title}
                 </h3>
               </div>
-              <div className="command-plane__artifact-statuses">
+              <div className="command-plane__scene-statuses">
                 <StatusBadge tone="accent">{currentScene.status}</StatusBadge>
                 <StatusBadge tone="default">{currentScene.duration}</StatusBadge>
                 <StatusBadge tone="warning">Fallback prepared</StatusBadge>
               </div>
             </div>
 
-            <div className="command-plane__artifact-board command-plane__artifact-board--rescued">
-              <div className="command-plane__artifact-stage">
-                <div className="command-plane__canvas command-plane__canvas--rescued">
-                  <div className="command-plane__canvas-wash" />
-                  <div className="command-plane__canvas-plinth" />
-                  <div className="command-plane__canvas-subject" />
-                  <div className="command-plane__canvas-overlay">
-                    <p className="eyebrow">Overlay</p>
-                    <h4>{currentScene.overlay}</h4>
-                    <span>writers_room locked / routed into performance, brand, and platform</span>
-                  </div>
-                  <div className="command-plane__canvas-tags">
-                    {["Scene 03 live", "Language pass attached", "Clip fallback armed"].map((item) => (
-                      <span key={item}>{item}</span>
-                    ))}
-                  </div>
-                  <div className="command-plane__canvas-footer">
-                    <div>
-                      <p className="eyebrow">Scene note</p>
-                      <span>{currentScene.note}</span>
-                    </div>
-                    <div>
-                      <p className="eyebrow">Latest handoff</p>
-                      <span>Storyboard queue is waiting on the live overlay confirmation.</span>
-                    </div>
-                  </div>
+            <div className="command-plane__scene-canvas">
+              <div className="command-plane__canvas command-plane__canvas--rescued command-plane__canvas--open">
+                <div className="command-plane__canvas-wash" />
+                <div className="command-plane__canvas-plinth" />
+                <div className="command-plane__canvas-subject" />
+                <div className="command-plane__canvas-overlay command-plane__canvas-overlay--open">
+                  <p className="eyebrow">Overlay</p>
+                  <h4>{currentScene.overlay}</h4>
+                  <span>writers_room locked / routed into performance, brand, and platform</span>
                 </div>
-
-                <div className="command-plane__artifact-side command-plane__artifact-side--rescued">
-                  <div className="command-plane__dependency-row">
-                    {visibleDependencies.map((item) => (
-                      <article key={item.label} className="command-plane__dependency">
-                        <div>
-                          <p>{item.label}</p>
-                          <strong>{item.note}</strong>
-                        </div>
-                        <div className="command-plane__dependency-meta">
-                          <StatusBadge tone={item.value === "Locked" ? "success" : item.value === "Mapped" ? "accent" : "warning"}>
-                            {item.value}
-                          </StatusBadge>
-                          <span>{item.time}</span>
-                        </div>
-                      </article>
-                    ))}
+                <div className="command-plane__canvas-tags">
+                  {["Scene 03 live", "Language pass attached", "Clip fallback armed"].map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+                <div className="command-plane__canvas-footer command-plane__canvas-footer--open">
+                  <div>
+                    <p className="eyebrow">Scene note</p>
+                    <span>{currentScene.note}</span>
                   </div>
-
-                  <div className="command-plane__artifact-flow">
-                    <div className="command-plane__artifact-flow-head">
-                      <p className="eyebrow">Artifact movement</p>
-                      <StatusBadge tone="accent">{visibleTransfers.length} live handoffs</StatusBadge>
-                    </div>
-                    <div className="command-plane__transfer-list">
-                      {visibleTransfers.map((transfer) => (
-                        <article key={`${transfer.time}-${transfer.artifact}`} className="command-plane__transfer">
-                          <div className="command-plane__transfer-time">{transfer.time}</div>
-                          <div className="command-plane__transfer-copy">
-                            <p>{transfer.artifact}</p>
-                            <strong>
-                              {transfer.from} to {transfer.to}
-                            </strong>
-                            <span>{transfer.note}</span>
-                          </div>
-                          <StatusBadge tone={toneForStatus(transfer.status)}>{transfer.status}</StatusBadge>
-                        </article>
-                      ))}
-                    </div>
+                  <div>
+                    <p className="eyebrow">Latest handoff</p>
+                    <span>Storyboard queue is waiting on the live overlay confirmation.</span>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="command-plane__route-list command-plane__route-list--rescued">
-                {(compact ? compactRoutes : commandOutputRoutes).map((route) => (
-                  <article key={route.name} className="command-plane__route">
-                    <div className="command-plane__route-head">
-                      <div>
-                        <p>{route.aspect}</p>
-                        <strong>{route.name}</strong>
-                      </div>
-                      <div className="command-plane__route-meta">
-                        <StatusBadge tone={toneForStatus(route.state)}>{route.state}</StatusBadge>
-                        <span>{route.note}</span>
-                      </div>
+            <div className="command-plane__scene-strip">
+              {commandScenes.map((scene) => (
+                <article
+                  key={scene.id}
+                  className={[
+                    "command-plane__scene-chip",
+                    scene.status === "Live"
+                      ? "is-live"
+                      : scene.status === "Complete"
+                        ? "is-complete"
+                        : "is-queued",
+                  ].join(" ")}
+                >
+                  <b>{scene.id}</b>
+                  <div>
+                    <strong>{scene.title}</strong>
+                    <span>{scene.status}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="command-plane__movement">
+            <div className="command-plane__stream">
+              <div className="command-plane__stream-head">
+                <p className="eyebrow">Artifact movement</p>
+                <StatusBadge tone="accent">{visibleTransfers.length} live handoffs</StatusBadge>
+              </div>
+              <div className="command-plane__transfer-list command-plane__transfer-list--open">
+                {visibleTransfers.map((transfer) => (
+                  <article key={`${transfer.time}-${transfer.artifact}`} className="command-plane__transfer command-plane__transfer--open">
+                    <div className="command-plane__transfer-time">{transfer.time}</div>
+                    <div className="command-plane__transfer-copy">
+                      <p>{transfer.artifact}</p>
+                      <strong>
+                        {transfer.from} to {transfer.to}
+                      </strong>
+                      <span>{transfer.note}</span>
                     </div>
-                    <div className="command-plane__route-map">
-                      {commandScenes.map((scene) => (
-                        <b
-                          key={`${route.name}-${scene.id}`}
-                          className={[
-                            route.scenes.includes(scene.id)
-                              ? scene.id === currentScene.id
-                                ? "is-live"
-                                : "is-on"
-                              : "",
-                          ].join(" ")}
-                        >
-                          {scene.id}
-                        </b>
-                      ))}
-                    </div>
+                    <StatusBadge tone={toneForStatus(transfer.status)}>{transfer.status}</StatusBadge>
                   </article>
                 ))}
               </div>
-
-              {compact ? (
-                <div className="command-plane__compact-band">
-                  <article>
-                    <p className="eyebrow">Active roles</p>
-                    <div className="command-plane__compact-list">
-                      {compactRoles.map((role) => (
-                        <div key={role.name}>
-                          <strong>{role.name}</strong>
-                          <span>
-                            {role.status} · {role.updatedAt}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </article>
-
-                  <article>
-                    <p className="eyebrow">Latest movement</p>
-                    <div className="command-plane__compact-list">
-                      {visibleTransfers.slice(0, 2).map((transfer) => (
-                        <div key={`${transfer.time}-${transfer.artifact}`}>
-                          <strong>{transfer.artifact}</strong>
-                          <span>
-                            {transfer.from} to {transfer.to} · {transfer.time}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </article>
-
-                  <article>
-                    <p className="eyebrow">Output cover</p>
-                    <div className="command-plane__compact-list">
-                      {compactRoutes.map((route) => (
-                        <div key={route.name}>
-                          <strong>
-                            {route.name} · {route.aspect}
-                          </strong>
-                          <span>{route.state}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </article>
-                </div>
-              ) : null}
-
             </div>
-          </article>
+
+            <div className="command-plane__route-list command-plane__route-list--open">
+              {(compact ? compactRoutes : commandOutputRoutes).map((route) => (
+                <article key={route.name} className="command-plane__route command-plane__route--open">
+                  <div className="command-plane__route-head">
+                    <div>
+                      <p>{route.aspect}</p>
+                      <strong>{route.name}</strong>
+                    </div>
+                    <div className="command-plane__route-meta">
+                      <StatusBadge tone={toneForStatus(route.state)}>{route.state}</StatusBadge>
+                      <span>{route.note}</span>
+                    </div>
+                  </div>
+                  <div className="command-plane__route-map">
+                    {commandScenes.map((scene) => (
+                      <b
+                        key={`${route.name}-${scene.id}`}
+                        className={[
+                          route.scenes.includes(scene.id)
+                            ? scene.id === currentScene.id
+                              ? "is-live"
+                              : "is-on"
+                            : "",
+                        ].join(" ")}
+                      >
+                        {scene.id}
+                      </b>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {compact ? (
+              <div className="command-plane__compact-band command-plane__compact-band--open">
+                <article>
+                  <p className="eyebrow">Active roles</p>
+                  <div className="command-plane__compact-list">
+                    {compactRoles.map((role) => (
+                      <div key={role.name}>
+                        <strong>{role.name}</strong>
+                        <span>
+                          {role.status} · {role.updatedAt}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+
+                <article>
+                  <p className="eyebrow">Latest movement</p>
+                  <div className="command-plane__compact-list">
+                    {visibleTransfers.slice(0, 2).map((transfer) => (
+                      <div key={`${transfer.time}-${transfer.artifact}`}>
+                        <strong>{transfer.artifact}</strong>
+                        <span>
+                          {transfer.from} to {transfer.to} · {transfer.time}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+
+                <article>
+                  <p className="eyebrow">Output cover</p>
+                  <div className="command-plane__compact-list">
+                    {compactRoutes.map((route) => (
+                      <div key={route.name}>
+                        <strong>
+                          {route.name} · {route.aspect}
+                        </strong>
+                        <span>{route.state}</span>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              </div>
+            ) : null}
+          </section>
+        </article>
       </section>
 
-      {!compact ? <aside className="command-plane__ops command-plane__ops--rescued">
+      {!compact ? <aside className="command-plane__ops command-plane__ops--rescued command-plane__ops--open">
         <section className="command-plane__ops-section command-plane__ops-section--roles">
           <div className="command-plane__ops-head">
             <p className="eyebrow">Role ledger</p>
@@ -849,7 +860,30 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
           </div>
         </section>
 
-        <section className="command-plane__recovery">
+        <section className="command-plane__ops-section command-plane__ops-section--dependencies">
+          <div className="command-plane__ops-head">
+            <p className="eyebrow">Dependencies</p>
+            <StatusBadge tone="warning">Live</StatusBadge>
+          </div>
+          <div className="command-plane__dependency-stack">
+            {visibleDependencies.map((item) => (
+              <article key={item.label} className="command-plane__dependency command-plane__dependency--open">
+                <div>
+                  <p>{item.label}</p>
+                  <strong>{item.note}</strong>
+                </div>
+                <div className="command-plane__dependency-meta">
+                  <StatusBadge tone={item.value === "Locked" ? "success" : item.value === "Mapped" ? "accent" : "warning"}>
+                    {item.value}
+                  </StatusBadge>
+                  <span>{item.time}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="command-plane__recovery command-plane__recovery--open">
           <div className="command-plane__ops-head">
             <p className="eyebrow">Recovery path</p>
             <StatusBadge tone="warning">Ready</StatusBadge>
@@ -865,46 +899,31 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
   );
 }
 
-function CommandSignal({
-  label,
-  value,
-  note,
-  tone,
-}: {
-  label: string;
-  value: string;
-  note: string;
-  tone: "default" | "accent" | "warning";
-}) {
-  return (
-    <article className={["command-signal", `command-signal--${tone}`].join(" ")}>
-      <p>{label}</p>
-      <div>
-        <strong>{value}</strong>
-        <span>{note}</span>
-      </div>
-    </article>
-  );
-}
-
 function CommandBriefRail() {
   return (
-    <aside className="command-brief">
-      <div className="command-brief__sheet">
+    <aside className="command-brief command-brief--open">
+      <div className="command-brief__sheet command-brief__sheet--open">
         <p className="eyebrow">Brief</p>
         <h3>Aster House Launch</h3>
         <p>
           Premium residential campaign focused on light, space, and confidence across inquiry,
           brand, and sales placements.
         </p>
-        <div className="command-brief__meta">
-          <Chip tone="accent">Residential</Chip>
-          <Chip tone="cobalt">Multi-format</Chip>
-          <Chip>Inquiry-led</Chip>
+        <div className="command-brief__meta command-brief__meta--open">
+          <span>Residential</span>
+          <span>Multi-format</span>
+          <span>Inquiry-led</span>
         </div>
-        <div className="command-brief__asset-list">
+        <div className="command-brief__asset-list command-brief__asset-list--open">
           {["Arrival lounge", "Window line", "Exterior dusk"].map((asset, index) => (
-            <article key={asset} className={index === 0 ? "command-brief__asset is-lead" : "command-brief__asset"}>
+            <article
+              key={asset}
+              className={[
+                "command-brief__asset",
+                "command-brief__asset--open",
+                index === 0 ? "is-lead" : "",
+              ].join(" ")}
+            >
               <span>{String(index + 1).padStart(2, "0")}</span>
               <div>
                 <strong>{asset}</strong>
@@ -919,12 +938,12 @@ function CommandBriefRail() {
             </article>
           ))}
         </div>
-        <div className="command-brief__formats">
+        <div className="command-brief__formats command-brief__formats--open">
           {["9:16", "1:1", "16:9"].map((format) => (
             <span key={format}>{format}</span>
           ))}
         </div>
-        <div className="command-brief__approval-list">
+        <div className="command-brief__approval-list command-brief__approval-list--open">
           <span>Script approved</span>
           <span>Storyboard approved</span>
         </div>

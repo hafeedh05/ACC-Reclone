@@ -180,7 +180,6 @@ function RunAtlasBoard({
                   asset={mediaForRun(activeRun.slug)}
                   aspect="portrait"
                   className="sample-atlas__preview-media"
-                  motion={activeRun.slug === "northstar-serum-launch"}
                   sizes="(min-width: 1280px) 22vw, 60vw"
                 />
                 <div className="sample-atlas__preview-output">

@@ -305,7 +305,6 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
                 asset={mediaForRun(run.slug)}
                 aspect="landscape"
                 className="sample-proof-board__preview-media"
-                motion={run.slug === "northstar-serum-launch"}
                 sizes="(min-width: 1280px) 34vw, 100vw"
               />
               <div className="sample-proof-board__preview-label">

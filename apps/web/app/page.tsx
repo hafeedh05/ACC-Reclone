@@ -1,305 +1,420 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  ButtonLink,
+  Chip,
+  MarketingHeader,
+  PageShell,
+  SiteFooter,
+  StatusBadge,
+} from "@/components/site-primitives";
+import { CommandCenterShowcase } from "@/components/product-surfaces";
+import {
   caseStudies,
-  dashboardStats,
-  outputVariants,
   pricingTiers,
-  projects,
-  trustSignals,
-} from "@/components/mock-data";
+  sampleOutputs,
+  sampleRuns,
+  trustMarks,
+} from "@/components/site-data";
+import {
+  buildJsonLd,
+  createPublicPageMetadata,
+  organizationJsonLd,
+  softwareApplicationJsonLd,
+} from "./seo";
 
-const benefits = [
-  "Prompt-first brief intake with guided approvals.",
-  "Writers room, storyboard review, clip generation, and exports in one flow.",
-  "Multiple variants from a single clip pool for faster campaign testing.",
+const heroRun = sampleRuns[0];
+const heroOutputs = heroRun.outputs.slice(0, 3);
+const proofStudies = caseStudies.slice(0, 2);
+const featuredOutput = sampleOutputs[1];
+const outputRail = sampleOutputs.filter((output) => output.slug !== featuredOutput.slug).slice(0, 3);
+
+const heroAssets = [
+  { id: "01", label: "Bottle", note: "Primary pack shot", tone: "amber" as const },
+  { id: "02", label: "Texture", note: "Proof detail", tone: "cobalt" as const },
+  { id: "03", label: "Routine", note: "Human scale", tone: "neutral" as const },
+  { id: "04", label: "Carton", note: "Offer support", tone: "amber" as const },
 ];
 
-const steps = [
+const workflowMoments = [
   {
-    title: "1. Brief the system",
-    copy: "Drop in a prompt, attach assets, and define audience, tone, and formats without needing a long setup flow.",
+    label: "Source set",
+    title: "Upload the assets and lock the brief before the expensive work starts.",
+    note: "The campaign only gets one production direction. Make it readable early.",
   },
   {
-    title: "2. Approve the creative",
-    copy: "Review script options and storyboards before media generation begins, so the expensive part is always intentional.",
+    label: "Creative package",
+    title: "Approve the script and storyboard while the run is still cheap to steer.",
+    note: "Hooks, benefit stack, and scene logic are compared before clips are generated.",
   },
   {
-    title: "3. Ship variants",
-    copy: "Receive a package of ad-ready variants in the formats your team needs for launch, testing, and repurposing.",
+    label: "Output family",
+    title: "Deliver four disciplined cuts from one shared pool instead of rebuilding per format.",
+    note: "Performance, brand, feature, and platform routes stay related without feeling duplicated.",
   },
 ];
+
+export const metadata: Metadata = createPublicPageMetadata({
+  title: "Turn a brief into campaign-ready ads",
+  description:
+    "Ad Command Center turns uploaded assets, reviewed creative, and production logic into finished ad variants across the formats a campaign actually needs.",
+  canonicalPath: "/",
+});
 
 export default function HomePage() {
   return (
-    <main className="relative overflow-hidden">
-      <div className="ambient-orb orb-gold drift-slow left-[-6rem] top-[-4rem] h-80 w-80" />
-      <div className="ambient-orb orb-blue drift-medium right-[-7rem] top-20 h-96 w-96" />
-      <div className="grid-fade absolute inset-0 opacity-30" />
+    <PageShell className="pb-16">
+      <script
+        id="organization-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: buildJsonLd(organizationJsonLd()) }}
+      />
+      <script
+        id="software-application-jsonld"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: buildJsonLd(softwareApplicationJsonLd()) }}
+      />
 
-      <section className="relative mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-4 py-4 sm:px-6 lg:px-8">
-        <header className="glass-panel-strong flex flex-col gap-4 rounded-[30px] px-5 py-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--muted)]">
-              Ad Command Center
-            </p>
-            <p className="mt-1 text-sm text-zinc-300">
-              A prompt-first production workspace for premium ad creation.
-            </p>
+      <MarketingHeader />
+
+      <section className="home-hero-v2">
+        <div className="home-hero-v2__copy">
+          <Chip tone="accent">Campaign production</Chip>
+          <h1 className="hero-title">Turn a brief into campaign-ready ads</h1>
+          <p className="hero-body">
+            Upload the assets, describe the offer, review the creative, and leave with polished
+            variants shaped for paid, feed, landing, and handoff use.
+          </p>
+          <div className="hero-actions">
+            <ButtonLink href="/how-it-works" variant="primary">
+              See How It Works
+            </ButtonLink>
+            <ButtonLink href="/sample-runs" variant="secondary">
+              Watch a Sample Run
+            </ButtonLink>
           </div>
-          <div className="flex flex-wrap items-center gap-3 text-sm">
-            <Link
-              href="/app"
-              className="rounded-full bg-gradient-to-r from-amber-200 via-orange-300 to-amber-500 px-4 py-2.5 font-medium text-neutral-950 shadow-[0_16px_40px_rgba(228,176,111,0.22)] transition hover:brightness-105"
-            >
-              Open workspace
-            </Link>
-            <Link
-              href="#workflow"
-              className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-zinc-100 transition hover:bg-white/[0.08]"
-            >
-              See workflow
-            </Link>
-          </div>
-        </header>
-
-        <div className="relative mt-4 grid flex-1 gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="glass-panel-strong rounded-[34px] p-6 sm:p-8 lg:p-10">
-            <div className="inline-flex rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs uppercase tracking-[0.28em] text-emerald-100">
-              Built for launch teams
+          <div className="hero-ledger">
+            <div>
+              <span>Upload</span>
+              <strong>Assets + brief</strong>
             </div>
-            <h1 className="mt-6 max-w-3xl text-5xl font-semibold tracking-[-0.04em] text-zinc-50 sm:text-6xl lg:text-7xl">
-              Turn a prompt and some pictures into ad campaigns people actually want to watch.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-300 sm:text-xl">
-              A cinematic command center for guided ad generation: write the brief, review the
-              script, approve the storyboard, generate the clips, and export multiple variants
-              from one coherent production run.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/app"
-                className="rounded-full bg-gradient-to-r from-amber-200 via-orange-300 to-amber-500 px-5 py-3 font-medium text-neutral-950 shadow-[0_18px_48px_rgba(228,176,111,0.24)] transition hover:brightness-105"
-              >
-                Start a new run
-              </Link>
-              <Link
-                href="#outputs"
-                className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-zinc-100 transition hover:bg-white/[0.08]"
-              >
-                View output styles
-              </Link>
+            <div>
+              <span>Review</span>
+              <strong>Script + storyboard</strong>
             </div>
-
-            <div className="mt-10 grid gap-4 md:grid-cols-3">
-              {dashboardStats.map((stat) => (
-                <div key={stat.label} className="rounded-[24px] border border-white/10 bg-black/20 p-4">
-                  <p className="text-sm text-zinc-400">{stat.label}</p>
-                  <p className="mt-2 text-3xl font-semibold text-white">{stat.value}</p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.24em] text-[color:var(--muted)]">
-                    {stat.detail}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="glass-panel rounded-[30px] p-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
-                Live example
-              </p>
-              <div className="mt-4 space-y-3">
-                {projects.map((project) => (
-                  <div key={project.name} className="rounded-[24px] border border-white/10 bg-black/20 p-4">
-                    <div className="flex items-center justify-between gap-4">
-                      <div>
-                        <p className="font-medium text-white">{project.name}</p>
-                        <p className="text-sm text-zinc-400">{project.industry}</p>
-                      </div>
-                      <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs text-zinc-300">
-                        {project.status}
-                      </span>
-                    </div>
-                    <div className="mt-4 h-1.5 rounded-full bg-white/5">
-                      <div className="h-full w-[72%] rounded-full bg-gradient-to-r from-amber-300 via-orange-300 to-amber-500" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="glass-panel rounded-[30px] p-5">
-              <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
-                Why it feels premium
-              </p>
-              <div className="mt-4 space-y-3">
-                {benefits.map((benefit) => (
-                  <div key={benefit} className="rounded-[22px] border border-white/10 bg-white/[0.03] p-4">
-                    <p className="text-sm leading-6 text-zinc-200">{benefit}</p>
-                  </div>
-                ))}
-              </div>
+            <div>
+              <span>Receive</span>
+              <strong>3 ratios / 4 cuts</strong>
             </div>
           </div>
         </div>
 
-        <section id="workflow" className="mt-4 grid gap-4 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="glass-panel rounded-[30px] p-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
-              Workflow
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-              A guided system that moves from idea to export without losing the creative thread.
-            </h2>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-zinc-300">
-              The app keeps approvals visible, the production stages explicit, and the output
-              formats organized so teams can move quickly without feeling rushed.
-            </p>
-            <div className="mt-6 space-y-3">
-              {steps.map((step) => (
-                <div key={step.title} className="rounded-[24px] border border-white/10 bg-black/20 p-4">
-                  <p className="font-medium text-white">{step.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-zinc-300">{step.copy}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+        <HeroConsole />
+      </section>
 
-          <div className="glass-panel-strong rounded-[30px] p-6" id="outputs">
-            <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
-              Outputs
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-              3-4 variants, each ready for the platform it was built for.
-            </h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {outputVariants.map((variant) => (
-                <div key={variant.title} className="rounded-[24px] border border-white/10 bg-white/[0.03] p-4">
-                  <p className="text-lg font-medium text-white">{variant.title}</p>
-                  <p className="mt-1 text-sm text-zinc-400">
-                    {variant.duration} · {variant.aspect}
-                  </p>
-                  <p className="mt-4 text-sm leading-6 text-zinc-300">{variant.theme}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 rounded-[24px] border border-amber-300/20 bg-amber-300/8 p-4">
-              <p className="text-sm font-medium text-amber-50">Launch-ready by design</p>
-              <p className="mt-2 text-sm leading-6 text-amber-100/80">
-                Review the creative, watch the command center run, and send the final package to
-                your team without exposing the infrastructure behind it.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-4 grid gap-4 lg:grid-cols-3">
-          {caseStudies.map((study) => (
-            <div key={study.title} className="glass-panel rounded-[30px] p-6">
-              <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
-                {study.category}
-              </p>
-              <h2 className="mt-3 text-2xl font-semibold text-white">{study.title}</h2>
-              <p className="mt-3 text-sm font-medium text-amber-100">{study.outcome}</p>
-              <p className="mt-4 text-sm leading-6 text-zinc-300">{study.summary}</p>
-            </div>
+      <section className="trust-whisper">
+        <p className="eyebrow">Trusted by teams that care what the work looks like</p>
+        <div className="trust-whisper__marks" aria-label="Who the product is for">
+          {trustMarks.map((mark) => (
+            <span key={mark}>{mark}</span>
           ))}
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-4 grid gap-4 lg:grid-cols-[0.8fr_1.2fr]">
-          <div className="glass-panel rounded-[30px] p-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">Trust</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-              The product explains itself while it works.
-            </h2>
-            <div className="mt-6 space-y-3">
-              {trustSignals.map((signal) => (
-                <div key={signal} className="rounded-[22px] border border-white/10 bg-black/20 p-4">
-                  <p className="text-sm leading-6 text-zinc-200">{signal}</p>
+      <section className="home-sequence-v2">
+        <div className="home-sequence-v2__copy">
+          <p className="eyebrow">Workflow</p>
+          <h2>One source set in. One disciplined output family out.</h2>
+          <p>
+            The product works because the material, the creative package, and the final routing
+            each have a distinct moment instead of collapsing into one noisy dashboard.
+          </p>
+
+          <ol className="workflow-ledger">
+            {workflowMoments.map((moment, index) => (
+              <li key={moment.label}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <p>{moment.label}</p>
+                  <strong>{moment.title}</strong>
+                  <em>{moment.note}</em>
                 </div>
-              ))}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div className="home-sequence-v2__proof">
+          <article className="featured-output">
+            <MediaPlate
+              tone="amber"
+              ratio={featuredOutput.aspect.split(" / ")[0]}
+              title={featuredOutput.title}
+              label="Sample output"
+              highlight="Brand cut"
+            />
+            <div className="featured-output__copy">
+              <p className="eyebrow">{featuredOutput.category}</p>
+              <strong>{featuredOutput.title}</strong>
+              <p>{featuredOutput.summary}</p>
+              <div className="chip-row">
+                <Chip tone="accent">{featuredOutput.aspect}</Chip>
+                <Chip tone="cobalt">Reviewed before generation</Chip>
+              </div>
             </div>
+          </article>
+
+          <div className="output-rail-v2">
+            {outputRail.map((output, index) => (
+              <Link key={output.slug} href="/gallery" className="output-rail-v2__item">
+                <MediaPlate
+                  tone={index === 0 ? "cobalt" : index === 1 ? "neutral" : "amber"}
+                  ratio={output.aspect.split(" / ")[0]}
+                  title={output.title}
+                  label={output.category}
+                  highlight={output.aspect.split(" / ")[1] ?? output.aspect}
+                  compact
+                />
+                <div>
+                  <strong>{output.title}</strong>
+                  <p>{output.summary}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="home-command-v2">
+        <div className="home-command-v2__lead">
+          <p className="eyebrow">Command Center</p>
+          <h2>See the run while it is still steerable.</h2>
+          <p>
+            Review gates, live artifacts, route mapping, retries, and output status stay visible in
+            one operating surface instead of getting buried in status prose.
+          </p>
+          <ButtonLink href="/app/command-center" variant="secondary">
+            Open the screen
+          </ButtonLink>
+        </div>
+        <CommandCenterShowcase compact />
+      </section>
+
+      <section className="home-proof-v2">
+        <div className="home-proof-v2__studies">
+          <div className="home-proof-v2__intro">
+            <p className="eyebrow">Proof</p>
+            <h2>Commercial evidence, not feature paraphrase.</h2>
+            <p>
+              The best proof pages show the brief, the constraints, the choices, and the delivered
+              outputs without turning the story into an internal product memo.
+            </p>
           </div>
 
-          <div className="glass-panel-strong rounded-[30px] p-6">
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
-                  Pricing
-                </p>
-                <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
-                  Structured for launches now and scale later.
-                </h2>
-              </div>
-              <Link
-                href="/app"
-                className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm text-zinc-100 transition hover:bg-white/[0.08]"
-              >
-                Try the workflow
-              </Link>
-            </div>
-
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {pricingTiers.map((tier) => (
-                <div
-                  key={tier.name}
-                  className={`rounded-[24px] border p-4 ${
-                    tier.highlighted
-                      ? "border-amber-300/30 bg-amber-300/8"
-                      : "border-white/10 bg-white/[0.03]"
-                  }`}
-                >
-                  <p className="text-sm font-medium text-white">{tier.name}</p>
-                  <p className="mt-3 text-3xl font-semibold text-white">{tier.price}</p>
-                  <p className="mt-2 text-sm leading-6 text-zinc-300">{tier.caption}</p>
-                  <div className="mt-4 space-y-2">
-                    {tier.points.map((point) => (
-                      <p key={point} className="text-sm text-zinc-200">
-                        {point}
-                      </p>
+          <div className="case-strip-v2">
+            {proofStudies.map((study, index) => (
+              <Link key={study.slug} href={`/case-studies/${study.slug}`} className="case-strip-v2__item">
+                <MediaPlate
+                  tone={index === 0 ? "amber" : "cobalt"}
+                  ratio="16:9"
+                  title={study.title}
+                  label={study.category}
+                  highlight="Case study"
+                  compact
+                />
+                <div className="case-strip-v2__copy">
+                  <strong>{study.title}</strong>
+                  <p>{study.dek}</p>
+                  <div className="case-strip-v2__metrics">
+                    {(study.metrics ?? []).slice(0, 2).map((metric) => (
+                      <div key={metric.label}>
+                        <span>{metric.label}</span>
+                        <b>{metric.value}</b>
+                      </div>
                     ))}
                   </div>
                 </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <aside className="home-commercial-v2">
+          <div className="home-commercial-v2__pricing">
+            <p className="eyebrow">Pricing</p>
+            <h3>Buying shapes that match how teams actually run work.</h3>
+            <div className="pricing-column-v2">
+              {pricingTiers.map((tier) => (
+                <article key={tier.name}>
+                  <div>
+                    <p className="eyebrow">{tier.name}</p>
+                    <strong>{tier.price}</strong>
+                  </div>
+                  <span>{tier.note}</span>
+                </article>
+              ))}
+            </div>
+            <ButtonLink href="/pricing" variant="secondary">
+              Review pricing
+            </ButtonLink>
+          </div>
+
+          <div className="enterprise-note-v2">
+            <p className="eyebrow">Enterprise</p>
+            <h3>Governance, approvals, and operational visibility for teams running at scale.</h3>
+            <p>
+              Keep brand control, review logic, and output oversight intact across launches,
+              markets, and stakeholders.
+            </p>
+            <ButtonLink href="/enterprise" variant="primary">
+              Talk to Enterprise
+            </ButtonLink>
+          </div>
+        </aside>
+      </section>
+
+      <SiteFooter />
+    </PageShell>
+  );
+}
+
+function HeroConsole() {
+  return (
+    <div className="hero-console" style={{ containerType: "inline-size" }}>
+      <div className="hero-console__bar">
+        <span>Northstar / run live</span>
+        <span>Script approved 09:13</span>
+        <span>4 cuts mapped</span>
+      </div>
+
+      <div className="hero-console__grid">
+        <aside className="hero-console__brief">
+          <p className="eyebrow">Brief</p>
+          <h2>{heroRun.title}</h2>
+          <p>{heroRun.summary}</p>
+          <div className="chip-row">
+            <Chip tone="accent">{heroRun.industry}</Chip>
+            <Chip tone="cobalt">Reviewed creative</Chip>
+            <Chip>Multi-format delivery</Chip>
+          </div>
+          <div className="hero-console__goals">
+            {heroRun.selectedGoals.slice(0, 2).map((goal) => (
+              <div key={goal}>
+                <span />
+                <p>{goal}</p>
+              </div>
+            ))}
+          </div>
+          <div className="hero-console__assets">
+            {heroAssets.slice(0, 3).map((asset) => (
+              <article key={asset.id} className={`hero-asset hero-asset--${asset.tone}`}>
+                <div className="hero-asset__thumb" aria-hidden="true">
+                  <span />
+                  <span />
+                </div>
+                <div className="hero-asset__copy">
+                  <p>{asset.id}</p>
+                  <strong>{asset.label}</strong>
+                  <span>{asset.note}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="hero-console__approvals">
+            <StatusBadge tone="success">Script approved</StatusBadge>
+            <StatusBadge tone="success">Storyboard approved</StatusBadge>
+            <StatusBadge tone="accent">Four cuts planned</StatusBadge>
+          </div>
+        </aside>
+
+        <div className="hero-preview">
+          <div className="hero-preview__header">
+            <div>
+              <p className="eyebrow">Campaign preview</p>
+              <strong>Warm proof. Clean promise.</strong>
+            </div>
+            <StatusBadge tone="accent">Scene 03 live</StatusBadge>
+          </div>
+
+          <div className="hero-preview__frame">
+            <div className="hero-preview__ambient" />
+            <div className="hero-preview__device">
+              <div className="hero-preview__device-bar">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="hero-preview__poster">
+                <div className="hero-preview__bottle" />
+                <div className="hero-preview__caption">
+                  <p>Performance cut</p>
+                  <strong>Scene 03 is feeding paid, brand, and platform routes.</strong>
+                  <span>Hook approved 09:13 · overlay locked · fallback prepared</span>
+                </div>
+              </div>
+            </div>
+            <div className="hero-preview__timeline">
+              {["01", "02", "03", "04"].map((scene) => (
+                <span key={scene} className={scene === "03" ? "is-live" : scene === "04" ? "is-queued" : "is-on"}>
+                  {scene}
+                </span>
               ))}
             </div>
           </div>
-        </section>
+        </div>
 
-        <section className="mt-4 mb-10">
-          <div className="glass-panel-strong rounded-[34px] p-6 sm:p-8 lg:p-10">
-            <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--muted)]">
-              Enterprise
-            </p>
-            <div className="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-3xl">
-                <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                  Need a private rollout, custom governance, or a tighter production lane?
-                </h2>
-                <p className="mt-4 text-sm leading-7 text-zinc-300 sm:text-base">
-                  This stack is structured for staged environments, hidden provider plumbing,
-                  event-driven workflow control, and a branded command surface that can scale into
-                  a real production system.
-                </p>
+        <aside className="hero-output-family">
+          {heroOutputs.map((output, index) => (
+            <article key={`${output.name}-${output.aspect}`} className="hero-output-card">
+              <MediaPlate
+                tone={index === 0 ? "amber" : index === 1 ? "cobalt" : "neutral"}
+                ratio={output.aspect}
+                title={output.name}
+                label="Output"
+                highlight={index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}
+                compact
+              />
+              <div>
+                <strong>{output.name}</strong>
+                <p>{output.note}</p>
               </div>
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href="/app"
-                  className="rounded-full bg-gradient-to-r from-amber-200 via-orange-300 to-amber-500 px-5 py-3 font-medium text-neutral-950 shadow-[0_18px_48px_rgba(228,176,111,0.24)] transition hover:brightness-105"
-                >
-                  Enter the command center
-                </Link>
-                <Link
-                  href="mailto:enterprise@ad-command-center.example"
-                  className="rounded-full border border-white/10 bg-white/[0.03] px-5 py-3 text-zinc-100 transition hover:bg-white/[0.08]"
-                >
-                  Contact enterprise
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </section>
-    </main>
+            </article>
+          ))}
+        </aside>
+      </div>
+    </div>
+  );
+}
+
+function MediaPlate({
+  tone,
+  ratio,
+  title,
+  label,
+  highlight,
+  compact = false,
+}: {
+  tone: "amber" | "cobalt" | "neutral";
+  ratio: string;
+  title: string;
+  label: string;
+  highlight: string;
+  compact?: boolean;
+}) {
+  return (
+    <div className={["media-plate", `media-plate--${tone}`, compact ? "is-compact" : ""].join(" ")}>
+      <div className="media-plate__shell">
+        <div className="media-plate__glow" />
+        <div className="media-plate__subject" />
+        <div className="media-plate__meta">
+          <span>{ratio}</span>
+          <b>{highlight}</b>
+        </div>
+      </div>
+      <div className="media-plate__copy">
+        <p>{label}</p>
+        <strong>{title}</strong>
+      </div>
+    </div>
   );
 }

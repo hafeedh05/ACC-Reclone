@@ -113,8 +113,8 @@ export default function HomePage() {
           <Chip tone="accent">Campaign production</Chip>
           <h1 className="hero-title">Turn a brief into campaign-ready ads</h1>
           <p className="hero-body">
-            Upload the assets, describe the offer, review the creative, and leave with polished
-            variants shaped for paid, feed, landing, and handoff use.
+            Upload the asset set, lock the angle in review, and receive polished ad families built
+            for 9:16, 1:1, 16:9, paid, feed, and handoff use.
           </p>
           <div className="hero-actions">
             <ButtonLink href="/how-it-works" variant="primary">
@@ -280,15 +280,16 @@ export default function HomePage() {
         <aside className="home-commercial-v2">
           <div className="home-commercial-v2__pricing">
             <p className="eyebrow">Pricing</p>
-            <h3>Buying shapes that match how teams actually run work.</h3>
+            <h3>Credits are bought into the workspace balance and spent when a run starts.</h3>
             <div className="pricing-column-v2">
               {pricingTiers.map((tier) => (
                 <article key={tier.name}>
                   <div>
                     <p className="eyebrow">{tier.name}</p>
                     <strong>{tier.price}</strong>
+                    <b>{tier.credits}</b>
                   </div>
-                  <span>{tier.note}</span>
+                  <span>{tier.runRange}</span>
                 </article>
               ))}
             </div>
@@ -320,9 +321,8 @@ function HeroConsole() {
   return (
     <div className="hero-console hero-console--open" style={{ containerType: "inline-size" }}>
       <div className="hero-console__meta-line">
-        <span>Northstar / run live</span>
-        <span>Reviewed creative</span>
-        <span>Script approved 09:13</span>
+        <span>Northstar / live workspace</span>
+        <span>Creative approved before generation</span>
         <span>4 cuts mapped</span>
       </div>
 
@@ -331,10 +331,10 @@ function HeroConsole() {
           <div className="hero-console__rail-intro">
             <p className="eyebrow">Brief</p>
             <h2>{heroRun.title}</h2>
-            <p>{heroRun.summary}</p>
+            <p>Pack-shot-led launch system with one clear promise held across every paid and brand cut.</p>
             <div className="hero-console__meta-stack">
               <span>{heroRun.industry}</span>
-              <span>Reviewed creative</span>
+              <span>Reviewed before spend</span>
               <span>Multi-format delivery</span>
             </div>
           </div>
@@ -349,7 +349,7 @@ function HeroConsole() {
           </div>
 
           <div className="hero-console__asset-column">
-            {heroAssets.slice(0, 3).map((asset) => (
+            {heroAssets.slice(0, 2).map((asset) => (
               <article key={asset.id} className={`hero-asset hero-asset--open hero-asset--${asset.tone}`}>
                 <div className="hero-asset__thumb" aria-hidden="true">
                   <EditorialMediaFrame
@@ -369,17 +369,18 @@ function HeroConsole() {
           </div>
 
           <div className="hero-console__approval-line">
+            <span>Brief locked</span>
             <span>Script approved</span>
             <span>Storyboard approved</span>
-            <span>Four cuts planned</span>
+            <span>Credits staged</span>
           </div>
         </aside>
 
         <section className="hero-canvas">
           <div className="hero-canvas__head">
             <div>
-              <p className="eyebrow">Campaign preview</p>
-              <strong>Warm launch framing. Clear offer.</strong>
+              <p className="eyebrow">Live cut</p>
+              <strong>Warm launch framing. Clean claim stack.</strong>
             </div>
             <StatusBadge tone="accent">Scene 03 live</StatusBadge>
           </div>
@@ -395,13 +396,13 @@ function HeroConsole() {
             />
             <div className="hero-canvas__caption">
               <p className="eyebrow">Performance cut</p>
-              <h3>Soft light, tighter claim stack, and a cleaner retail close.</h3>
-              <span>Scene 03 is already feeding paid, brand, and platform routes.</span>
+              <h3>Soft light. Clear promise. A cleaner paid close.</h3>
+              <span>This scene is already routing into paid, brand, and platform outputs.</span>
             </div>
             <div className="hero-canvas__status">
-              <span>Hook approved 09:13</span>
+              <span>Hook approved</span>
               <span>Overlay locked</span>
-              <span>Fallback prepared</span>
+              <span>Fallback ready</span>
             </div>
           </div>
 
@@ -442,7 +443,7 @@ function HeroConsole() {
                 />
                 <div>
                   <strong>{output.name}</strong>
-                  <p>{output.note}</p>
+                  <p>{output.aspect} export</p>
                 </div>
               </article>
             ))}

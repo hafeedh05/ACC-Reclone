@@ -36,8 +36,13 @@ export type CaseStudyTeaser = {
 export type PricingTier = {
   name: string;
   price: string;
+  credits: string;
+  runRange: string;
   note: string;
   points: string[];
+  ctaLabel: string;
+  href: string;
+  featured?: boolean;
 };
 
 export type GalleryItem = {
@@ -324,34 +329,47 @@ export const caseStudyTeasers: CaseStudyTeaser[] = [
 
 export const pricingTiers: PricingTier[] = [
   {
-    name: "Core",
-    price: "By campaign",
-    note: "For smaller teams running focused launches with clean review points.",
+    name: "Launch",
+    price: "$299",
+    credits: "240 credits",
+    runRange: "About 3 to 5 guided runs",
+    note: "For smaller teams buying credits into one workspace and using them campaign by campaign.",
     points: [
-      "Guided workflow for briefs, approvals, and outputs",
-      "Multiple variants from a shared production run",
-      "Export-ready aspect ratio packaging",
+      "Credits land in the workspace balance and are only spent when generation starts",
+      "Best for focused launches, offer tests, and paid refreshes",
+      "Includes the full review flow, approvals, and export packaging",
     ],
+    ctaLabel: "Set up launch credits",
+    href: "/contact",
   },
   {
     name: "Studio",
-    price: "By workspace",
-    note: "For teams producing campaigns consistently and protecting brand standards.",
+    price: "$799",
+    credits: "720 credits",
+    runRange: "About 10 to 14 guided runs",
+    note: "For teams running a steady output rhythm and keeping a reusable credit reserve inside the workspace.",
     points: [
-      "Templates and reusable production settings",
-      "Team review controls and stronger project organization",
-      "Faster output reuse across launches and categories",
+      "Lower effective credit rate for teams shipping every week",
+      "Shared balance, reusable production structure, and stronger project organization",
+      "Built for recurring launches, performance refreshes, and multi-cut output families",
     ],
+    ctaLabel: "Set up studio billing",
+    href: "/contact",
+    featured: true,
   },
   {
     name: "Enterprise",
     price: "Custom",
-    note: "For organizations that need governance, repeatability, and cross-team scale.",
+    credits: "Pooled credits",
+    runRange: "Annual or quarterly volume planning",
+    note: "For organizations that need pooled credits, governance, procurement support, and cross-team control.",
     points: [
-      "Brand control across multiple teams and markets",
-      "Approval logic and operational visibility",
-      "High-touch onboarding and workflow design",
+      "Pooled balances across multiple teams, brands, or markets",
+      "Approval logic, governance, operational visibility, and rollout discipline",
+      "Annual billing, onboarding design, and account-level support",
     ],
+    ctaLabel: "Talk to enterprise",
+    href: "/enterprise",
   },
 ];
 

@@ -60,12 +60,11 @@ export default function SampleRunsPage() {
         <div className="sample-runs-hero__copy">
           <Chip tone="accent">Sample runs</Chip>
           <h1 className="hero-title max-w-[8ch]">
-            Six campaigns. Six very different launch systems.
+            Sample runs that show the whole campaign system.
           </h1>
           <p className="hero-body">
-            Each run keeps the brief, the selected source set, the approvals, and the final
-            cut family in one view. Beauty should not read like residential. Apparel should
-            not be packaged like a supplement launch.
+            Open the brief, the source set, the approved structure, and the finished cut family
+            in one place. Each category keeps its own pace, framing, and output logic.
           </p>
           <div className="flex flex-wrap gap-2">
             {sampleRunFilters.map((filter) => (
@@ -82,8 +81,8 @@ export default function SampleRunsPage() {
           </div>
           <div className="page-meta-line">
             <span>{atlas.length} live examples</span>
-            <span>Brief, approvals, outputs</span>
-            <span>3 ratios / multi-cut packaging</span>
+            <span>Brief to outputs</span>
+            <span>Paid, brand, and platform cuts</span>
           </div>
         </div>
 
@@ -157,7 +156,7 @@ function RunAtlasBoard({
   activeSlug: string;
 }) {
   const activeRun = runs.find((run) => run.slug === activeSlug) ?? runs[0];
-  const perimeter = runs.filter((run) => run.slug !== activeRun.slug).slice(0, 4);
+  const perimeter = runs.filter((run) => run.slug !== activeRun.slug).slice(0, 3);
 
   return (
     <div className="sample-atlas">
@@ -171,10 +170,6 @@ function RunAtlasBoard({
             <p className="sample-atlas__focus-title">{activeRun.title}</p>
             <p className="sample-atlas__focus-copy">{activeRun.brief}</p>
             <div className="sample-atlas__preview">
-              <div className="sample-atlas__preview-asset">
-                <span>Source set</span>
-                <strong>{activeRun.selectedAssets[0]}</strong>
-              </div>
               <div className="sample-atlas__preview-main">
                 <EditorialMediaFrame
                   asset={mediaForRun(activeRun.slug)}
@@ -187,13 +182,20 @@ function RunAtlasBoard({
                   <strong>{activeRun.outputs[0]?.name}</strong>
                 </div>
               </div>
-              <div className="sample-atlas__preview-rail">
-                {activeRun.outputs.slice(0, 3).map((output) => (
-                  <div key={`${activeRun.slug}-${output.name}`} className="sample-atlas__mini-output">
-                    <span>{output.aspect}</span>
-                    <strong>{output.name}</strong>
-                  </div>
-                ))}
+              <div className="sample-atlas__preview-side">
+                <div className="sample-atlas__preview-asset">
+                  <span>Source set</span>
+                  <strong>{activeRun.selectedAssets[0]}</strong>
+                  <p>{activeRun.selectedAssets[1]}</p>
+                </div>
+                <div className="sample-atlas__preview-rail">
+                  {activeRun.outputs.slice(0, 3).map((output) => (
+                    <div key={`${activeRun.slug}-${output.name}`} className="sample-atlas__mini-output">
+                      <span>{output.aspect}</span>
+                      <strong>{output.name}</strong>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -212,17 +214,17 @@ function RunAtlasBoard({
                       : "sample-atlas__tile--neutral",
                 ].join(" ")}
               >
-                <div className="sample-atlas__tile-media">
-                  <EditorialMediaFrame
-                    asset={mediaForRun(run.slug)}
-                    aspect="landscape"
-                    className="sample-atlas__tile-media-frame"
+            <div className="sample-atlas__tile-media">
+              <EditorialMediaFrame
+                asset={mediaForRun(run.slug)}
+                aspect="landscape"
+                className="sample-atlas__tile-media-frame"
                     sizes="280px"
                   />
                 </div>
                 <p>{run.industry}</p>
                 <strong>{run.title}</strong>
-                <span>{run.outputs[0]?.name} · {run.outputs[0]?.aspect}</span>
+                <span>{run.outputs[0]?.aspect} · {run.outputs[0]?.name}</span>
               </Link>
             ))}
           </div>
@@ -268,7 +270,7 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
           <div className="mt-4 space-y-3">
             {run.selectedAssets.map((asset) => (
               <div key={`${run.slug}-${asset}`} className="sample-proof-board__asset">
-                <span>Selected</span>
+                <span>Asset</span>
                 <strong>{asset}</strong>
               </div>
             ))}
@@ -419,7 +421,7 @@ function RunProofRow({
             <p>{run.brief}</p>
           </div>
           <div>
-            <span>Output strategy</span>
+            <span>Delivered cuts</span>
             <p>{run.outputs.map((output) => output.name).join(" · ")}</p>
           </div>
         </div>

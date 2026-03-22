@@ -1,6 +1,7 @@
 use crate::domain::*;
 use crate::error::ServiceResult;
 use crate::providers::*;
+use std::sync::Arc;
 
 #[derive(Default, Clone, Copy)]
 pub struct MockScriptProvider;
@@ -182,4 +183,18 @@ pub struct MockProviderSuite {
     pub qc: MockQCProvider,
     pub edit: MockEditPlanner,
     pub renderer: MockRenderer,
+}
+
+impl ProviderSuite {
+    pub fn mock() -> Self {
+        Self {
+            mode: ProviderMode::Mock,
+            script: Arc::new(MockScriptProvider),
+            video: Arc::new(MockVideoProvider),
+            voice: Arc::new(MockVoiceProvider),
+            qc: Arc::new(MockQCProvider),
+            edit: Arc::new(MockEditPlanner),
+            renderer: Arc::new(MockRenderer),
+        }
+    }
 }

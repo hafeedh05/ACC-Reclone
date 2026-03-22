@@ -297,7 +297,7 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
             </div>
 
             <div className="sample-proof-board__scene-stack">
-              {run.storyboard.map((frame) => (
+              {run.storyboard.slice(0, 2).map((frame) => (
                 <div key={`${run.slug}-${frame.scene}`} className="sample-proof-board__scene">
                   <span>{frame.scene}</span>
                   <strong>{frame.overlay}</strong>

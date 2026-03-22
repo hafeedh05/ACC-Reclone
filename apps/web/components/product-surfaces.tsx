@@ -676,7 +676,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                   sizes="(min-width: 1280px) 42vw, 100vw"
                 />
                 <div className="command-plane__canvas-tags">
-                  {["Scene 03 live", "Overlay locked", "Fallback armed"].map((item) => (
+                  {["Scene 03 live", "Fallback armed"].map((item) => (
                     <span key={item}>{item}</span>
                   ))}
                 </div>
@@ -687,10 +687,6 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
               <div>
                 <p className="eyebrow">Overlay</p>
                 <span>{currentScene.overlay}</span>
-              </div>
-              <div>
-                <p className="eyebrow">Scene note</p>
-                <span>{currentScene.note}</span>
               </div>
               <div>
                 <p className="eyebrow">Latest handoff</p>

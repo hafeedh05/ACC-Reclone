@@ -124,20 +124,6 @@ export default function HomePage() {
               Watch a Sample Run
             </ButtonLink>
           </div>
-          <div className="hero-ledger">
-            <div>
-              <span>Upload</span>
-              <strong>Assets + brief</strong>
-            </div>
-            <div>
-              <span>Review</span>
-              <strong>Script + storyboard</strong>
-            </div>
-            <div>
-              <span>Receive</span>
-              <strong>3 ratios / 4 cuts</strong>
-            </div>
-          </div>
         </div>
 
         <HeroConsole />
@@ -337,15 +323,6 @@ function HeroConsole() {
             </div>
           </div>
 
-          <div className="hero-console__goal-line">
-            {heroRun.selectedGoals.slice(0, 2).map((goal) => (
-              <div key={goal}>
-                <span />
-                <p>{goal}</p>
-              </div>
-            ))}
-          </div>
-
           <div className="hero-console__asset-strip">
             {heroAssets.slice(0, 2).map((asset) => (
               <article key={asset.id} className="hero-asset-chip">
@@ -363,11 +340,6 @@ function HeroConsole() {
                 </div>
               </article>
             ))}
-          </div>
-
-          <div className="hero-console__approval-line">
-            <span>Script approved</span>
-            <span>Storyboard approved</span>
           </div>
         </aside>
 
@@ -389,14 +361,17 @@ function HeroConsole() {
               priority
               sizes="(min-width: 1280px) 38vw, 100vw"
             />
+            <div className="hero-canvas__status">
+              <span>Scene 03 live</span>
+              <span>Fallback ready</span>
+            </div>
+          </div>
+
+          <div className="hero-canvas__info-row">
             <div className="hero-canvas__caption">
               <p className="eyebrow">Performance cut</p>
               <h3>Soft light. Clear promise.</h3>
               <span>Scene 03 is already feeding paid, brand, and platform outputs.</span>
-            </div>
-            <div className="hero-canvas__status">
-              <span>Overlay locked</span>
-              <span>Fallback ready</span>
             </div>
             <div className="hero-canvas__family-stack">
               {heroOutputs.map((output, index) => (

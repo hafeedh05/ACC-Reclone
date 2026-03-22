@@ -1,8 +1,8 @@
 use crate::domain::*;
 use crate::error::{ServiceError, ServiceResult};
-use crate::mock::MockProviderSuite;
+use crate::live::provider_suite_from_env;
 use crate::orchestrator::{OrchestratorTick, RunMachine};
-use crate::providers::{EditPlanner, Renderer, ScriptProvider, VideoProvider};
+use crate::providers::ProviderSuite;
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
@@ -18,9 +18,10 @@ pub struct MemoryStoreInner {
     pub usage: Vec<UsageLedger>,
 }
 
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct MemoryStore {
     inner: Arc<Mutex<MemoryStoreInner>>,
+    providers: ProviderSuite,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -31,7 +32,14 @@ pub struct UploadUrls {
 
 impl MemoryStore {
     pub fn new() -> Self {
-        Self::default()
+        Self::with_providers(provider_suite_from_env())
+    }
+
+    pub fn with_providers(providers: ProviderSuite) -> Self {
+        Self {
+            inner: Arc::new(Mutex::new(MemoryStoreInner::default())),
+            providers,
+        }
     }
 
     fn lock(&self) -> ServiceResult<std::sync::MutexGuard<'_, MemoryStoreInner>> {
@@ -174,7 +182,6 @@ impl MemoryStore {
             .filter(|asset| asset.project_id == request.project_id)
             .cloned()
             .collect::<Vec<_>>();
-        let providers = MockProviderSuite::default();
         let brief = CreativeBrief {
             objective: request.objective,
             audience: request.audience,
@@ -182,7 +189,7 @@ impl MemoryStore {
             call_to_action: request.call_to_action,
             formats: request.formats.clone(),
         };
-        let script = providers.script.generate_script(&brief, &assets)?;
+        let script = self.providers.script.generate_script(&brief, &assets)?;
         let storyboard = StoryboardDraft {
             id: new_id("story"),
             version: 1,
@@ -338,7 +345,6 @@ impl MemoryStore {
 
     pub fn approve_storyboard(&self, run_id: &str) -> ServiceResult<GenerationRun> {
         let mut inner = self.lock()?;
-        let providers = MockProviderSuite::default();
         let (snapshot, project_id, rendered_variants, edit_plan_id) = {
             let run = inner
                 .runs
@@ -349,17 +355,22 @@ impl MemoryStore {
             })?;
             let mut clips = Vec::new();
             for scene in &storyboard.scenes {
-                for ratio in &run.brief.formats {
-                    clips.push(providers.video.generate_clip(scene, *ratio)?);
+                for ratio in generation_formats(&run.brief.formats) {
+                    clips.push(self.providers.video.generate_clip(scene, ratio)?);
                 }
             }
-            let edit_plan = providers.edit.plan_edit(run)?;
+            let edit_plan = self.providers.edit.plan_edit(run)?;
             let mut clip_jobs = Vec::new();
             for scene in &storyboard.scenes {
                 clip_jobs.push(ClipJob {
                     id: new_id("job"),
                     scene_id: scene.id.clone(),
-                    provider: "clip_lab".to_string(),
+                    provider: match self.providers.mode {
+                        crate::providers::ProviderMode::LiveGeminiApi => "gemini_video".to_string(),
+                        crate::providers::ProviderMode::LiveVertex => "vertex_video".to_string(),
+                        crate::providers::ProviderMode::LiveScriptOnly => "clip_lab_mock".to_string(),
+                        crate::providers::ProviderMode::Mock => "clip_lab".to_string(),
+                    },
                     status: "completed".to_string(),
                     attempts: 1,
                     started_at: Some(Utc::now()),
@@ -371,7 +382,7 @@ impl MemoryStore {
             run_with_render.clip_assets = clips.clone();
             run_with_render.edit_plan = Some(edit_plan.clone());
             let rendered_variants =
-                providers
+                self.providers
                     .renderer
                     .render_variants(&run_with_render, &edit_plan, &clips)?;
             let delivery_bundle = DeliveryBundle {
@@ -545,4 +556,24 @@ impl MemoryStore {
             .push(event.clone());
         Ok(event)
     }
+}
+
+fn generation_formats(formats: &[AspectRatio]) -> Vec<AspectRatio> {
+    let requested = if formats.is_empty() {
+        vec![AspectRatio::R9x16, AspectRatio::R1x1, AspectRatio::R16x9]
+    } else {
+        formats.to_vec()
+    };
+
+    let mut result = Vec::new();
+    if requested.iter().any(|ratio| matches!(ratio, AspectRatio::R16x9 | AspectRatio::R1x1)) {
+        result.push(AspectRatio::R16x9);
+    }
+    if requested.iter().any(|ratio| *ratio == AspectRatio::R9x16) {
+        result.push(AspectRatio::R9x16);
+    }
+    if result.is_empty() {
+        result.push(AspectRatio::R16x9);
+    }
+    result
 }

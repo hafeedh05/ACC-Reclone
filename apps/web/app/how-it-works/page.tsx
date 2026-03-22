@@ -4,11 +4,12 @@ import {
   EditorialDivider,
   MarketingHeader,
   PageShell,
-  PlaceholderArt,
   SectionIntro,
   SiteFooter,
   StatusBadge,
 } from "@/components/site-primitives";
+import { JourneyRail, RevealOnScroll } from "@/components/experience-chrome";
+import { EditorialMediaFrame, mediaLibrary } from "@/components/media-system";
 import { workflowSteps } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
 
@@ -24,56 +25,76 @@ const stepArtifacts = [
     eyebrow: "Project setup",
     detail: "Goal, audience, and launch pressure are established before any production logic kicks in.",
     chips: ["Launch objective", "Format plan", "Team owner"],
-    ratio: "browser" as const,
+    ratio: "wide" as const,
+    media: mediaLibrary.chargerStill,
   },
   {
     eyebrow: "Asset intake",
     detail: "The asset tray becomes a usable edit surface instead of a file dump.",
     chips: ["Pack shot", "Hand-held", "Packaging"],
     ratio: "landscape" as const,
+    media: mediaLibrary.heroSerum,
   },
   {
     eyebrow: "Creative brief",
     detail: "Message hierarchy, concept angle, and first-pass script become explicit and reviewable.",
     chips: ["Hook options", "Benefit stack", "CTA"],
-    ratio: "browser" as const,
+    ratio: "wide" as const,
+    media: mediaLibrary.ecommerceTray,
   },
   {
     eyebrow: "Script review",
     detail: "The system exposes what changed so regeneration is precise, not random.",
     chips: ["Original", "Revision", "Approved"],
     ratio: "landscape" as const,
+    media: mediaLibrary.heroSerum,
   },
   {
     eyebrow: "Storyboard approval",
     detail: "Each scene earns its place with a visual role, pacing note, and overlay intent.",
     chips: ["Scene role", "Overlay", "Timing"],
-    ratio: "browser" as const,
+    ratio: "wide" as const,
+    media: mediaLibrary.residentialStill,
   },
   {
     eyebrow: "Clip generation",
     detail: "Generation stays downstream from the creative decisions, not ahead of them.",
     chips: ["Shared pool", "Retry path", "QC ready"],
     ratio: "landscape" as const,
+    media: mediaLibrary.apparelStill,
   },
   {
     eyebrow: "Live command view",
     detail: "Stage truth, role status, and fallback logic remain visible while the run is moving.",
     chips: ["Live", "Fallback", "Event feed"],
-    ratio: "browser" as const,
+    ratio: "wide" as const,
+    media: mediaLibrary.residentialStill,
   },
   {
     eyebrow: "Final delivery",
     detail: "The run closes with a usable output library rather than disconnected exports.",
     chips: ["Performance", "Brand", "Feature"],
     ratio: "landscape" as const,
+    media: mediaLibrary.greensStill,
   },
 ];
 
 export default function HowItWorksPage() {
+  const workflowJourney = [
+    { id: workflowSteps[0].id, label: "Create" },
+    { id: workflowSteps[1].id, label: "Upload" },
+    { id: workflowSteps[2].id, label: "Write" },
+    { id: workflowSteps[3].id, label: "Review" },
+    { id: workflowSteps[4].id, label: "Approve" },
+    { id: workflowSteps[5].id, label: "Generate" },
+    { id: workflowSteps[6].id, label: "Track" },
+    { id: workflowSteps[7].id, label: "Deliver" },
+  ];
+
   return (
     <PageShell className="pb-16">
       <MarketingHeader />
+      <JourneyRail items={workflowJourney} label="Workflow path" className="story-journey-rail" />
 
       <section className="page-hero page-hero--story">
         <SectionIntro
@@ -88,11 +109,24 @@ export default function HowItWorksPage() {
           const artifact = stepArtifacts[index];
 
           return (
-            <article key={step.id} className="workflow-story__chapter">
+            <RevealOnScroll
+              as="article"
+              key={step.id}
+              id={step.id}
+              className="workflow-story__chapter"
+              variant="mask"
+              delay={index * 40}
+            >
               <div className="workflow-story__visual">
                 <div className="workflow-story__visual-sticky">
                   <div className="workflow-story__frame">
-                    <PlaceholderArt label={step.visualLabel} ratio={artifact.ratio} />
+                    <EditorialMediaFrame
+                      asset={artifact.media}
+                      aspect={artifact.ratio}
+                      className="workflow-story__media-frame"
+                      motion={Boolean(artifact.media.videoSrc && index % 2 === 0)}
+                      sizes="(min-width: 1280px) 34vw, 100vw"
+                    />
                     <div className="workflow-story__artifact">
                       <p className="eyebrow">{artifact.eyebrow}</p>
                       <p>{artifact.detail}</p>
@@ -132,7 +166,7 @@ export default function HowItWorksPage() {
                   </div>
                 </div>
               </div>
-            </article>
+            </RevealOnScroll>
           );
         })}
       </section>

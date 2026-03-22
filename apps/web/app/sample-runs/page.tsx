@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { JourneyRail, RevealOnScroll } from "@/components/experience-chrome";
 import {
   ButtonLink,
   Chip,
@@ -36,7 +37,10 @@ function collectRuns(activeIndustry: string) {
       ? sampleRuns
       : sampleRuns.filter((run) => run.industry === activeIndustry);
 
-  const primary = filtered[0] ?? sampleRuns[0];
+  const primary =
+    (activeIndustry === "All"
+      ? filtered.find((run) => run.slug === "aster-house-launch")
+      : filtered[0]) ?? filtered[0] ?? sampleRuns[0];
   const rest = filtered.filter((run) => run.slug !== primary.slug);
   const atlas = activeIndustry === "All" ? sampleRuns : filtered;
 
@@ -51,45 +55,59 @@ function collectRuns(activeIndustry: string) {
 export default function SampleRunsPage() {
   const [activeIndustry, setActiveIndustry] = useState("All");
   const { primary, atlas, archive } = useMemo(() => collectRuns(activeIndustry), [activeIndustry]);
+  const sampleRunsJourney = [
+    { id: "sample-runs-atlas", label: "Atlas" },
+    { id: "sample-runs-proof", label: "Lead run" },
+    { id: "sample-runs-archive", label: "Archive" },
+  ];
 
   return (
     <PageShell className="pb-16">
       <MarketingHeader />
+      <JourneyRail items={sampleRunsJourney} label="Sample run path" className="sample-runs-journey-rail" />
 
-      <section className="page-hero sample-runs-hero">
-        <div className="sample-runs-hero__copy">
-          <Chip tone="accent">Sample runs</Chip>
-          <h1 className="hero-title max-w-[8ch]">
-            Sample runs that show the whole campaign system.
-          </h1>
-          <p className="hero-body">
-            Open the brief, the source set, the approved structure, and the finished cut family
-            in one place. Each category keeps its own pace, framing, and output logic.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {sampleRunFilters.map((filter) => (
-              <button
-                key={filter}
-                type="button"
-                className={filterButtonClass(activeIndustry === filter)}
-                onClick={() => setActiveIndustry(filter)}
-                aria-pressed={activeIndustry === filter}
-              >
-                {filter}
-              </button>
-            ))}
+      <section id="sample-runs-atlas" className="page-hero sample-runs-hero journey-section">
+        <div className="sample-runs-hero__top">
+          <div className="sample-runs-hero__lead">
+            <Chip tone="accent">Sample runs</Chip>
+            <h1 className="hero-title max-w-[9ch]">Sample runs that show the whole campaign.</h1>
           </div>
-          <div className="page-meta-line">
-            <span>{atlas.length} live examples</span>
-            <span>Brief to outputs</span>
-            <span>Paid, brand, and platform cuts</span>
+
+          <div className="sample-runs-hero__support">
+            <p className="hero-body">
+              Keep the brief, source set, approvals, and cut family in one readable record so the
+              work feels like proof instead of inventory.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {sampleRunFilters.map((filter) => (
+                <button
+                  key={filter}
+                  type="button"
+                  className={filterButtonClass(activeIndustry === filter)}
+                  onClick={() => setActiveIndustry(filter)}
+                  aria-pressed={activeIndustry === filter}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
+            <div className="page-meta-line">
+              <span>{atlas.length} live examples</span>
+              <span>Brief to outputs</span>
+              <span>Paid, brand, feature, platform</span>
+            </div>
           </div>
         </div>
 
         <RunAtlasBoard runs={atlas} activeSlug={primary.slug} />
       </section>
 
-      <section className="sample-proof">
+      <RevealOnScroll
+        as="section"
+        id="sample-runs-proof"
+        className="sample-proof journey-section"
+        variant="mask"
+      >
         <div className="sample-proof__intro">
           <div className="space-y-3">
             <p className="eyebrow">Inside the run</p>
@@ -112,9 +130,14 @@ export default function SampleRunsPage() {
         </div>
 
         <LeadRunBoard run={primary} />
-      </section>
+      </RevealOnScroll>
 
-      <section className="sample-archive">
+      <RevealOnScroll
+        as="section"
+        id="sample-runs-archive"
+        className="sample-archive journey-section"
+        delay={70}
+      >
         <div className="sample-archive__heading">
           <div className="space-y-3">
             <p className="eyebrow">Archive</p>
@@ -132,7 +155,7 @@ export default function SampleRunsPage() {
         </div>
 
         <div className="sample-archive__list">
-          {archive.slice(2, 5).map((run, index) => (
+          {archive.slice(2).map((run, index) => (
             <RunProofRow
               key={run.slug}
               run={run}
@@ -141,7 +164,7 @@ export default function SampleRunsPage() {
             />
           ))}
         </div>
-      </section>
+      </RevealOnScroll>
 
       <SiteFooter />
     </PageShell>
@@ -164,10 +187,10 @@ function RunAtlasBoard({
       <div className="sample-atlas__surface">
         <div className="sample-atlas__board">
           <div className="sample-atlas__focus">
-          <div className="sample-atlas__focus-header">
-            <p className="eyebrow">{activeRun.industry}</p>
-            <StatusBadge tone="accent">{activeRun.outputs.length} cuts</StatusBadge>
-          </div>
+            <div className="sample-atlas__focus-header">
+              <p className="eyebrow">{activeRun.industry}</p>
+              <StatusBadge tone="accent">{activeRun.outputs.length} cuts</StatusBadge>
+            </div>
             <p className="sample-atlas__focus-title">{activeRun.title}</p>
             <p className="sample-atlas__focus-copy">{activeRun.brief}</p>
             <div className="sample-atlas__preview">
@@ -183,20 +206,20 @@ function RunAtlasBoard({
                   <strong>{activeRun.outputs[0]?.name}</strong>
                 </div>
               </div>
-              <div className="sample-atlas__preview-side">
-                <div className="sample-atlas__preview-asset">
-                  <span>Source set</span>
-                  <strong>{activeRun.selectedAssets.slice(0, 2).join(" · ")}</strong>
-                  <p>{activeRun.selectedGoals.slice(0, 2).join(" · ")}</p>
-                </div>
-                <div className="sample-atlas__preview-rail">
-                  {activeRun.outputs.slice(0, 2).map((output) => (
-                    <div key={`${activeRun.slug}-${output.name}`} className="sample-atlas__mini-output">
-                      <span>{output.aspect}</span>
-                      <strong>{output.name}</strong>
-                    </div>
-                  ))}
-                </div>
+            </div>
+            <div className="sample-atlas__support-row">
+              <div className="sample-atlas__preview-asset">
+                <span>Source set</span>
+                <strong>{activeRun.selectedAssets.slice(0, 3).join(" · ")}</strong>
+                <p>{activeRun.selectedGoals.slice(0, 2).join(" · ")}</p>
+              </div>
+              <div className="sample-atlas__preview-rail">
+                {activeRun.outputs.slice(0, 3).map((output) => (
+                  <div key={`${activeRun.slug}-${output.name}`} className="sample-atlas__mini-output">
+                    <span>{output.aspect}</span>
+                    <strong>{output.name}</strong>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -16,11 +16,11 @@ export type MediaAsset = {
 type MediaAspect = "landscape" | "portrait" | "square" | "wide";
 
 const heroSerum: MediaAsset = {
-  imageSrc: "/media/generated/hero-serum-thumb.webp",
-  posterSrc: "/media/generated/hero-serum-thumb.webp",
-  videoSrc: "/media/generated/hero-serum-loop.mp4",
-  alt: "Amber dropper bottle arranged on charcoal fabric and a ceramic tray.",
-  objectPosition: "60% 44%",
+  imageSrc: "/media/generated/hero-serum-thumb-v2.webp",
+  posterSrc: "/media/generated/hero-serum-thumb-v2.webp",
+  videoSrc: "/media/generated/hero-serum-loop-v2.mp4",
+  alt: "Amber dropper bottle arranged on graphite linen beside a speckled ceramic tray.",
+  objectPosition: "50% 52%",
 };
 
 const ecommerceTray: MediaAsset = {

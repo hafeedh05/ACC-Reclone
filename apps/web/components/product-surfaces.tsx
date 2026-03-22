@@ -574,21 +574,17 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
       className={["command-plane", "command-plane--rescued", "command-plane--open", compact ? "is-compact" : ""].join(" ")}
       style={{ containerType: "inline-size" }}
     >
-      {!compact ? <CommandBriefRail /> : null}
-
       <section className="command-plane__core command-plane__core--open">
         <header className="command-plane__hero">
           <div className="command-plane__hero-copy">
             <p className="eyebrow">Command Center</p>
             <h2>Aster House Launch</h2>
-            <p className="command-plane__hero-note">
-              Scene 03 is live, Scene 04 is queued, and the fallback still pack is already armed.
-            </p>
+            <p className="command-plane__hero-note">Scene 03 is live. Scene 04 is queued.</p>
           </div>
           <div className="command-plane__hero-meta">
             <span>AC-184 live</span>
             <span>{currentStage.name} {currentStage.progress}%</span>
-            <span>delivery watch</span>
+            <span>Fallback armed</span>
           </div>
         </header>
 
@@ -612,43 +608,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
               <span>Performance, brand, and feature are already mapped.</span>
             </article>
           </div>
-        ) : (
-          <>
-            <div className="command-plane__telemetry command-plane__telemetry--open">
-              {telemetryRows.map((item) => (
-                <article key={item.label} className="command-plane__telemetry-item">
-                  <p>{item.label}</p>
-                  <strong>{item.value}</strong>
-                  <span>{item.note}</span>
-                </article>
-              ))}
-            </div>
-
-            <div className="command-plane__stage-ribbon command-plane__stage-ribbon--open">
-              {commandStages.map((stage) => (
-                <article
-                  key={stage.name}
-                  className={[
-                    "command-plane__stage",
-                    stage.status === "Complete"
-                      ? "is-complete"
-                      : stage.status === "Live"
-                        ? "is-live"
-                        : stage.status === "Queued"
-                          ? "is-queued"
-                          : "",
-                  ].join(" ")}
-                >
-                  <div className="command-plane__stage-copy">
-                    <p>{stage.name}</p>
-                    <span>{stage.status}</span>
-                  </div>
-                  <b>{stage.progress}%</b>
-                </article>
-              ))}
-            </div>
-          </>
-        )}
+        ) : null}
 
         <article className="command-plane__board">
           <section className="command-plane__scene-panel">
@@ -658,7 +618,9 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                 <h3>
                   Scene {currentScene.id} · {currentScene.title}
                 </h3>
-                <p className="command-plane__scene-note">{currentScene.note}</p>
+                <p className="command-plane__scene-note">
+                  Scene 03 is feeding the live output family while the close waits in queue.
+                </p>
               </div>
               <div className="command-plane__scene-statuses">
                 <StatusBadge tone="accent">{currentScene.status}</StatusBadge>
@@ -676,7 +638,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                   sizes="(min-width: 1280px) 42vw, 100vw"
                 />
                 <div className="command-plane__canvas-tags">
-                  {["Scene 03 live", "Fallback armed"].map((item) => (
+                  {["Scene 03 live"].map((item) => (
                     <span key={item}>{item}</span>
                   ))}
                 </div>
@@ -830,6 +792,21 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
             ) : null}
           </section>
         </article>
+
+        {!compact ? (
+          <section className="command-plane__afterglow">
+            <div className="command-plane__telemetry command-plane__telemetry--open">
+              {telemetryRows.map((item) => (
+                <article key={item.label} className="command-plane__telemetry-item">
+                  <p>{item.label}</p>
+                  <strong>{item.value}</strong>
+                  <span>{item.note}</span>
+                </article>
+              ))}
+            </div>
+            <CommandBriefRail />
+          </section>
+        ) : null}
       </section>
 
       {!compact ? <aside className="command-plane__ops command-plane__ops--rescued command-plane__ops--open">
@@ -889,19 +866,16 @@ function CommandBriefRail() {
   return (
     <aside className="command-brief command-brief--open">
       <div className="command-brief__sheet command-brief__sheet--open">
-        <p className="eyebrow">Brief</p>
-        <h3>Aster House</h3>
-        <p>
-          Premium residential campaign focused on light, space, and confidence across inquiry,
-          brand, and sales placements.
-        </p>
-        <div className="command-brief__meta command-brief__meta--open">
-          <span>Residential</span>
-          <span>Multi-format</span>
-          <span>Inquiry-led</span>
+        <div className="command-brief__summary">
+          <p className="eyebrow">Brief</p>
+          <h3>Aster House</h3>
+          <p>
+            Premium residential launch shaped around light, space, and inquiry-ready calm.
+          </p>
         </div>
+
         <div className="command-brief__asset-list command-brief__asset-list--open">
-          {["Arrival lounge", "Window line", "Exterior dusk"].map((asset, index) => (
+          {["Arrival lounge", "Window line"].map((asset, index) => (
             <article
               key={asset}
               className={[
@@ -916,23 +890,30 @@ function CommandBriefRail() {
                 <p>
                   {index === 0
                     ? "Primary scene"
-                    : index === 1
-                      ? "Material proof"
-                      : "Closing route"}
+                    : "Material proof"}
                 </p>
               </div>
             </article>
           ))}
         </div>
-        <div className="command-brief__formats command-brief__formats--open">
-          {["9:16", "1:1", "16:9"].map((format) => (
-            <span key={format}>{format}</span>
-          ))}
+
+        <div className="command-brief__support">
+          <div className="command-brief__meta command-brief__meta--open">
+            <span>Residential</span>
+            <span>Multi-format</span>
+            <span>Inquiry-led</span>
+          </div>
+          <div className="command-brief__formats command-brief__formats--open">
+            {["9:16", "1:1", "16:9"].map((format) => (
+              <span key={format}>{format}</span>
+            ))}
+          </div>
+          <div className="command-brief__approval-list command-brief__approval-list--open">
+            <span>Script approved</span>
+            <span>Storyboard approved</span>
+          </div>
         </div>
-        <div className="command-brief__approval-list command-brief__approval-list--open">
-          <span>Script approved</span>
-          <span>Storyboard approved</span>
-        </div>
+
         <div className="command-brief__run-meta">
           <div>
             <span>Run clock</span>

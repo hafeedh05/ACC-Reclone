@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { MarketingNavLinks } from "./experience-chrome";
 import { marketingNav } from "./site-data";
 
 function cn(...parts: Array<string | false | null | undefined>) {
@@ -132,11 +133,7 @@ export function MarketingHeader() {
       <div className="topbar">
         <SiteWordmark />
         <nav className="hidden items-center gap-8 text-sm text-[color:var(--text-secondary)] lg:flex">
-          {marketingNav.map((item) => (
-            <Link key={item.href} href={item.href} className="site-nav-link">
-              {item.label}
-            </Link>
-          ))}
+          <MarketingNavLinks items={marketingNav} />
         </nav>
         <div className="hidden items-center gap-3 md:flex">
           <ButtonLink href="/how-it-works" variant="primary">

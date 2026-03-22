@@ -562,11 +562,11 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
   const currentStage = commandStages.find((stage) => stage.status === "Live") ?? commandStages[2];
   const visibleEvents = eventRows.slice(0, compact ? 3 : 3);
   const visibleTransfers = commandTransfers.slice(0, compact ? 3 : 3);
-  const visibleDependencies = commandDependencies.slice(0, compact ? 2 : commandDependencies.length);
-  const compactRoles = commandRoleLedger.slice(0, 3);
+  const visibleDependencies = commandDependencies.slice(0, 2);
+  const compactRoles = commandRoleLedger.slice(0, 2);
   const compactRoutes = commandOutputRoutes.slice(0, 3);
-  const telemetryRows = compact ? commandTelemetry.slice(0, 3) : commandTelemetry.slice(0, 3);
-  const activeRoles = compact ? compactRoles : commandRoleLedger.filter((role) => role.status !== "Waiting").slice(0, 6);
+  const telemetryRows = compact ? commandTelemetry.slice(0, 2) : commandTelemetry.slice(0, 2);
+  const activeRoles = compact ? compactRoles : commandRoleLedger.filter((role) => role.status !== "Waiting").slice(0, 4);
   const liveEvents = compact ? visibleEvents : visibleEvents.slice(0, 2);
 
   return (
@@ -579,22 +579,17 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
           <div className="command-plane__hero-copy">
             <p className="eyebrow">Command Center</p>
             <h2>Aster House Launch</h2>
-            <p className="command-plane__hero-note">Scene 03 is live. Scene 04 is queued.</p>
+            <p className="command-plane__hero-note">Scene 03 is live and already feeding the export map.</p>
           </div>
           <div className="command-plane__hero-meta">
             <span>AC-184 live</span>
             <span>{currentStage.name} {currentStage.progress}%</span>
-            <span>Fallback armed</span>
+            <span>Fallback ready</span>
           </div>
         </header>
 
         {compact ? (
           <div className="command-plane__mini-overview">
-            <article>
-              <p className="eyebrow">Stage</p>
-              <strong>{currentStage.name}</strong>
-              <span>{currentStage.theatrical}</span>
-            </article>
             <article>
               <p className="eyebrow">Scene focus</p>
               <strong>
@@ -603,7 +598,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
               <span>{currentScene.status} with fallback prepared</span>
             </article>
             <article>
-              <p className="eyebrow">Route cover</p>
+              <p className="eyebrow">Output map</p>
               <strong>{compactRoutes.length} live export paths</strong>
               <span>Performance, brand, and feature are already mapped.</span>
             </article>
@@ -619,7 +614,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                   Scene {currentScene.id} · {currentScene.title}
                 </h3>
                 <p className="command-plane__scene-note">
-                  Scene 03 is feeding the live output family while the close waits in queue.
+                  The live scene stays in focus while the next beat waits cleanly in queue.
                 </p>
               </div>
               <div className="command-plane__scene-statuses">
@@ -652,7 +647,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
               </div>
               <div>
                 <p className="eyebrow">Latest handoff</p>
-                <span>Scene 04 is queued behind the live overlay confirmation.</span>
+                <span>Scene 04 is queued behind overlay confirmation.</span>
               </div>
             </div>
 

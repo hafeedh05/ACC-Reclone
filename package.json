@@ -11,6 +11,7 @@
     "qa:visual": "node scripts/qa/visual.mjs",
     "qa:flows": "node scripts/qa/flows.mjs",
     "qa:content": "node scripts/qa/content.mjs",
+    "qa:motion": "node scripts/qa/motion.mjs",
     "qa:a11y": "node scripts/qa/a11y.mjs",
     "qa:perf": "node scripts/qa/perf.mjs",
     "qa:seo": "node scripts/qa/seo.mjs",

@@ -1,0 +1,32 @@
+{
+  "route": "/journal",
+  "label": "Journal",
+  "capturedAt": "2026-03-22T16:54:49.025Z",
+  "visibleWordCountAboveFold": 172,
+  "interactiveCountAboveFold": 11,
+  "navItemCount": 6,
+  "ctaCountAboveFold": 2,
+  "chipBadgeCountAboveFold": 17,
+  "borderedSurfaceCountAboveFold": 7,
+  "sectionCount": 3,
+  "repeatedLabelCount": 1,
+  "visiblePlaceholderOrScaffoldingTerms": [],
+  "motionElementCountPerViewport": {
+    "desktop-1440": 0,
+    "mobile-390": 0
+  },
+  "interactionInventory": [
+    "Ad Command CenterPrompt-first campaign production",
+    "How It Works",
+    "Sample Runs",
+    "Gallery",
+    "Pricing",
+    "Journal",
+    "Enterprise",
+    "See How It Works",
+    "Watch a Sample Run",
+    "WorkflowWhy creative approval belongs before generationThe fastest way to waste time in an ad system is to generate media before the campaign angle is actually clear.Approval should lock the angle before the expensive media stage.Script and storyboard reviews reduce revision churn downstream.A clear sign-off path makes the production system safer to scale.March 20, 20266 min readAd Command CenterReview gates2Script and storyboard approvals keep the pipeline honest.Output lift4xOne clean decision flow protects multiple variants.Failure modeLate approvalGeneration before clarity multiplies rework.",
+    "Creative OpsThe right way to think about aspect ratios in launch ads5 min readAspect ratio should be a production decision, not a formatting afterthought.01Different ratios deserve different edit intent, not simple crops.02The shared clip pool should be planned around the weakest placement first.03Vertical, square, and landscape each play a different acquisition role."
+  ],
+  "consoleErrors": []
+}

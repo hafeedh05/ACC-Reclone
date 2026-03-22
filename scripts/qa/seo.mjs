@@ -15,7 +15,9 @@ function normalizeUrl(url) {
 const routes = parseRouteFilter();
 const baseUrl = getBaseUrl();
 const expectedCanonicalBase =
-  process.env.QA_EXPECT_CANONICAL_BASE?.replace(/\/$/, "") ?? baseUrl;
+  process.env.QA_EXPECT_CANONICAL_BASE?.replace(/\/$/, "") ??
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
+  "https://ad-command-center-dev-web-k66jrtxjhq-uc.a.run.app";
 const publicRoutes = routes.filter((route) => route.public);
 const privateRoutes = routes.filter((route) => !route.public);
 const artifactDir = await createArtifactDir("seo");

@@ -144,7 +144,6 @@ export type EventRow = {
 export const marketingNav: NavItem[] = [
   { href: "/how-it-works", label: "How It Works" },
   { href: "/sample-runs", label: "Sample Runs" },
-  { href: "/gallery", label: "Gallery" },
   { href: "/pricing", label: "Pricing" },
   { href: "/journal", label: "Journal" },
   { href: "/enterprise", label: "Enterprise" },

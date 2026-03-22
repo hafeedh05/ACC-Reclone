@@ -35,4 +35,5 @@ legacy/prototype/helper/kie/__pycache__/
 
 # Local build artifacts
 coverage/
-output/qa/
+output/
+tmp/

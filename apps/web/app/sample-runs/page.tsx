@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { JourneyRail, RevealOnScroll } from "@/components/experience-chrome";
+import { RevealOnScroll } from "@/components/experience-chrome";
 import {
   ButtonLink,
   Chip,
@@ -55,43 +55,29 @@ function collectRuns(activeIndustry: string) {
 export default function SampleRunsPage() {
   const [activeIndustry, setActiveIndustry] = useState("All");
   const { primary, atlas, archive } = useMemo(() => collectRuns(activeIndustry), [activeIndustry]);
-  const sampleRunsJourney = [
-    { id: "sample-runs-atlas", label: "Atlas" },
-    { id: "sample-runs-proof", label: "Lead run" },
-    { id: "sample-runs-archive", label: "Archive" },
-  ];
 
   return (
     <PageShell className="pb-16">
       <MarketingHeader />
-      <JourneyRail items={sampleRunsJourney} label="Sample run path" className="sample-runs-journey-rail" />
 
       <section id="sample-runs-atlas" className="page-hero sample-runs-hero journey-section">
         <div className="sample-runs-hero__top">
           <div className="sample-runs-hero__lead">
             <Chip tone="accent">Sample runs</Chip>
             <h1 className="hero-title max-w-[9ch]">Sample runs that show the whole campaign.</h1>
-          </div>
-
-          <div className="sample-runs-hero__support">
             <p className="hero-body">
-              Keep the brief, source set, approvals, and cut family in one readable record so the
-              work feels like proof instead of inventory.
+              Open the lead run, inspect the approved story, and compare the final cut family
+              without wading through inventory first.
             </p>
-            <div className="flex flex-wrap gap-2">
-              {sampleRunFilters.map((filter) => (
-                <button
-                  key={filter}
-                  type="button"
-                  className={filterButtonClass(activeIndustry === filter)}
-                  onClick={() => setActiveIndustry(filter)}
-                  aria-pressed={activeIndustry === filter}
-                >
-                  {filter}
-                </button>
-              ))}
+            <div className="hero-actions">
+              <ButtonLink href={`/sample-runs/${primary.slug}`} variant="primary">
+                Open the lead run
+              </ButtonLink>
+              <ButtonLink href="/gallery" variant="secondary">
+                Browse finished outputs
+              </ButtonLink>
             </div>
-            <div className="page-meta-line">
+            <div className="hero-proof-row">
               <span>{atlas.length} live examples</span>
               <span>Brief to outputs</span>
               <span>Paid, brand, feature, platform</span>
@@ -110,7 +96,7 @@ export default function SampleRunsPage() {
       >
         <div className="sample-proof__intro">
           <div className="space-y-3">
-            <p className="eyebrow">Inside the run</p>
+            <p className="eyebrow">Lead run</p>
             <h2 className="text-4xl leading-[0.96] tracking-[-0.05em] text-[color:var(--text-primary)] md:text-[4.4rem]">
               {primary.title}
             </h2>
@@ -148,6 +134,19 @@ export default function SampleRunsPage() {
               Each run below keeps the angle, the approvals, and the delivered cut family visible
               enough to judge the work quickly.
             </p>
+            <div className="flex flex-wrap gap-2 pt-3">
+              {sampleRunFilters.map((filter) => (
+                <button
+                  key={filter}
+                  type="button"
+                  className={filterButtonClass(activeIndustry === filter)}
+                  onClick={() => setActiveIndustry(filter)}
+                  aria-pressed={activeIndustry === filter}
+                >
+                  {filter}
+                </button>
+              ))}
+            </div>
           </div>
           <ButtonLink href="/contact" variant="secondary">
             Request a tailored run

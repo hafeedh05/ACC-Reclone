@@ -117,11 +117,6 @@ export function SiteWordmark({ compact = false }: { compact?: boolean }) {
         <span className="block font-semibold tracking-[-0.02em] text-[color:var(--text-primary)]">
           Ad Command Center
         </span>
-        {!compact ? (
-          <span className="mt-1 block text-[11px] uppercase tracking-[0.28em] text-[color:var(--text-soft)]">
-            Prompt-first campaign production
-          </span>
-        ) : null}
       </span>
     </Link>
   );
@@ -130,22 +125,14 @@ export function SiteWordmark({ compact = false }: { compact?: boolean }) {
 export function MarketingHeader() {
   return (
     <header className="site-shell site-shell--tight">
-      <div className="topbar">
+      <div className="topbar topbar--quiet">
         <SiteWordmark />
         <nav className="hidden items-center gap-8 text-sm text-[color:var(--text-secondary)] lg:flex">
           <MarketingNavLinks items={marketingNav} />
         </nav>
-        <div className="hidden items-center gap-3 md:flex">
-          <ButtonLink href="/how-it-works" variant="primary">
-            See How It Works
-          </ButtonLink>
-          <ButtonLink href="/sample-runs" variant="secondary">
-            Watch a Sample Run
-          </ButtonLink>
-        </div>
         <div className="md:hidden">
-          <ButtonLink href="/how-it-works" variant="primary" compact>
-            Workflow
+          <ButtonLink href="/sample-runs" variant="secondary" compact>
+            Sample Runs
           </ButtonLink>
         </div>
       </div>

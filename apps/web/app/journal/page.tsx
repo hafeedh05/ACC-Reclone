@@ -11,8 +11,6 @@ import { EditorialMediaFrame, mediaForJournal } from "@/components/media-system"
 import { journalArticles } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
 
-const topicLabels = ["Workflow", "Creative Ops", "Production", "Launch Craft", "Output Strategy"];
-
 export const metadata: Metadata = createPublicPageMetadata({
   title: "Journal",
   description:
@@ -30,64 +28,23 @@ export default function JournalIndexPage() {
       <section className="page-hero journal-hero">
         <div className="journal-hero__copy">
           <Chip tone="accent">Journal</Chip>
-          <h1 className="hero-title max-w-[8ch]">
-            Editorial depth for teams improving campaign systems
-          </h1>
+          <h1 className="hero-title max-w-[8ch]">Editorial depth for teams improving campaign systems</h1>
           <p className="hero-body">
             Essays, field notes, and operating lessons for teams shaping briefs, reviewing
             storyboards, packaging output families, and keeping campaign production coherent
             after handoff.
           </p>
-          <div className="page-meta-line">
-            {topicLabels.map((item, index) => (
-              <span key={item} className={index === 0 ? "text-[color:var(--text-primary)]" : undefined}>
-                {item}
-              </span>
-            ))}
-          </div>
-          <div className="page-meta-line">
+          <div className="hero-proof-row">
             <span>{journalArticles.length} articles</span>
-            <span>Essays, notes, and systems views</span>
-            <span>Linked to runs and case studies</span>
+            <span>Essays, notes, how-tos</span>
+            <span>Linked to runs and studies</span>
           </div>
         </div>
 
         <FeaturedJournalBoard article={featured} />
       </section>
 
-      <section className="journal-grid">
-        <aside className="journal-grid__rail">
-          <div className="journal-rail-panel">
-            <p className="eyebrow">Reading map</p>
-            <div className="mt-5 space-y-4">
-              <ArchiveNote
-                label="Workflow"
-                value="Approvals, storyboard logic, and the sequence that protects production quality."
-              />
-              <ArchiveNote
-                label="Creative ops"
-                value="Ratios, output libraries, and how one run turns into a usable family."
-              />
-              <ArchiveNote
-                label="Proof"
-                value="Every article has a natural path into a sample run or a case study."
-              />
-            </div>
-          </div>
-
-          <div className="journal-rail-panel">
-            <p className="eyebrow">Next step</p>
-            <div className="mt-5 grid gap-3">
-              <ButtonLink href="/sample-runs" variant="primary">
-                Move into sample runs
-              </ButtonLink>
-              <ButtonLink href="/case-studies" variant="secondary">
-                Read case studies
-              </ButtonLink>
-            </div>
-          </div>
-        </aside>
-
+      <section className="journal-grid journal-grid--simple">
         <div className="journal-grid__stack">
           <LeadEssayCard article={leadEssay} />
           <div className="journal-grid__notes">
@@ -137,11 +94,6 @@ function FeaturedJournalBoard({ article }: { article: (typeof journalArticles)[n
         <p className="eyebrow">{article.category}</p>
         <h2>{article.title}</h2>
         <p>{article.dek}</p>
-        <div className="journal-lead__chips">
-          {(article.summaryPoints ?? []).slice(0, 3).map((point) => (
-            <span key={point}>{point}</span>
-          ))}
-        </div>
         <div className="page-meta-line">
           <span>{article.date}</span>
           <span>{article.readTime}</span>
@@ -156,22 +108,6 @@ function FeaturedJournalBoard({ article }: { article: (typeof journalArticles)[n
           className="journal-lead__media-frame"
           sizes="(min-width: 1280px) 26vw, 100vw"
         />
-      </div>
-
-      <div className="journal-lead__sidebar">
-        {(article.metrics ?? []).slice(0, 3).map((metric, index) => (
-          <article
-            key={metric.label}
-            className={[
-              "journal-metric",
-              index === 0 ? "journal-metric--accent" : "",
-            ].join(" ")}
-          >
-            <p className="eyebrow">{metric.label}</p>
-            <div>{metric.value}</div>
-            <p>{metric.note}</p>
-          </article>
-        ))}
       </div>
     </Link>
   );
@@ -286,16 +222,5 @@ function JournalArchiveRow({
         <strong>{article.cta?.label ?? "Read article"}</strong>
       </div>
     </Link>
-  );
-}
-
-function ArchiveNote({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border-b border-[rgba(246,242,234,0.08)] pb-4 last:border-b-0 last:pb-0">
-      <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
-        {label}
-      </p>
-      <p className="mt-2 text-sm leading-7 text-[color:var(--text-secondary)]">{value}</p>
-    </div>
   );
 }

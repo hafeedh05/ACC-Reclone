@@ -5,7 +5,7 @@ const runId =
   process.env.QA_RUN_ID ??
   new Date().toISOString().replaceAll(":", "-").replaceAll(".", "-");
 
-const steps = ["qa:visual", "qa:content", "qa:flows", "qa:a11y", "qa:perf", "qa:seo"];
+const steps = ["qa:visual", "qa:content", "qa:flows", "qa:motion", "qa:a11y", "qa:perf", "qa:seo"];
 
 for (const step of steps) {
   const result = spawnSync("pnpm", [step], {

@@ -6,9 +6,8 @@ import {
   MarketingHeader,
   PageShell,
   SiteFooter,
-  StatusBadge,
 } from "@/components/site-primitives";
-import { JourneyRail, RevealOnScroll } from "@/components/experience-chrome";
+import { RevealOnScroll } from "@/components/experience-chrome";
 import {
   EditorialMediaFrame,
   mediaForCaseStudy,
@@ -37,37 +36,6 @@ const proofStudies = caseStudies.slice(0, 2);
 const featuredOutput = sampleOutputs[1];
 const outputRail = sampleOutputs.filter((output) => output.slug !== featuredOutput.slug).slice(0, 3);
 
-const heroAssets = [
-  {
-    id: "01",
-    label: "Primary pack",
-    note: "Front-facing hero crop",
-    tone: "amber" as const,
-    media: mediaLibrary.heroSerum,
-  },
-  {
-    id: "02",
-    label: "Offer tray",
-    note: "Controlled support composition",
-    tone: "cobalt" as const,
-    media: mediaLibrary.ecommerceTray,
-  },
-  {
-    id: "03",
-    label: "Travel kit",
-    note: "Accessory cue for compact cuts",
-    tone: "neutral" as const,
-    media: mediaLibrary.chargerStill,
-  },
-  {
-    id: "04",
-    label: "Interior proof",
-    note: "Space-led backdrop for wider exports",
-    tone: "amber" as const,
-    media: mediaLibrary.residentialStill,
-  },
-];
-
 const workflowMoments = [
   {
     label: "Source set",
@@ -84,13 +52,6 @@ const workflowMoments = [
     title: "Route one shared clip pool into the cuts the campaign actually needs.",
     note: "Performance, brand, feature, and platform exports stay related without feeling duplicated.",
   },
-];
-
-const homeJourney = [
-  { id: "home-hero", label: "Brief" },
-  { id: "home-workflow", label: "Workflow" },
-  { id: "home-command", label: "Command Center" },
-  { id: "home-proof", label: "Proof" },
 ];
 
 export const metadata: Metadata = createPublicPageMetadata({
@@ -116,36 +77,27 @@ export default function HomePage() {
 
       <MarketingHeader />
 
-      <JourneyRail items={homeJourney} label="User journey" className="home-journey-rail" />
-
       <section id="home-hero" className="home-hero-v2 journey-section journey-section--hero">
         <div className="home-hero-v2__copy">
-          <div className="home-hero-v2__lead">
-            <Chip tone="accent">Campaign production</Chip>
-            <h1 className="hero-title">Turn a brief into campaign-ready ads</h1>
-          </div>
-
-        <div className="home-hero-v2__support">
+          <p className="eyebrow">Campaign production</p>
+          <h1 className="hero-title">Turn a brief into campaign-ready ads</h1>
           <p className="hero-body">
             Upload the asset set, review the angle, and leave with polished cuts for 9:16, 1:1,
             and 16:9.
           </p>
           <div className="hero-actions">
-              <ButtonLink href="/how-it-works" variant="primary">
-                See How It Works
-              </ButtonLink>
-              <ButtonLink href="/sample-runs" variant="secondary">
-                Watch a Sample Run
-              </ButtonLink>
-            </div>
-            <div className="hero-guidance-line" aria-label="Jump to the key sections on this page">
-              <a href="#home-workflow">Shape the creative</a>
-              <span />
-              <a href="#home-command">Track the run</a>
-              <span />
-              <a href="#home-proof">Inspect proof</a>
-            </div>
+            <ButtonLink href="/how-it-works" variant="primary">
+              See How It Works
+            </ButtonLink>
+            <ButtonLink href="/sample-runs" variant="secondary">
+              Watch a Sample Run
+            </ButtonLink>
           </div>
+        <div className="hero-proof-row" aria-label="What the run produces">
+          <span>Reviewed creative</span>
+          <span>Four-cut family</span>
+          <span>9:16 / 1:1 / 16:9</span>
+        </div>
         </div>
 
         <HeroConsole />
@@ -343,104 +295,43 @@ export default function HomePage() {
 function HeroConsole() {
   return (
     <div className="hero-console hero-console--open" style={{ containerType: "inline-size" }}>
-      <div className="hero-console__meta-line">
-        <span>Northstar / live workspace</span>
-        <span>3 ratios / 4 cuts mapped</span>
-      </div>
-
-      <div className="hero-console__brief-strip">
-        <div className="hero-console__brief-copy">
-          <p className="eyebrow">Brief</p>
-          <h2>{heroRun.title}</h2>
-          <p>Pack-shot-led launch held to one clear promise across every cut.</p>
-        </div>
-        <div className="hero-console__brief-meta">
-          <span>{heroRun.industry}</span>
-          <span>Reviewed before generation</span>
-        </div>
-      </div>
-
       <section className="hero-canvas">
-        <div className="hero-canvas__head">
-          <div>
-            <p className="eyebrow">Live cut</p>
-            <strong>Warm launch framing. Clean offer.</strong>
-          </div>
-          <StatusBadge tone="accent">Scene 03 live</StatusBadge>
-        </div>
-
-        <div className="hero-canvas__stage">
+        <div className="hero-canvas__stage hero-canvas__stage--poster">
           <EditorialMediaFrame
             asset={mediaLibrary.heroSerum}
             aspect="landscape"
             className="hero-canvas__media"
             motion
             priority
-            sizes="(min-width: 1280px) 64vw, 100vw"
+            sizes="(min-width: 1280px) 52vw, 100vw"
           />
-          <div className="hero-canvas__status">
+          <div className="hero-canvas__caption hero-canvas__caption--poster">
+            <p className="eyebrow">Live preview</p>
+            <h3>{heroRun.title}</h3>
+            <span>Warm launch framing. Clear offer.</span>
+          </div>
+          <div className="hero-canvas__status hero-canvas__status--poster">
             <span>Scene 03 live</span>
             <span>Fallback ready</span>
           </div>
         </div>
 
-        <div className="hero-canvas__info-row">
-          <div className="hero-canvas__caption">
-            <p className="eyebrow">Performance cut</p>
-            <h3>Soft light. Clear promise.</h3>
-            <span>Scene 03 is already feeding paid, brand, and platform routes.</span>
+        <div className="hero-canvas__info-row hero-canvas__info-row--poster">
+          <div className="hero-console__support-block">
+            <p className="eyebrow">Output family</p>
           </div>
-          <div className="hero-canvas__family-stack">
-            {heroOutputs.map((output, index) => (
-              <article key={`${output.name}-${output.aspect}`} className="hero-family-chip">
-                <div className="hero-family-chip__meta">
-                  <span>{output.aspect}</span>
-                  <b>{index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}</b>
-                </div>
-                <strong>{output.name}</strong>
-              </article>
-            ))}
-          </div>
-        </div>
 
-        <div className="hero-canvas__footer-line">
-          <div className="hero-console__asset-strip">
-            {heroAssets.slice(0, 3).map((asset) => (
-              <article key={asset.id} className="hero-asset-chip">
-                <div className="hero-asset-chip__thumb" aria-hidden="true">
-                  <EditorialMediaFrame
-                    asset={asset.media}
-                    aspect="square"
-                    className="hero-asset-chip__media"
-                    sizes="96px"
-                  />
-                </div>
-                <div className="hero-asset-chip__copy">
-                  <p>{asset.id}</p>
-                  <strong>{asset.label}</strong>
-                </div>
-              </article>
-            ))}
-          </div>
-          <div className="hero-canvas__scene-strip">
-            {[
-              { id: "01", label: "Arrival", state: "on" },
-              { id: "02", label: "Texture", state: "on" },
-              { id: "03", label: "Reveal", state: "live" },
-              { id: "04", label: "Close", state: "queued" },
-            ].map((scene) => (
-              <div
-                key={scene.id}
-                className={[
-                  "hero-canvas__scene",
-                  scene.state === "live" ? "is-live" : scene.state === "queued" ? "is-queued" : "is-on",
-                ].join(" ")}
-              >
-                <b>{scene.id}</b>
-                <span>{scene.label}</span>
+          <div className="hero-console__format-list">
+            {heroOutputs.map((output, index) => (
+              <div key={`${output.name}-${output.aspect}`} className="hero-console__format-item">
+                <span>{output.aspect}</span>
+                <strong>{output.name}</strong>
+                <b>{index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}</b>
               </div>
             ))}
           </div>
+
+          <p className="hero-console__support-note">Reviewed before generation. Primary pack and offer tray already mapped.</p>
         </div>
       </section>
     </div>

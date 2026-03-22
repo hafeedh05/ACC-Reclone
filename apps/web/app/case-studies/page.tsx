@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import {
-  ButtonLink,
   Chip,
   MarketingHeader,
   PageShell,
@@ -28,15 +27,13 @@ export default function CaseStudiesPage() {
       <section className="page-hero case-hero">
         <div className="case-hero__copy">
           <Chip tone="accent">Case studies</Chip>
-          <h1 className="hero-title max-w-[8ch]">
-            Case studies built around the actual launch decisions
-          </h1>
+          <h1 className="hero-title max-w-[8ch]">Case studies built around the actual launch decisions</h1>
           <p className="hero-body">
             Brief, constraints, workflow choices, approval logic, output structure, and what
             changed commercially all stay together so the page proves the system instead of
             summarizing it.
           </p>
-          <div className="page-meta-line">
+          <div className="hero-proof-row">
             <span>{caseStudies.length} studies</span>
             <span>Before / after logic</span>
             <span>Outputs tied to outcomes</span>
@@ -46,39 +43,7 @@ export default function CaseStudiesPage() {
         <FeaturedCaseBoard study={featured} />
       </section>
 
-      <section className="case-system">
-        <aside className="case-system__rail">
-          <div className="case-rail-panel">
-            <p className="eyebrow">What strong studies answer</p>
-            <div className="mt-5 space-y-4">
-              <ArchiveNote
-                label="Constraints"
-                value="What the team did not have matters as much as what they shipped."
-              />
-              <ArchiveNote
-                label="Workflow choices"
-                value="Where approvals happened changed the quality and pace of the final package."
-              />
-              <ArchiveNote
-                label="Commercial effect"
-                value="The strongest studies show why the final handoff mattered after review."
-              />
-            </div>
-          </div>
-
-          <div className="case-rail-panel">
-            <p className="eyebrow">Next step</p>
-            <div className="mt-5 grid gap-3">
-              <ButtonLink href="/sample-runs" variant="primary">
-                Compare against sample runs
-              </ButtonLink>
-              <ButtonLink href="/contact" variant="secondary">
-                Talk through a similar launch
-              </ButtonLink>
-            </div>
-          </div>
-        </aside>
-
+      <section className="case-system case-system--simple">
         <div className="case-system__list">
           {supporting.map((study, index) => (
             <CaseStudyRow
@@ -103,11 +68,6 @@ function FeaturedCaseBoard({ study }: { study: (typeof caseStudies)[number] }) {
         <p className="eyebrow">{study.category}</p>
         <h2>{study.title}</h2>
         <p>{study.dek}</p>
-        <div className="case-lead__chips">
-          {(study.constraints ?? []).slice(0, 3).map((item) => (
-            <span key={`${study.slug}-${item}`}>{item}</span>
-          ))}
-        </div>
         <div className="page-meta-line">
           <span>{study.date}</span>
           <span>{study.readTime}</span>
@@ -137,19 +97,6 @@ function FeaturedCaseBoard({ study }: { study: (typeof caseStudies)[number] }) {
           className="case-lead__media-frame"
           sizes="(min-width: 1280px) 28vw, 100vw"
         />
-      </div>
-
-      <div className="case-lead__sidebar">
-        {(study.metrics ?? []).slice(0, 3).map((metric, index) => (
-          <article
-            key={metric.label}
-            className={["case-metric", index === 0 ? "case-metric--accent" : ""].join(" ")}
-          >
-            <p className="eyebrow">{metric.label}</p>
-            <div>{metric.value}</div>
-            <p>{metric.note}</p>
-          </article>
-        ))}
       </div>
     </Link>
   );
@@ -228,16 +175,5 @@ function CaseStudyRow({
         </div>
       </div>
     </Link>
-  );
-}
-
-function ArchiveNote({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="border-b border-[rgba(246,242,234,0.08)] pb-4 last:border-b-0 last:pb-0">
-      <p className="text-[11px] uppercase tracking-[0.18em] text-[color:var(--text-soft)]">
-        {label}
-      </p>
-      <p className="mt-2 text-sm leading-7 text-[color:var(--text-secondary)]">{value}</p>
-    </div>
   );
 }

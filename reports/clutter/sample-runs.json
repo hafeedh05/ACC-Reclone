@@ -1,0 +1,40 @@
+{
+  "route": "/sample-runs",
+  "label": "Sample Runs",
+  "capturedAt": "2026-03-22T16:54:32.430Z",
+  "visibleWordCountAboveFold": 110,
+  "interactiveCountAboveFold": 19,
+  "navItemCount": 6,
+  "ctaCountAboveFold": 9,
+  "chipBadgeCountAboveFold": 6,
+  "borderedSurfaceCountAboveFold": 7,
+  "sectionCount": 3,
+  "repeatedLabelCount": 0,
+  "visiblePlaceholderOrScaffoldingTerms": [],
+  "motionElementCountPerViewport": {
+    "desktop-1440": 0,
+    "mobile-390": 0
+  },
+  "interactionInventory": [
+    "Ad Command CenterPrompt-first campaign production",
+    "How It Works",
+    "Sample Runs",
+    "Gallery",
+    "Pricing",
+    "Journal",
+    "Enterprise",
+    "See How It Works",
+    "Watch a Sample Run",
+    "01Atlas",
+    "02Lead run",
+    "03Archive",
+    "All",
+    "Beauty",
+    "Ecommerce",
+    "Apparel",
+    "Tech Accessory",
+    "Residential",
+    "Supplement"
+  ],
+  "consoleErrors": []
+}

@@ -22,7 +22,10 @@ const summary = [];
 const failures = [];
 
 function isIgnorableRequestFailure(entry) {
-  return entry.failure.includes("ERR_ABORTED") && entry.url.includes("_rsc=");
+  return (
+    (entry.failure.includes("ERR_ABORTED") && entry.url.includes("_rsc=")) ||
+    (entry.failure.includes("ERR_ABORTED") && /\.mp4($|\?)/.test(entry.url))
+  );
 }
 
 for (const route of routes) {

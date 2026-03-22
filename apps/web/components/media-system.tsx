@@ -160,7 +160,7 @@ export function EditorialMediaFrame({
           muted
           playsInline
           poster={asset.posterSrc ?? asset.imageSrc}
-          preload="metadata"
+          preload="none"
         >
           <source src={asset.videoSrc} type="video/mp4" />
         </video>

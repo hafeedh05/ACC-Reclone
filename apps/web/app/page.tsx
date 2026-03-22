@@ -338,7 +338,7 @@ function HeroConsole() {
           </div>
 
           <div className="hero-console__goal-line">
-            {heroRun.selectedGoals.slice(0, 1).map((goal) => (
+            {heroRun.selectedGoals.slice(0, 2).map((goal) => (
               <div key={goal}>
                 <span />
                 <p>{goal}</p>
@@ -346,21 +346,20 @@ function HeroConsole() {
             ))}
           </div>
 
-          <div className="hero-console__asset-column">
-            {heroAssets.slice(0, 1).map((asset) => (
-              <article key={asset.id} className={`hero-asset hero-asset--open hero-asset--${asset.tone}`}>
-                <div className="hero-asset__thumb" aria-hidden="true">
+          <div className="hero-console__asset-strip">
+            {heroAssets.slice(0, 2).map((asset) => (
+              <article key={asset.id} className="hero-asset-chip">
+                <div className="hero-asset-chip__thumb" aria-hidden="true">
                   <EditorialMediaFrame
                     asset={asset.media}
                     aspect="square"
-                    className="hero-asset__media"
-                    sizes="140px"
+                    className="hero-asset-chip__media"
+                    sizes="84px"
                   />
                 </div>
-                <div className="hero-asset__copy">
+                <div className="hero-asset-chip__copy">
                   <p>{asset.id}</p>
                   <strong>{asset.label}</strong>
-                  <span>{asset.note}</span>
                 </div>
               </article>
             ))}
@@ -399,51 +398,44 @@ function HeroConsole() {
               <span>Overlay locked</span>
               <span>Fallback ready</span>
             </div>
+            <div className="hero-canvas__family-stack">
+              {heroOutputs.map((output, index) => (
+                <article key={`${output.name}-${output.aspect}`} className="hero-family-chip">
+                  <div className="hero-family-chip__meta">
+                    <span>{output.aspect}</span>
+                    <b>{index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}</b>
+                  </div>
+                  <strong>{output.name}</strong>
+                </article>
+              ))}
+            </div>
           </div>
 
-          <div className="hero-canvas__scene-strip">
-            {[
-              { id: "01", label: "Arrival", state: "on" },
-              { id: "02", label: "Texture", state: "on" },
-              { id: "03", label: "Reveal", state: "live" },
-              { id: "04", label: "Close", state: "queued" },
-            ].map((scene) => (
-              <div
-                key={scene.id}
-                className={[
-                  "hero-canvas__scene",
-                  scene.state === "live" ? "is-live" : scene.state === "queued" ? "is-queued" : "is-on",
-                ].join(" ")}
-              >
-                <b>{scene.id}</b>
-                <span>{scene.label}</span>
-              </div>
-            ))}
+          <div className="hero-canvas__footer-line">
+            <div className="hero-canvas__scene-strip">
+              {[
+                { id: "01", label: "Arrival", state: "on" },
+                { id: "02", label: "Texture", state: "on" },
+                { id: "03", label: "Reveal", state: "live" },
+                { id: "04", label: "Close", state: "queued" },
+              ].map((scene) => (
+                <div
+                  key={scene.id}
+                  className={[
+                    "hero-canvas__scene",
+                    scene.state === "live" ? "is-live" : scene.state === "queued" ? "is-queued" : "is-on",
+                  ].join(" ")}
+                >
+                  <b>{scene.id}</b>
+                  <span>{scene.label}</span>
+                </div>
+              ))}
+            </div>
+            <p className="hero-canvas__footer-note">
+              Performance, brand, feature, and platform cuts stay tied to one approved clip pool.
+            </p>
           </div>
         </section>
-
-        <aside className="hero-family">
-          <p className="eyebrow">Output family</p>
-          <div className="hero-family__list">
-            {heroOutputs.map((output, index) => (
-              <article key={`${output.name}-${output.aspect}`} className="hero-family__item">
-                <MediaPlate
-                  asset={mediaLibrary.heroSerum}
-                  tone={index === 0 ? "amber" : index === 1 ? "cobalt" : "neutral"}
-                  ratio={output.aspect}
-                  title={output.name}
-                  label="Output"
-                  highlight={index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}
-                  compact
-                />
-                <div>
-                  <strong>{output.name}</strong>
-                  <p>{output.aspect} export</p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </aside>
       </div>
     </div>
   );

@@ -92,7 +92,7 @@ export default function SampleRunsPage() {
       <section className="sample-proof">
         <div className="sample-proof__intro">
           <div className="space-y-3">
-            <p className="eyebrow">Lead run</p>
+            <p className="eyebrow">Inside the run</p>
             <h2 className="text-4xl leading-[0.96] tracking-[-0.05em] text-[color:var(--text-primary)] md:text-[4.4rem]">
               {primary.title}
             </h2>
@@ -132,7 +132,7 @@ export default function SampleRunsPage() {
         </div>
 
         <div className="sample-archive__list">
-          {archive.slice(0, 3).map((run, index) => (
+          {archive.slice(2, 5).map((run, index) => (
             <RunProofRow
               key={run.slug}
               run={run}
@@ -157,7 +157,7 @@ function RunAtlasBoard({
 }) {
   const activeRun = runs.find((run) => run.slug === activeSlug) ?? runs[0];
   const remainingRuns = runs.filter((run) => run.slug !== activeRun.slug);
-  const perimeter = (remainingRuns.length > 3 ? remainingRuns.slice(3, 5) : remainingRuns.slice(0, 2));
+  const perimeter = remainingRuns.slice(0, 2);
 
   return (
     <div className="sample-atlas">
@@ -186,8 +186,8 @@ function RunAtlasBoard({
               <div className="sample-atlas__preview-side">
                 <div className="sample-atlas__preview-asset">
                   <span>Source set</span>
-                  <strong>{activeRun.selectedAssets[0]}</strong>
-                  <p>{activeRun.selectedAssets[1]}</p>
+                  <strong>{activeRun.selectedAssets.slice(0, 2).join(" · ")}</strong>
+                  <p>{activeRun.selectedGoals.slice(0, 2).join(" · ")}</p>
                 </div>
                 <div className="sample-atlas__preview-rail">
                   {activeRun.outputs.slice(0, 2).map((output) => (
@@ -232,18 +232,10 @@ function RunAtlasBoard({
         </div>
 
         <div className="sample-atlas__ledger">
-          <div>
-            <p className="eyebrow">Locked approvals</p>
-            <strong>Script + storyboard approved</strong>
-          </div>
-          <div>
-            <p className="eyebrow">Shared clip pool</p>
-            <strong>One generation spine, multiple cuts</strong>
-          </div>
-          <div>
-            <p className="eyebrow">Output family</p>
-            <strong>9:16, 1:1, 16:9, platform variants</strong>
-          </div>
+          <span>Script approved</span>
+          <span>Storyboard approved</span>
+          <span>One clip pool / four cut routes</span>
+          <span>9:16, 1:1, 16:9</span>
         </div>
       </div>
     </div>
@@ -257,9 +249,6 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
         <div className="sample-proof-board__panel">
           <p className="eyebrow">Brief</p>
           <p className="sample-proof-board__copy">{run.brief}</p>
-        </div>
-        <div className="sample-proof-board__panel">
-          <p className="eyebrow">Selected goals</p>
           <div className="page-meta-line mt-4">
             {run.selectedGoals.map((goal) => (
               <span key={`${run.slug}-goal-${goal}`}>{goal}</span>
@@ -293,16 +282,6 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
             </div>
 
           <div className="sample-proof-board__stage-visual">
-            <div className="sample-proof-board__scene-stack">
-              {run.storyboard.map((frame) => (
-                <div key={`${run.slug}-${frame.scene}`} className="sample-proof-board__scene">
-                  <span>{frame.scene}</span>
-                  <strong>{frame.overlay}</strong>
-                  <p>{frame.note}</p>
-                </div>
-              ))}
-            </div>
-
             <div className="sample-proof-board__preview">
               <EditorialMediaFrame
                 asset={mediaForRun(run.slug)}
@@ -313,7 +292,18 @@ function LeadRunBoard({ run }: { run: SampleRun }) {
               <div className="sample-proof-board__preview-label">
                 <span>Live preview</span>
                 <strong>{run.outputs[0]?.name}</strong>
+                <p>{run.outputs[0]?.note}</p>
               </div>
+            </div>
+
+            <div className="sample-proof-board__scene-stack">
+              {run.storyboard.map((frame) => (
+                <div key={`${run.slug}-${frame.scene}`} className="sample-proof-board__scene">
+                  <span>{frame.scene}</span>
+                  <strong>{frame.overlay}</strong>
+                  <p>{frame.note}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

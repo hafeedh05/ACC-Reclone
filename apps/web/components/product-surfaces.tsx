@@ -566,6 +566,8 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
   const compactRoles = commandRoleLedger.slice(0, 3);
   const compactRoutes = commandOutputRoutes.slice(0, 3);
   const telemetryRows = compact ? commandTelemetry.slice(0, 3) : commandTelemetry.slice(0, 3);
+  const activeRoles = compact ? compactRoles : commandRoleLedger.filter((role) => role.status !== "Waiting").slice(0, 6);
+  const liveEvents = compact ? visibleEvents : visibleEvents.slice(0, 2);
 
   return (
     <div
@@ -578,12 +580,15 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
         <header className="command-plane__hero">
           <div className="command-plane__hero-copy">
             <p className="eyebrow">Command Center</p>
-            <h2>Live scene, route status, and delivery risk in one operating board.</h2>
+            <h2>Aster House Launch</h2>
+            <p className="command-plane__hero-note">
+              Scene 03 is live, Scene 04 is queued, and the fallback still pack is already armed.
+            </p>
           </div>
           <div className="command-plane__hero-meta">
             <span>AC-184 live</span>
-            <span>script locked 09:13</span>
-            <span>fallback armed</span>
+            <span>{currentStage.name} {currentStage.progress}%</span>
+            <span>delivery watch</span>
           </div>
         </header>
 
@@ -653,11 +658,11 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                 <h3>
                   Scene {currentScene.id} · {currentScene.title}
                 </h3>
+                <p className="command-plane__scene-note">{currentScene.note}</p>
               </div>
               <div className="command-plane__scene-statuses">
                 <StatusBadge tone="accent">{currentScene.status}</StatusBadge>
                 <StatusBadge tone="default">{currentScene.duration}</StatusBadge>
-                <StatusBadge tone="warning">Fallback prepared</StatusBadge>
               </div>
             </div>
 
@@ -832,31 +837,13 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
       </section>
 
       {!compact ? <aside className="command-plane__ops command-plane__ops--rescued command-plane__ops--open">
-        <section className="command-plane__ops-section command-plane__ops-section--roles">
-          <div className="command-plane__ops-head">
-            <p className="eyebrow">Role ledger</p>
-            <StatusBadge tone="accent">8 roles active</StatusBadge>
-          </div>
-          <div className="command-plane__role-list command-plane__role-list--compact">
-            {commandRoleLedger.map((role) => (
-              <article key={role.name} className="command-plane__role">
-                <strong>{role.name}</strong>
-                <div className="command-plane__role-meta">
-                  <em>{role.updatedAt}</em>
-                  <StatusBadge tone={toneForStatus(role.status)}>{role.status}</StatusBadge>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section className="command-plane__ops-section command-plane__ops-section--events">
           <div className="command-plane__ops-head">
             <p className="eyebrow">Live feed</p>
             <StatusBadge tone="default">latest events</StatusBadge>
           </div>
           <div className="command-plane__event-list" aria-live="polite">
-            {visibleEvents.map((event, rowIndex) => (
+            {liveEvents.map((event, rowIndex) => (
               <article key={`${event.time}-${event.title}-${rowIndex}`} className="command-plane__event">
                 <div className="command-plane__event-meta">
                   <p>{event.time}</p>
@@ -871,16 +858,31 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
           </div>
         </section>
 
+        <section className="command-plane__ops-section command-plane__ops-section--roles">
+          <div className="command-plane__ops-head">
+            <p className="eyebrow">Role ledger</p>
+            <StatusBadge tone="accent">{activeRoles.length} active roles</StatusBadge>
+          </div>
+          <div className="command-plane__role-list command-plane__role-list--compact">
+            {activeRoles.map((role) => (
+              <article key={role.name} className="command-plane__role">
+                <strong>{role.name}</strong>
+                <div className="command-plane__role-meta">
+                  <em>{role.updatedAt}</em>
+                  <StatusBadge tone={toneForStatus(role.status)}>{role.status}</StatusBadge>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
         <section className="command-plane__recovery command-plane__recovery--open">
           <div className="command-plane__ops-head">
             <p className="eyebrow">Recovery path</p>
             <StatusBadge tone="warning">Ready</StatusBadge>
           </div>
-          <strong>Still-led assembly can take over if clip generation misses the timing window.</strong>
-          <span>
-            Scene 03 is already mapped for the performance, brand, and platform cuts, so delivery
-            can stay on schedule even if one motion beat needs a retry.
-          </span>
+          <strong>Still-led assembly is already mapped for the live scene.</strong>
+          <span>Performance, brand, and platform cuts keep moving even if one motion beat slips.</span>
         </section>
       </aside> : null}
     </div>
@@ -892,7 +894,7 @@ function CommandBriefRail() {
     <aside className="command-brief command-brief--open">
       <div className="command-brief__sheet command-brief__sheet--open">
         <p className="eyebrow">Brief</p>
-        <h3>Aster House Launch</h3>
+        <h3>Aster House</h3>
         <p>
           Premium residential campaign focused on light, space, and confidence across inquiry,
           brand, and sales placements.

@@ -113,8 +113,8 @@ export default function HomePage() {
           <Chip tone="accent">Campaign production</Chip>
           <h1 className="hero-title">Turn a brief into campaign-ready ads</h1>
           <p className="hero-body">
-            Upload the asset set, lock the angle in review, and receive polished ad families built
-            for 9:16, 1:1, 16:9, paid, feed, and handoff use.
+            Upload the asset set, review the angle, and receive polished ad families built for
+            9:16, 1:1, and 16:9.
           </p>
           <div className="hero-actions">
             <ButtonLink href="/how-it-works" variant="primary">
@@ -322,7 +322,7 @@ function HeroConsole() {
     <div className="hero-console hero-console--open" style={{ containerType: "inline-size" }}>
       <div className="hero-console__meta-line">
         <span>Northstar / live workspace</span>
-        <span>4 cuts mapped after approvals</span>
+        <span>3 ratios / 4 cuts mapped</span>
       </div>
 
       <div className="hero-console__open-grid">
@@ -330,7 +330,7 @@ function HeroConsole() {
           <div className="hero-console__rail-intro">
             <p className="eyebrow">Brief</p>
             <h2>{heroRun.title}</h2>
-            <p>Pack-shot-led launch with one clear promise held across paid, brand, and platform cuts.</p>
+            <p>Pack-shot-led launch with one clear promise held across every cut.</p>
             <div className="hero-console__meta-stack">
               <span>{heroRun.industry}</span>
               <span>Reviewed before generation</span>
@@ -367,8 +367,8 @@ function HeroConsole() {
           </div>
 
           <div className="hero-console__approval-line">
-            <span>Script + storyboard approved</span>
-            <span>Credits staged</span>
+            <span>Script approved</span>
+            <span>Storyboard approved</span>
           </div>
         </aside>
 

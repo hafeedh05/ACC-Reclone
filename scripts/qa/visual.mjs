@@ -31,6 +31,10 @@ for (const route of routes) {
       artifactDir,
       `${routeSlug(route)}-${viewport.name}.png`,
     );
+    const foldScreenshotPath = path.join(
+      artifactDir,
+      `${routeSlug(route)}-${viewport.name}-fold.png`,
+    );
 
     const result = await withPage(
       baseUrl,
@@ -39,6 +43,7 @@ for (const route of routes) {
         await page.goto(resolveUrl(baseUrl, route.path), { waitUntil: "networkidle" });
         const metrics = await getPageMetrics(page);
         await page.screenshot({ path: screenshotPath, fullPage: true });
+        await page.screenshot({ path: foldScreenshotPath });
         return { metrics, consoleErrors, pageErrors, requestFailures };
       },
     );
@@ -121,6 +126,7 @@ for (const route of routes) {
       route: route.path,
       viewport: viewport.name,
       screenshotPath,
+      foldScreenshotPath,
       metrics: result.metrics,
       diffPixels,
       diffRatio,

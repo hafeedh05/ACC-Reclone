@@ -19,19 +19,19 @@ const heroSerum: MediaAsset = {
   imageSrc: "/media/generated/hero-serum-thumb.webp",
   posterSrc: "/media/generated/hero-serum-thumb.webp",
   videoSrc: "/media/generated/hero-serum-loop.mp4",
-  alt: "Amber serum bottle and carton arranged on a dark stone plinth.",
-  objectPosition: "center center",
+  alt: "Amber dropper bottle arranged on charcoal fabric and a ceramic tray.",
+  objectPosition: "60% 44%",
 };
 
 const ecommerceTray: MediaAsset = {
   imageSrc: "/media/generated/ecommerce-tray-thumb.webp",
-  alt: "Premium packaging arrangement on a dark tray.",
+  alt: "Amber skincare bottles arranged on a warm tray with a leaf detail.",
   objectPosition: "center center",
 };
 
 const apparelStill: MediaAsset = {
   imageSrc: "/media/generated/apparel-thumb.webp",
-  alt: "Tailored apparel composition in a dark editorial studio.",
+  alt: "Folded charcoal garment arranged on a quiet studio surface.",
   objectPosition: "center center",
 };
 
@@ -43,6 +43,8 @@ const chargerStill: MediaAsset = {
 
 const residentialStill: MediaAsset = {
   imageSrc: "/media/generated/residential-thumb.webp",
+  posterSrc: "/media/generated/residential-thumb.webp",
+  videoSrc: "/media/generated/residential-loop.mp4",
   alt: "Premium residential interior with warm dusk light and floor-to-ceiling windows.",
   objectPosition: "center center",
 };

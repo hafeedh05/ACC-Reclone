@@ -667,15 +667,11 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                   asset={mediaForRun("aster-house-launch")}
                   aspect="landscape"
                   className="command-plane__canvas-media"
+                  motion
                   sizes="(min-width: 1280px) 42vw, 100vw"
                 />
-                <div className="command-plane__canvas-overlay command-plane__canvas-overlay--open">
-                  <p className="eyebrow">Overlay</p>
-                  <h4>{currentScene.overlay}</h4>
-                  <span>Language pass locked. Scene 03 is already routed into live output paths.</span>
-                </div>
                 <div className="command-plane__canvas-tags">
-                  {["Scene 03 live", "Overlay attached", "Fallback armed"].map((item) => (
+                  {["Scene 03 live", "Overlay locked", "Fallback armed"].map((item) => (
                     <span key={item}>{item}</span>
                   ))}
                 </div>
@@ -684,12 +680,16 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
 
             <div className="command-plane__canvas-notes">
               <div>
+                <p className="eyebrow">Overlay</p>
+                <span>{currentScene.overlay}</span>
+              </div>
+              <div>
                 <p className="eyebrow">Scene note</p>
                 <span>{currentScene.note}</span>
               </div>
               <div>
                 <p className="eyebrow">Latest handoff</p>
-                <span>Storyboard queue is waiting on overlay confirmation for Scene 04.</span>
+                <span>Scene 04 is queued behind the live overlay confirmation.</span>
               </div>
             </div>
 

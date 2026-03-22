@@ -1,17 +1,15 @@
 use crate::domain::*;
 use crate::error::{ServiceError, ServiceResult};
 use crate::mock::{MockEditPlanner, MockQCProvider, MockVoiceProvider};
-use crate::providers::{
-    ProviderMode, ProviderSuite, Renderer, ScriptProvider, VideoProvider,
-};
+use crate::providers::{ProviderMode, ProviderSuite, Renderer, ScriptProvider, VideoProvider};
 use base64::Engine;
 use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
 use reqwest::{Client, RequestBuilder};
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::env;
-use std::future::Future;
 use std::fs;
+use std::future::Future;
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::Arc;
@@ -219,13 +217,14 @@ impl ScriptProvider for OpenAiScriptProvider {
 
         let body = request_json(
             self.client
-            .post(OPENAI_RESPONSES_URL)
-            .bearer_auth(&self.api_key)
-            .json(&request),
+                .post(OPENAI_RESPONSES_URL)
+                .bearer_auth(&self.api_key)
+                .json(&request),
             "openai responses",
         )?;
-        let output_text = first_output_text(&body)
-            .ok_or_else(|| ServiceError::Internal("openai response did not include output text".to_string()))?;
+        let output_text = first_output_text(&body).ok_or_else(|| {
+            ServiceError::Internal("openai response did not include output text".to_string())
+        })?;
         let structured: StructuredScript = serde_json::from_str(&output_text).map_err(|error| {
             ServiceError::Internal(format!("openai response JSON parse failed: {error}"))
         })?;
@@ -264,9 +263,7 @@ impl VideoProvider for GoogleVideoProvider {
             GoogleVideoMode::GeminiApiKey(api_key) => {
                 self.generate_with_gemini_key(scene, aspect_ratio, &prompt, api_key)
             }
-            GoogleVideoMode::VertexAdc => {
-                self.generate_with_vertex(scene, aspect_ratio, &prompt)
-            }
+            GoogleVideoMode::VertexAdc => self.generate_with_vertex(scene, aspect_ratio, &prompt),
         }
     }
 }
@@ -296,7 +293,9 @@ impl Renderer for PassthroughRenderer {
             .enumerate()
             .map(|(index, ratio)| {
                 let clip = find_clip_for_ratio(clips, ratio).ok_or_else(|| {
-                    ServiceError::InvalidRequest("no generated clips available for rendering".to_string())
+                    ServiceError::InvalidRequest(
+                        "no generated clips available for rendering".to_string(),
+                    )
                 })?;
                 Ok(RenderedVariant {
                     id: new_id("variant"),
@@ -320,10 +319,7 @@ impl GoogleVideoProvider {
         prompt: &str,
         api_key: &str,
     ) -> ServiceResult<ClipAsset> {
-        let endpoint = format!(
-            "{GEMINI_BASE_URL}/models/{}:predictLongRunning",
-            self.model
-        );
+        let endpoint = format!("{GEMINI_BASE_URL}/models/{}:predictLongRunning", self.model);
         let request = json!({
             "instances": [{ "prompt": prompt }],
             "parameters": google_video_parameters(aspect_ratio),
@@ -380,10 +376,19 @@ impl GoogleVideoProvider {
             .and_then(Value::as_str)
             .ok_or_else(|| ServiceError::Internal("vertex operation name missing".to_string()))?;
         let final_response = self.poll_google_operation(
-            &format!("https://{}-aiplatform.googleapis.com/v1/{}", self.region, operation_name),
+            &format!(
+                "https://{}-aiplatform.googleapis.com/v1/{}",
+                self.region, operation_name
+            ),
             GoogleAuth::Bearer(token),
         )?;
-        self.clip_from_video_response(scene, aspect_ratio, &final_response, None, Some(&self.region))
+        self.clip_from_video_response(
+            scene,
+            aspect_ratio,
+            &final_response,
+            None,
+            Some(&self.region),
+        )
     }
 
     fn poll_google_operation(&self, url: &str, auth: GoogleAuth) -> ServiceResult<Value> {
@@ -391,10 +396,16 @@ impl GoogleVideoProvider {
             let request = self.client.get(url);
             let request = match &auth {
                 GoogleAuth::ApiKey(key) => request.header("x-goog-api-key", key),
-                GoogleAuth::Bearer(token) => request.header(AUTHORIZATION, format!("Bearer {token}")),
+                GoogleAuth::Bearer(token) => {
+                    request.header(AUTHORIZATION, format!("Bearer {token}"))
+                }
             };
             let response = request_json(request, "google operation poll")?;
-            if response.get("done").and_then(Value::as_bool).unwrap_or(false) {
+            if response
+                .get("done")
+                .and_then(Value::as_bool)
+                .unwrap_or(false)
+            {
                 if response.get("error").is_some() {
                     return Err(ServiceError::Internal(format!(
                         "google operation failed: {}",
@@ -423,7 +434,9 @@ impl GoogleVideoProvider {
             .pointer("/response/generateVideoResponse/generatedSamples/0/video")
             .or_else(|| response.pointer("/response/generatedVideos/0/video"))
             .ok_or_else(|| {
-                ServiceError::Internal("google video response did not contain a video payload".to_string())
+                ServiceError::Internal(
+                    "google video response did not contain a video payload".to_string(),
+                )
             })?;
 
         let uri = video_node
@@ -457,11 +470,14 @@ impl GoogleVideoProvider {
 }
 
 fn find_clip_for_ratio(clips: &[ClipAsset], ratio: AspectRatio) -> Option<&ClipAsset> {
-    clips.iter()
+    clips
+        .iter()
         .find(|clip| clip.aspect_ratio == ratio)
         .or_else(|| {
             if ratio == AspectRatio::R1x1 {
-                clips.iter().find(|clip| clip.aspect_ratio == AspectRatio::R16x9)
+                clips
+                    .iter()
+                    .find(|clip| clip.aspect_ratio == AspectRatio::R16x9)
             } else {
                 None
             }
@@ -522,27 +538,27 @@ where
         Builder::new_current_thread()
             .enable_all()
             .build()
-            .map_err(|error| ServiceError::Internal(format!("tokio runtime build failed: {error}")))?
+            .map_err(|error| {
+                ServiceError::Internal(format!("tokio runtime build failed: {error}"))
+            })?
             .block_on(future)
     }
 }
 
 fn request_json(request: RequestBuilder, context: &str) -> ServiceResult<Value> {
     run_async(async move {
-        let response = request
-            .send()
-            .await
-            .map_err(|error| ServiceError::Internal(format!("{context} request failed: {error}")))?;
+        let response = request.send().await.map_err(|error| {
+            ServiceError::Internal(format!("{context} request failed: {error}"))
+        })?;
         parse_json_response(response, context).await
     })
 }
 
 async fn parse_json_response(response: reqwest::Response, context: &str) -> ServiceResult<Value> {
     let status = response.status();
-    let body = response
-        .text()
-        .await
-        .map_err(|error| ServiceError::Internal(format!("{context} response read failed: {error}")))?;
+    let body = response.text().await.map_err(|error| {
+        ServiceError::Internal(format!("{context} response read failed: {error}"))
+    })?;
 
     if !status.is_success() {
         return Err(ServiceError::Internal(format!(
@@ -550,8 +566,9 @@ async fn parse_json_response(response: reqwest::Response, context: &str) -> Serv
         )));
     }
 
-    serde_json::from_str(&body)
-        .map_err(|error| ServiceError::Internal(format!("{context} response JSON parse failed: {error}")))
+    serde_json::from_str(&body).map_err(|error| {
+        ServiceError::Internal(format!("{context} response JSON parse failed: {error}"))
+    })
 }
 
 fn first_output_text(body: &Value) -> Option<String> {
@@ -580,7 +597,9 @@ fn google_access_token(client: &Client) -> ServiceResult<String> {
     let output = Command::new("gcloud")
         .args(["auth", "print-access-token"])
         .output()
-        .map_err(|error| ServiceError::Internal(format!("failed to invoke gcloud for access token: {error}")))?;
+        .map_err(|error| {
+            ServiceError::Internal(format!("failed to invoke gcloud for access token: {error}"))
+        })?;
 
     if !output.status.success() {
         return Err(ServiceError::Internal(format!(
@@ -601,10 +620,7 @@ fn google_access_token(client: &Client) -> ServiceResult<String> {
 
 fn metadata_access_token(client: &Client) -> ServiceResult<String> {
     let mut headers = HeaderMap::new();
-    headers.insert(
-        "Metadata-Flavor",
-        HeaderValue::from_static("Google"),
-    );
+    headers.insert("Metadata-Flavor", HeaderValue::from_static("Google"));
     let body = request_json(
         client
             .get("http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token")
@@ -614,7 +630,9 @@ fn metadata_access_token(client: &Client) -> ServiceResult<String> {
     body.get("access_token")
         .and_then(Value::as_str)
         .map(ToOwned::to_owned)
-        .ok_or_else(|| ServiceError::Internal("metadata token response missing access_token".to_string()))
+        .ok_or_else(|| {
+            ServiceError::Internal("metadata token response missing access_token".to_string())
+        })
 }
 
 fn download_or_return_video_uri(

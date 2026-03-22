@@ -368,7 +368,9 @@ impl MemoryStore {
                     provider: match self.providers.mode {
                         crate::providers::ProviderMode::LiveGeminiApi => "gemini_video".to_string(),
                         crate::providers::ProviderMode::LiveVertex => "vertex_video".to_string(),
-                        crate::providers::ProviderMode::LiveScriptOnly => "clip_lab_mock".to_string(),
+                        crate::providers::ProviderMode::LiveScriptOnly => {
+                            "clip_lab_mock".to_string()
+                        }
                         crate::providers::ProviderMode::Mock => "clip_lab".to_string(),
                     },
                     status: "completed".to_string(),
@@ -566,7 +568,10 @@ fn generation_formats(formats: &[AspectRatio]) -> Vec<AspectRatio> {
     };
 
     let mut result = Vec::new();
-    if requested.iter().any(|ratio| matches!(ratio, AspectRatio::R16x9 | AspectRatio::R1x1)) {
+    if requested
+        .iter()
+        .any(|ratio| matches!(ratio, AspectRatio::R16x9 | AspectRatio::R1x1))
+    {
         result.push(AspectRatio::R16x9);
     }
     if requested.iter().any(|ratio| *ratio == AspectRatio::R9x16) {

@@ -14555,3 +14555,349 @@ select:focus-visible {
   border: 0;
   border-top: 1px solid rgba(246, 242, 234, 0.08);
 }
+
+/* March 22 typography density pass */
+
+.page-hero--pricing {
+  align-items: start;
+}
+
+.pricing-hero-v2 {
+  gap: clamp(26px, 3vw, 38px);
+}
+
+.pricing-hero-v2 .section-intro {
+  max-width: 56rem;
+}
+
+.pricing-hero-v2 .section-intro__title {
+  max-width: 10ch;
+  font-size: clamp(3.3rem, 4.3vw, 4.9rem);
+  line-height: 0.94;
+}
+
+.pricing-hero-v2 .section-intro__body {
+  max-width: 46ch;
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.pricing-hero-v2__ledger {
+  gap: 18px 28px;
+}
+
+.pricing-hero-v2__ledger div {
+  padding-top: 14px;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+}
+
+.pricing-hero-v2__ledger strong {
+  font-size: clamp(1.24rem, 1.08rem + 0.3vw, 1.44rem);
+  line-height: 1.08;
+}
+
+.pricing-cascade {
+  gap: 34px;
+}
+
+.pricing-cascade__tier {
+  padding: 24px 0 0;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+  background: transparent;
+  box-shadow: none;
+}
+
+.pricing-cascade__tier.is-featured {
+  padding-top: 28px;
+  border-top-color: rgba(212, 154, 90, 0.28);
+  background: transparent;
+  box-shadow: none;
+}
+
+.pricing-cascade__header {
+  gap: 18px;
+  align-items: end;
+}
+
+.pricing-cascade__tier h2 {
+  font-size: clamp(2.4rem, 2.1rem + 0.8vw, 3rem);
+  line-height: 0.92;
+}
+
+.pricing-cascade__credit-line {
+  gap: 10px;
+}
+
+.pricing-cascade__credit-line strong {
+  font-size: 1.1rem;
+}
+
+.pricing-cascade__credit-line span {
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.pricing-cascade__tier > p:first-of-type {
+  max-width: 36ch;
+  color: var(--text-secondary);
+  line-height: 1.78;
+}
+
+.pricing-logic--credits,
+.pricing-faq-v2 {
+  gap: 28px;
+}
+
+.pricing-logic--credits article,
+.pricing-faq-v2 article {
+  padding-top: 18px;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+}
+
+.pricing-logic--credits h3,
+.pricing-faq-v2 h3 {
+  max-width: 24ch;
+  line-height: 1.04;
+}
+
+.pricing-logic--credits p:last-child,
+.pricing-faq-v2 p:last-child {
+  max-width: 38ch;
+  line-height: 1.72;
+}
+
+.journal-hero,
+.case-hero {
+  grid-template-columns: minmax(320px, 0.56fr) minmax(0, 1.44fr);
+  gap: clamp(28px, 3vw, 40px);
+  align-items: start;
+}
+
+.journal-hero__copy,
+.case-hero__copy {
+  gap: 16px;
+  max-width: 28rem;
+}
+
+.journal-hero .hero-title,
+.case-hero .hero-title {
+  max-width: 7ch;
+  font-size: clamp(3.35rem, 4.1vw, 4.9rem);
+  line-height: 0.93;
+  letter-spacing: -0.06em;
+}
+
+.journal-hero .hero-body,
+.case-hero .hero-body {
+  max-width: 39ch;
+  font-size: 0.98rem;
+  line-height: 1.72;
+}
+
+.journal-lead,
+.case-lead {
+  gap: 22px;
+  grid-template-columns: minmax(0, 1.08fr) 320px;
+  padding: 26px;
+}
+
+.journal-lead__copy,
+.case-lead__copy {
+  gap: 16px;
+}
+
+.journal-lead__copy h2,
+.case-lead__copy h2 {
+  max-width: 11ch;
+  font-size: clamp(2rem, 2.6vw, 3rem);
+  line-height: 0.97;
+}
+
+.journal-lead__copy > p:last-of-type,
+.case-lead__copy > p:last-of-type {
+  max-width: 52ch;
+  font-size: 0.96rem;
+  line-height: 1.72;
+}
+
+.journal-grid,
+.case-system {
+  gap: 28px;
+  grid-template-columns: 260px minmax(0, 1fr);
+}
+
+.journal-rail-panel,
+.case-rail-panel {
+  padding: 0 0 18px;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+  background: transparent;
+  box-shadow: none;
+}
+
+.journal-essay {
+  gap: 18px;
+  padding: 22px 0 0;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+  background: transparent;
+  box-shadow: none;
+}
+
+.journal-essay__top h2 {
+  max-width: 13ch;
+  font-size: clamp(1.72rem, 2.2vw, 2.5rem);
+}
+
+.journal-essay__dek {
+  max-width: 58ch;
+  font-size: 0.96rem;
+  line-height: 1.75;
+}
+
+.journal-essay__grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+}
+
+.journal-essay__point,
+.case-lead__logic div,
+.case-row__logic div {
+  padding: 12px 0 0;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+  background: transparent;
+}
+
+.journal-note {
+  gap: 16px;
+  padding: 18px 0 0;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+  background: transparent;
+  box-shadow: none;
+}
+
+.journal-note h3,
+.journal-archive-row__content h3,
+.case-row__content h3 {
+  font-size: clamp(1.2rem, 1.7vw, 1.8rem);
+  line-height: 1.02;
+}
+
+.journal-archive {
+  margin-top: 84px;
+}
+
+.journal-archive__heading {
+  margin-bottom: 24px;
+}
+
+.journal-archive-row {
+  gap: 18px;
+  grid-template-columns: 170px minmax(0, 0.9fr) minmax(240px, 1.1fr) 140px;
+  padding: 18px 0;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+  background: transparent;
+  box-shadow: none;
+}
+
+.journal-archive-row__content p {
+  max-width: 50ch;
+  line-height: 1.72;
+}
+
+.case-lead__logic {
+  gap: 16px;
+}
+
+.case-system__list {
+  gap: 24px;
+}
+
+.case-row {
+  gap: 24px;
+  padding: 22px 0 0;
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+  background: transparent;
+  box-shadow: none;
+}
+
+.case-row__visual {
+  gap: 16px;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+}
+
+.case-row__visual-top,
+.case-row__band,
+.case-row__outputs {
+  padding-top: 12px;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+}
+
+.case-row__band {
+  gap: 14px;
+}
+
+.case-row__band strong {
+  max-width: 28ch;
+  font-size: 0.94rem;
+  line-height: 1.58;
+}
+
+.case-row__content {
+  gap: 20px;
+}
+
+.case-row__content > div > p:last-child {
+  max-width: 50ch;
+  font-size: 0.96rem;
+  line-height: 1.72;
+}
+
+@media (max-width: 1180px) {
+  .pricing-hero-v2__ledger,
+  .pricing-faq-v2,
+  .journal-essay__grid,
+  .journal-grid,
+  .case-system,
+  .case-lead__logic,
+  .case-row__logic,
+  .journal-archive-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .journal-hero,
+  .case-hero,
+  .journal-lead,
+  .case-lead,
+  .journal-grid,
+  .case-system,
+  .journal-archive-row,
+  .case-row,
+  .case-row--reverse,
+  .case-lead__logic,
+  .case-row__logic {
+    grid-template-columns: 1fr !important;
+  }
+
+  .case-row--reverse .case-row__visual,
+  .case-row--reverse .case-row__content {
+    order: initial;
+  }
+}

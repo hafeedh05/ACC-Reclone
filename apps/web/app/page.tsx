@@ -322,8 +322,7 @@ function HeroConsole() {
     <div className="hero-console hero-console--open" style={{ containerType: "inline-size" }}>
       <div className="hero-console__meta-line">
         <span>Northstar / live workspace</span>
-        <span>Creative approved before generation</span>
-        <span>4 cuts mapped</span>
+        <span>4 cuts mapped after approvals</span>
       </div>
 
       <div className="hero-console__open-grid">
@@ -331,16 +330,15 @@ function HeroConsole() {
           <div className="hero-console__rail-intro">
             <p className="eyebrow">Brief</p>
             <h2>{heroRun.title}</h2>
-            <p>Pack-shot-led launch system with one clear promise held across every paid and brand cut.</p>
+            <p>Pack-shot-led launch with one clear promise held across paid, brand, and platform cuts.</p>
             <div className="hero-console__meta-stack">
               <span>{heroRun.industry}</span>
-              <span>Reviewed before spend</span>
-              <span>Multi-format delivery</span>
+              <span>Reviewed before generation</span>
             </div>
           </div>
 
           <div className="hero-console__goal-line">
-            {heroRun.selectedGoals.slice(0, 2).map((goal) => (
+            {heroRun.selectedGoals.slice(0, 1).map((goal) => (
               <div key={goal}>
                 <span />
                 <p>{goal}</p>
@@ -349,7 +347,7 @@ function HeroConsole() {
           </div>
 
           <div className="hero-console__asset-column">
-            {heroAssets.slice(0, 2).map((asset) => (
+            {heroAssets.slice(0, 1).map((asset) => (
               <article key={asset.id} className={`hero-asset hero-asset--open hero-asset--${asset.tone}`}>
                 <div className="hero-asset__thumb" aria-hidden="true">
                   <EditorialMediaFrame
@@ -369,9 +367,7 @@ function HeroConsole() {
           </div>
 
           <div className="hero-console__approval-line">
-            <span>Brief locked</span>
-            <span>Script approved</span>
-            <span>Storyboard approved</span>
+            <span>Script + storyboard approved</span>
             <span>Credits staged</span>
           </div>
         </aside>
@@ -380,7 +376,7 @@ function HeroConsole() {
           <div className="hero-canvas__head">
             <div>
               <p className="eyebrow">Live cut</p>
-              <strong>Warm launch framing. Clean claim stack.</strong>
+              <strong>Warm launch framing. Clean offer.</strong>
             </div>
             <StatusBadge tone="accent">Scene 03 live</StatusBadge>
           </div>
@@ -396,11 +392,10 @@ function HeroConsole() {
             />
             <div className="hero-canvas__caption">
               <p className="eyebrow">Performance cut</p>
-              <h3>Soft light. Clear promise. A cleaner paid close.</h3>
-              <span>This scene is already routing into paid, brand, and platform outputs.</span>
+              <h3>Soft light. Clear promise.</h3>
+              <span>Scene 03 is already feeding paid, brand, and platform outputs.</span>
             </div>
             <div className="hero-canvas__status">
-              <span>Hook approved</span>
               <span>Overlay locked</span>
               <span>Fallback ready</span>
             </div>

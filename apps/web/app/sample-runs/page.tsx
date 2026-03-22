@@ -132,7 +132,7 @@ export default function SampleRunsPage() {
         </div>
 
         <div className="sample-archive__list">
-          {archive.map((run, index) => (
+          {archive.slice(0, 3).map((run, index) => (
             <RunProofRow
               key={run.slug}
               run={run}
@@ -156,7 +156,8 @@ function RunAtlasBoard({
   activeSlug: string;
 }) {
   const activeRun = runs.find((run) => run.slug === activeSlug) ?? runs[0];
-  const perimeter = runs.filter((run) => run.slug !== activeRun.slug).slice(0, 3);
+  const remainingRuns = runs.filter((run) => run.slug !== activeRun.slug);
+  const perimeter = (remainingRuns.length > 3 ? remainingRuns.slice(3, 5) : remainingRuns.slice(0, 2));
 
   return (
     <div className="sample-atlas">
@@ -173,9 +174,9 @@ function RunAtlasBoard({
               <div className="sample-atlas__preview-main">
                 <EditorialMediaFrame
                   asset={mediaForRun(activeRun.slug)}
-                  aspect="portrait"
+                  aspect="wide"
                   className="sample-atlas__preview-media"
-                  sizes="(min-width: 1280px) 22vw, 60vw"
+                  sizes="(min-width: 1280px) 44vw, 100vw"
                 />
                 <div className="sample-atlas__preview-output">
                   <span>{activeRun.outputs[0]?.aspect}</span>
@@ -189,7 +190,7 @@ function RunAtlasBoard({
                   <p>{activeRun.selectedAssets[1]}</p>
                 </div>
                 <div className="sample-atlas__preview-rail">
-                  {activeRun.outputs.slice(0, 3).map((output) => (
+                  {activeRun.outputs.slice(0, 2).map((output) => (
                     <div key={`${activeRun.slug}-${output.name}`} className="sample-atlas__mini-output">
                       <span>{output.aspect}</span>
                       <strong>{output.name}</strong>

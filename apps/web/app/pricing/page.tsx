@@ -11,6 +11,17 @@ import {
 import { pricingTiers } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
 
+function creditRate(price: string, credits: string) {
+  const priceValue = Number(price.replace(/[^0-9.]/g, ""));
+  const creditValue = Number(credits.replace(/[^0-9.]/g, ""));
+
+  if (!priceValue || !creditValue) {
+    return null;
+  }
+
+  return `$${(priceValue / creditValue).toFixed(2)} / credit`;
+}
+
 export const metadata: Metadata = createPublicPageMetadata({
   title: "Pricing",
   description:
@@ -46,6 +57,11 @@ export default function PricingPage() {
               <strong>Credits live on the account</strong>
               <p>Billing stays attached to the workspace, not to a single user or campaign.</p>
             </div>
+            <div>
+              <span>Credits are spent</span>
+              <strong>Only when generation starts</strong>
+              <p>Briefing, script review, storyboard approval, and workspace setup do not burn credits.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -64,6 +80,9 @@ export default function PricingPage() {
                   <strong>{tier.credits}</strong>
                   <span>{tier.runRange}</span>
                 </div>
+                {creditRate(tier.price, tier.credits) ? (
+                  <p className="pricing-cascade__rate">{creditRate(tier.price, tier.credits)}</p>
+                ) : null}
               </div>
               {tier.featured ? <Chip tone="accent">Best rate</Chip> : null}
             </div>

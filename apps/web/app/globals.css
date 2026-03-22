@@ -12035,3 +12035,450 @@ select:focus-visible {
     min-height: 260px;
   }
 }
+
+/* March 22 decram pass */
+
+.hero-console__meta-line {
+  gap: 10px 28px;
+  padding-bottom: 14px;
+}
+
+.hero-console__open-grid {
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 40px);
+}
+
+.hero-console__rail {
+  gap: 16px;
+}
+
+.hero-console__rail-intro {
+  gap: 10px;
+}
+
+.hero-console__rail-intro h2 {
+  max-width: 8ch;
+}
+
+.hero-console__goal-line,
+.hero-console__asset-column {
+  gap: 10px;
+}
+
+.hero-console__goal-line div p,
+.hero-console__rail-intro p:last-child,
+.hero-asset__copy span,
+.hero-family__item p {
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.hero-asset--open {
+  padding-top: 10px;
+}
+
+.hero-console__approval-line {
+  gap: 8px 12px;
+}
+
+.hero-family__list {
+  gap: 14px;
+}
+
+.hero-family .media-plate__shell {
+  min-height: 150px;
+  border-radius: 26px;
+}
+
+.hero-canvas__stage {
+  min-height: clamp(380px, 42vw, 520px);
+  border-radius: 36px;
+}
+
+.hero-canvas__stage::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 36%;
+  background: linear-gradient(180deg, transparent, rgba(7, 9, 12, 0.68));
+  z-index: 1;
+}
+
+.hero-canvas__caption {
+  left: 28px;
+  right: auto;
+  top: auto;
+  bottom: 30px;
+  width: min(44%, 320px);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  gap: 8px;
+}
+
+.hero-canvas__caption h3 {
+  max-width: 9ch;
+  font-size: clamp(1.4rem, 1rem + 1vw, 1.9rem);
+  line-height: 0.96;
+}
+
+.hero-canvas__caption span {
+  max-width: 34ch;
+  color: rgba(246, 242, 234, 0.76);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.hero-canvas__status {
+  left: auto;
+  right: 28px;
+  top: 26px;
+  bottom: auto;
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+  max-width: 180px;
+  text-align: right;
+}
+
+.hero-canvas__status span {
+  color: rgba(246, 242, 234, 0.56);
+}
+
+.command-plane--open {
+  grid-template-columns: 112px minmax(0, 1fr) 176px;
+  gap: clamp(28px, 3vw, 42px) !important;
+}
+
+.command-brief__sheet--open {
+  gap: 14px;
+}
+
+.command-brief__asset-list--open {
+  gap: 12px;
+}
+
+.command-plane__hero {
+  gap: 10px;
+  padding-bottom: 12px;
+}
+
+.command-plane__hero-copy h2 {
+  max-width: 11ch;
+  font-size: clamp(2.1rem, 1.4rem + 1.9vw, 3.2rem);
+  line-height: 0.94;
+}
+
+.command-plane__hero-meta {
+  gap: 8px 14px;
+}
+
+.command-plane__telemetry--open {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.command-plane__stage-ribbon--open {
+  gap: 10px;
+  padding: 8px 0 14px;
+}
+
+.command-plane__stage {
+  gap: 8px;
+}
+
+.command-plane__stage-copy span {
+  color: rgba(246, 242, 234, 0.58);
+  font-size: 0.7rem;
+  line-height: 1.3;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.command-plane__board {
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.command-plane__scene-panel,
+.command-plane__movement {
+  gap: 18px;
+}
+
+.command-plane__movement {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.92fr);
+  gap: 26px;
+  align-items: start;
+}
+
+.command-plane__canvas--open {
+  min-height: clamp(420px, 38vw, 520px);
+  border-radius: 34px;
+}
+
+.command-plane__canvas--open::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 38%;
+  background: linear-gradient(180deg, transparent, rgba(7, 9, 12, 0.72));
+  z-index: 1;
+}
+
+.command-plane__canvas-overlay--open {
+  left: 26px;
+  right: auto;
+  top: auto;
+  bottom: 28px;
+  width: min(34%, 220px);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
+  gap: 8px;
+}
+
+.command-plane__canvas-overlay--open h4 {
+  max-width: 8ch;
+  font-size: clamp(1.35rem, 1.1rem + 0.7vw, 1.9rem);
+  line-height: 0.94;
+}
+
+.command-plane__canvas-overlay--open span {
+  max-width: 30ch;
+  color: rgba(246, 242, 234, 0.76);
+  font-size: 0.84rem;
+  line-height: 1.52;
+}
+
+.command-plane__canvas-tags {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.command-plane__canvas-tags span {
+  color: rgba(246, 242, 234, 0.56);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.command-plane__canvas-notes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+}
+
+.command-plane__canvas-notes div {
+  display: grid;
+  gap: 6px;
+}
+
+.command-plane__canvas-notes span {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.58;
+}
+
+.command-plane__dependency-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding-bottom: 4px;
+}
+
+.command-plane__dependency-chip {
+  display: grid;
+  gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+}
+
+.command-plane__dependency-chip p,
+.pricing-cascade__rate {
+  color: rgba(246, 242, 234, 0.56);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.command-plane__dependency-chip strong {
+  color: var(--text-primary);
+  font-size: 0.96rem;
+}
+
+.command-plane__dependency-chip span {
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.command-plane__transfer-list--open {
+  gap: 10px;
+}
+
+.command-plane__route-list--open {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.command-plane__route--open {
+  gap: 12px;
+}
+
+.command-plane__route-meta span {
+  display: none;
+}
+
+.command-plane__ops--open {
+  gap: 14px;
+}
+
+.command-plane__role-list--compact {
+  gap: 10px;
+}
+
+.command-plane__role-list--compact .command-plane__role {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.command-plane__role-list--compact .command-plane__role strong {
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.command-plane__event-list {
+  gap: 10px;
+}
+
+.command-plane__event span {
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.sample-atlas__board {
+  grid-template-columns: 1fr;
+  gap: 34px;
+}
+
+.sample-atlas__focus {
+  gap: 18px;
+}
+
+.sample-atlas__preview {
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 24px;
+}
+
+.sample-atlas__preview-main {
+  min-height: clamp(360px, 36vw, 470px);
+  border-radius: 30px;
+}
+
+.sample-atlas__preview-output {
+  left: 24px;
+  right: auto;
+  bottom: 22px;
+  top: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.sample-atlas__preview-side {
+  gap: 18px;
+}
+
+.sample-atlas__preview-asset,
+.sample-atlas__mini-output {
+  padding-top: 12px;
+}
+
+.sample-atlas__perimeter {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.sample-atlas__tile {
+  min-height: 260px;
+  padding: 20px;
+}
+
+.sample-atlas__tile span {
+  color: rgba(246, 242, 234, 0.68);
+}
+
+.pricing-hero-v2__ledger {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pricing-cascade {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+}
+
+.pricing-cascade__tier {
+  min-height: 100%;
+}
+
+.pricing-cascade__header {
+  display: grid;
+  gap: 14px;
+}
+
+.pricing-cascade__rate {
+  margin-top: 10px;
+}
+
+@media (max-width: 1180px) {
+  .command-plane__board,
+  .command-plane__route-list--open,
+  .pricing-cascade,
+  .pricing-hero-v2__ledger {
+    grid-template-columns: 1fr;
+  }
+
+  .command-plane__dependency-strip,
+  .command-plane__movement,
+  .sample-atlas__preview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero-console__open-grid,
+  .command-plane--open,
+  .sample-atlas__perimeter,
+  .command-plane__canvas-notes {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-canvas__caption,
+  .command-plane__canvas-overlay--open {
+    width: calc(100% - 48px);
+    max-width: none;
+  }
+
+  .hero-canvas__status,
+  .command-plane__canvas-tags {
+    justify-items: start;
+    text-align: left;
+    right: auto;
+    left: 24px;
+  }
+}

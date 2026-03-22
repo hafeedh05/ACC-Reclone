@@ -560,11 +560,12 @@ export function CommandCenterSurface() {
 export function CommandCenterShowcase({ compact = false }: { compact?: boolean }) {
   const currentScene = commandScenes.find((scene) => scene.status === "Live") ?? commandScenes[2];
   const currentStage = commandStages.find((stage) => stage.status === "Live") ?? commandStages[2];
-  const visibleEvents = eventRows.slice(0, compact ? 4 : 5);
-  const visibleTransfers = commandTransfers.slice(0, compact ? 3 : commandTransfers.length);
+  const visibleEvents = eventRows.slice(0, compact ? 3 : 3);
+  const visibleTransfers = commandTransfers.slice(0, compact ? 3 : 3);
   const visibleDependencies = commandDependencies.slice(0, compact ? 2 : commandDependencies.length);
   const compactRoles = commandRoleLedger.slice(0, 3);
   const compactRoutes = commandOutputRoutes.slice(0, 3);
+  const telemetryRows = compact ? commandTelemetry.slice(0, 3) : commandTelemetry.slice(0, 3);
 
   return (
     <div
@@ -577,12 +578,11 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
         <header className="command-plane__hero">
           <div className="command-plane__hero-copy">
             <p className="eyebrow">Command Center</p>
-            <h2>Run state, active scene, and delivery routes stay visible in one operational board.</h2>
+            <h2>Live scene, route status, and delivery risk in one operating board.</h2>
           </div>
           <div className="command-plane__hero-meta">
             <span>AC-184 live</span>
             <span>script locked 09:13</span>
-            <span>scene 03 routed into three exports</span>
             <span>fallback armed</span>
           </div>
         </header>
@@ -610,7 +610,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
         ) : (
           <>
             <div className="command-plane__telemetry command-plane__telemetry--open">
-              {commandTelemetry.map((item) => (
+              {telemetryRows.map((item) => (
                 <article key={item.label} className="command-plane__telemetry-item">
                   <p>{item.label}</p>
                   <strong>{item.value}</strong>
@@ -636,8 +636,7 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                 >
                   <div className="command-plane__stage-copy">
                     <p>{stage.name}</p>
-                    <strong>{stage.theatrical}</strong>
-                    <span>{stage.status === "Live" ? stage.note : `${stage.progress}% prepared`}</span>
+                    <span>{stage.status}</span>
                   </div>
                   <b>{stage.progress}%</b>
                 </article>
@@ -666,30 +665,31 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
               <div className="command-plane__canvas command-plane__canvas--rescued command-plane__canvas--open">
                 <EditorialMediaFrame
                   asset={mediaForRun("aster-house-launch")}
-                  aspect="portrait"
+                  aspect="landscape"
                   className="command-plane__canvas-media"
-                  sizes="(min-width: 1280px) 22vw, 100vw"
+                  sizes="(min-width: 1280px) 42vw, 100vw"
                 />
                 <div className="command-plane__canvas-overlay command-plane__canvas-overlay--open">
                   <p className="eyebrow">Overlay</p>
                   <h4>{currentScene.overlay}</h4>
-                  <span>writers_room locked / routed into performance, brand, and platform</span>
+                  <span>Language pass locked. Scene 03 is already routed into live output paths.</span>
                 </div>
                 <div className="command-plane__canvas-tags">
-                  {["Scene 03 live", "Language pass attached", "Clip fallback armed"].map((item) => (
+                  {["Scene 03 live", "Overlay attached", "Fallback armed"].map((item) => (
                     <span key={item}>{item}</span>
                   ))}
                 </div>
-                <div className="command-plane__canvas-footer command-plane__canvas-footer--open">
-                  <div>
-                    <p className="eyebrow">Scene note</p>
-                    <span>{currentScene.note}</span>
-                  </div>
-                  <div>
-                    <p className="eyebrow">Latest handoff</p>
-                    <span>Storyboard queue is waiting on the live overlay confirmation.</span>
-                  </div>
-                </div>
+              </div>
+            </div>
+
+            <div className="command-plane__canvas-notes">
+              <div>
+                <p className="eyebrow">Scene note</p>
+                <span>{currentScene.note}</span>
+              </div>
+              <div>
+                <p className="eyebrow">Latest handoff</p>
+                <span>Storyboard queue is waiting on overlay confirmation for Scene 04.</span>
               </div>
             </div>
 
@@ -717,6 +717,16 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
           </section>
 
           <section className="command-plane__movement">
+            <div className="command-plane__dependency-strip">
+              {visibleDependencies.map((item) => (
+                <article key={item.label} className="command-plane__dependency-chip">
+                  <p>{item.label}</p>
+                  <strong>{item.value}</strong>
+                  <span>{item.time}</span>
+                </article>
+              ))}
+            </div>
+
             <div className="command-plane__stream">
               <div className="command-plane__stream-head">
                 <p className="eyebrow">Artifact movement</p>
@@ -827,13 +837,10 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
             <p className="eyebrow">Role ledger</p>
             <StatusBadge tone="accent">8 roles active</StatusBadge>
           </div>
-          <div className="command-plane__role-list">
+          <div className="command-plane__role-list command-plane__role-list--compact">
             {commandRoleLedger.map((role) => (
               <article key={role.name} className="command-plane__role">
-                <div>
-                  <strong>{role.name}</strong>
-                  <span>{role.dependency}</span>
-                </div>
+                <strong>{role.name}</strong>
                 <div className="command-plane__role-meta">
                   <em>{role.updatedAt}</em>
                   <StatusBadge tone={toneForStatus(role.status)}>{role.status}</StatusBadge>
@@ -859,29 +866,6 @@ export function CommandCenterShowcase({ compact = false }: { compact?: boolean }
                 </div>
                 <strong>{event.title}</strong>
                 <span>{event.note}</span>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="command-plane__ops-section command-plane__ops-section--dependencies">
-          <div className="command-plane__ops-head">
-            <p className="eyebrow">Dependencies</p>
-            <StatusBadge tone="warning">Live</StatusBadge>
-          </div>
-          <div className="command-plane__dependency-stack">
-            {visibleDependencies.map((item) => (
-              <article key={item.label} className="command-plane__dependency command-plane__dependency--open">
-                <div>
-                  <p>{item.label}</p>
-                  <strong>{item.note}</strong>
-                </div>
-                <div className="command-plane__dependency-meta">
-                  <StatusBadge tone={item.value === "Locked" ? "success" : item.value === "Mapped" ? "accent" : "warning"}>
-                    {item.value}
-                  </StatusBadge>
-                  <span>{item.time}</span>
-                </div>
               </article>
             ))}
           </div>

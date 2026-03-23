@@ -308,18 +308,15 @@ function HeroConsole() {
           <div className="hero-canvas__caption hero-canvas__caption--poster">
             <p className="eyebrow">Live preview</p>
             <h3>{heroRun.title}</h3>
-            <span>Warm launch framing. Clear offer.</span>
+            <span>Pack shot, offer line, and close are already resolved.</span>
           </div>
           <div className="hero-canvas__status hero-canvas__status--poster">
             <span>Scene 03 live</span>
-            <span>Fallback ready</span>
           </div>
         </div>
 
         <div className="hero-canvas__info-row hero-canvas__info-row--poster">
-          <div className="hero-console__support-block">
-            <p className="eyebrow">Output family</p>
-          </div>
+          <p className="eyebrow">Four-cut family</p>
 
           <div className="hero-console__format-list">
             {heroOutputs.map((output, index) => (
@@ -330,8 +327,6 @@ function HeroConsole() {
               </div>
             ))}
           </div>
-
-          <p className="hero-console__support-note">Reviewed before generation. Primary pack and offer tray already mapped.</p>
         </div>
       </section>
     </div>

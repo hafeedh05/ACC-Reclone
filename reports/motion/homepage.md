@@ -18,5 +18,5 @@
   purpose: make route mapping legible without turning the whole surface into a dashboard animation
   fallback when reduced motion is enabled: static route indicators
 
-Max visible animated elements observed: 3
+Max visible animated elements observed: 1
 Reduced-motion max visible animated elements observed: 0

@@ -8,6 +8,13 @@ export const qaRoutes = [
     flagship: true,
   },
   { key: "sample-runs", path: "/sample-runs", label: "Sample Runs", public: true, flagship: false },
+  {
+    key: "sample-run-detail",
+    path: "/sample-runs/cobalt-travel-charger",
+    label: "Sample Run Detail",
+    public: true,
+    flagship: false,
+  },
   { key: "pricing", path: "/pricing", label: "Pricing", public: true, flagship: false },
   { key: "journal", path: "/journal", label: "Journal", public: true, flagship: false },
   { key: "case-studies", path: "/case-studies", label: "Case Studies", public: true, flagship: false },
@@ -26,6 +33,7 @@ export const performanceThresholds = {
   home: 0.7,
   "command-center": 0.68,
   "sample-runs": 0.68,
+  "sample-run-detail": 0.68,
   pricing: 0.68,
   journal: 0.68,
   "case-studies": 0.68,
@@ -75,6 +83,10 @@ export const flowExpectations = {
   "sample-runs": [
     { name: "Northstar Serum Launch", href: "/sample-runs/northstar-serum-launch" },
     { name: "Atelier Summer Layering", href: "/sample-runs/atelier-summer-layering" },
+  ],
+  "sample-run-detail": [
+    { name: "Build a run like this", href: "/contact" },
+    { name: "Back to sample runs", href: "/sample-runs" },
   ],
   pricing: [
     { name: "Set up launch credits", href: "/contact" },

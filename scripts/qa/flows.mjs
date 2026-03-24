@@ -17,17 +17,24 @@ const failures = [];
 
 const flowStrategies = {
   home: [
-    { name: "See How It Works", href: "/how-it-works" },
-    { name: "Watch a Sample Run", href: "/sample-runs" },
-    { name: "Command Center teaser", href: "/app/command-center" },
+    { name: "Open Workspace", href: "/app" },
+    { name: "Watch Sample Run", href: "/sample-runs/cobalt-travel-charger" },
+    { name: "Review pricing", href: "/pricing" },
   ],
   "command-center": [
-    { name: "Outputs library", prefix: "/app/outputs" },
+    { name: "Dashboard", href: "/app" },
     { name: "Project detail", prefix: "/app/projects/" },
+    { name: "Sample run detail", prefix: "/sample-runs/" },
   ],
   "sample-runs": [{ name: "Sample run detail", prefix: "/sample-runs/" }],
+  "sample-run-detail": [
+    { name: "Back to runs", href: "/sample-runs" },
+    { name: "Request similar launch", href: "/contact" },
+  ],
   journal: [{ name: "Journal article", prefix: "/journal/" }],
+  "journal-detail": [{ name: "Back to journal", href: "/journal" }],
   "case-studies": [{ name: "Case study detail", prefix: "/case-studies/" }],
+  "case-study-detail": [{ name: "Back to case studies", href: "/case-studies" }],
 };
 
 function isIgnorableRequestFailure(entry) {

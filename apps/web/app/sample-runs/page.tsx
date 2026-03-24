@@ -2,443 +2,96 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { RevealOnScroll } from "@/components/experience-chrome";
-import {
-  ButtonLink,
-  Chip,
-  MarketingHeader,
-  PageShell,
-  SiteFooter,
-  StatusBadge,
-} from "@/components/site-primitives";
 import { EditorialMediaFrame, mediaForRun } from "@/components/media-system";
-import { sampleRunFilters, sampleRuns, type SampleRun } from "@/components/site-data";
-
-type AccentTone = "amber" | "cobalt" | "neutral";
-
-function filterButtonClass(active: boolean) {
-  return [
-    "inline-flex items-center justify-center rounded-full border-b px-1 py-2 text-sm transition",
-    active
-      ? "border-[rgba(212,154,90,0.34)] bg-transparent text-[color:var(--text-primary)]"
-      : "border-transparent bg-transparent text-[color:var(--text-secondary)] hover:border-[rgba(246,242,234,0.14)] hover:text-[color:var(--text-primary)]",
-  ].join(" ");
-}
-
-function toneForRun(index: number): AccentTone {
-  if (index % 3 === 0) return "amber";
-  if (index % 3 === 1) return "cobalt";
-  return "neutral";
-}
-
-function collectRuns(activeIndustry: string) {
-  const filtered =
-    activeIndustry === "All"
-      ? sampleRuns
-      : sampleRuns.filter((run) => run.industry === activeIndustry);
-
-  const primary =
-    (activeIndustry === "All"
-      ? filtered.find((run) => run.slug === "aster-house-launch")
-      : filtered[0]) ?? filtered[0] ?? sampleRuns[0];
-  const rest = filtered.filter((run) => run.slug !== primary.slug);
-  const atlas = activeIndustry === "All" ? sampleRuns : filtered;
-
-  return {
-    filtered,
-    primary,
-    atlas,
-    archive: rest,
-  };
-}
+import { sampleRunFilters, sampleRuns } from "@/components/site-data";
+import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
 
 export default function SampleRunsPage() {
-  const [activeIndustry, setActiveIndustry] = useState("All");
-  const { primary, atlas, archive } = useMemo(() => collectRuns(activeIndustry), [activeIndustry]);
+  const [active, setActive] = useState("All");
+
+  const filtered = useMemo(
+    () =>
+      active === "All" ? sampleRuns : sampleRuns.filter((run) => run.industry === active),
+    [active],
+  );
+
+  const [featured, ...rest] = filtered;
 
   return (
-    <PageShell className="pb-16">
-      <MarketingHeader />
+    <main className="aether-marketing-page" id="main-content">
+      <MarketingHeader active="sample-runs" />
 
-      <section id="sample-runs-atlas" className="page-hero sample-runs-hero journey-section">
-        <div className="sample-runs-hero__top">
-          <div className="sample-runs-hero__lead">
-            <Chip tone="accent">Sample runs</Chip>
-            <h1 className="hero-title max-w-[9ch]">Sample runs that show the whole campaign.</h1>
-            <p className="hero-body">
-              Open the lead run, inspect the approved story, and compare the final cut family
-              without wading through inventory first.
-            </p>
-            <div className="hero-actions">
-              <ButtonLink href={`/sample-runs/${primary.slug}`} variant="primary">
-                Open the lead run
-              </ButtonLink>
-              <ButtonLink href="/gallery" variant="secondary">
-                Browse finished outputs
-              </ButtonLink>
-            </div>
-            <div className="hero-proof-row">
-              <span>{atlas.length} live examples</span>
-              <span>Brief to outputs</span>
-              <span>Paid, brand, feature, platform</span>
-            </div>
+      <section className="aether-sample-index-hero">
+        <div className="aether-sample-index-hero__copy">
+          <p className="aether-kicker">Sample runs</p>
+          <h1>Proof pages, not inventory pages.</h1>
+          <p>
+            Browse real campaign systems, open the strongest run, and inspect the approved story,
+            aspect views, and final output family without extra scaffolding.
+          </p>
+          <div className="aether-hero-actions">
+            <Link href={`/sample-runs/${featured.slug}`} className="aether-btn aether-btn--primary">
+              Open featured run
+            </Link>
+            <Link href="/app/command-center" className="aether-btn aether-btn--ghost">
+              Open platform
+            </Link>
+          </div>
+          <div className="aether-filter-row">
+            {sampleRunFilters.map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                className={filter === active ? "is-active" : undefined}
+                onClick={() => setActive(filter)}
+              >
+                {filter}
+              </button>
+            ))}
           </div>
         </div>
 
-        <RunAtlasBoard runs={atlas} activeSlug={primary.slug} />
+        <Link href={`/sample-runs/${featured.slug}`} className="aether-sample-index-hero__feature">
+          <EditorialMediaFrame
+            asset={mediaForRun(featured.slug)}
+            aspect="wide"
+            className="aether-sample-index-hero__frame"
+            motion
+            priority
+            sizes="(min-width: 1024px) 56vw, 100vw"
+          />
+          <div className="aether-sample-index-hero__feature-copy">
+            <p>{featured.industry}</p>
+            <h2>{featured.title}</h2>
+            <span>{featured.outputs[0]?.aspect}</span>
+          </div>
+        </Link>
       </section>
 
-      <RevealOnScroll
-        as="section"
-        id="sample-runs-proof"
-        className="sample-proof journey-section"
-        variant="mask"
-      >
-        <div className="sample-proof__intro">
-          <div className="space-y-3">
-            <p className="eyebrow">Lead run</p>
-            <h2 className="text-4xl leading-[0.96] tracking-[-0.05em] text-[color:var(--text-primary)] md:text-[4.4rem]">
-              {primary.title}
-            </h2>
-            <p className="max-w-3xl text-base leading-8 text-[color:var(--text-secondary)]">
-              {primary.summary}
-            </p>
-          </div>
-
-          <div className="sample-proof__intro-actions">
-            <ButtonLink href={`/sample-runs/${primary.slug}`} variant="primary">
-              Open the full run
-            </ButtonLink>
-            <ButtonLink href="/gallery" variant="secondary">
-              Browse finished outputs
-            </ButtonLink>
+      <section className="aether-archive">
+        <div className="aether-archive__head">
+          <div>
+            <p className="aether-kicker">Archive</p>
+            <h3>Campaign systems across categories.</h3>
           </div>
         </div>
-
-        <LeadRunBoard run={primary} />
-      </RevealOnScroll>
-
-      <RevealOnScroll
-        as="section"
-        id="sample-runs-archive"
-        className="sample-archive journey-section"
-        delay={70}
-      >
-        <div className="sample-archive__heading">
-          <div className="space-y-3">
-            <p className="eyebrow">Archive</p>
-            <h2 className="text-4xl leading-[0.98] tracking-[-0.05em] text-[color:var(--text-primary)]">
-              Compare campaign systems side by side.
-            </h2>
-            <p className="max-w-3xl text-base leading-8 text-[color:var(--text-secondary)]">
-              Each run below keeps the angle, the approvals, and the delivered cut family visible
-              enough to judge the work quickly.
-            </p>
-            <div className="flex flex-wrap gap-2 pt-3">
-              {sampleRunFilters.map((filter) => (
-                <button
-                  key={filter}
-                  type="button"
-                  className={filterButtonClass(activeIndustry === filter)}
-                  onClick={() => setActiveIndustry(filter)}
-                  aria-pressed={activeIndustry === filter}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-          </div>
-          <ButtonLink href="/contact" variant="secondary">
-            Request a tailored run
-          </ButtonLink>
-        </div>
-
-        <div className="sample-archive__list">
-          {archive.slice(2).map((run, index) => (
-            <RunProofRow
-              key={run.slug}
-              run={run}
-              accent={toneForRun(index)}
-              reversed={index % 2 === 1}
-            />
+        <div className="aether-archive__grid">
+          {rest.map((run) => (
+            <Link key={run.slug} href={`/sample-runs/${run.slug}`} className="aether-archive__card">
+              <EditorialMediaFrame
+                asset={mediaForRun(run.slug)}
+                aspect="portrait"
+                className="aether-archive__frame"
+                sizes="(min-width: 1024px) 22vw, 100vw"
+              />
+              <span>{run.industry}</span>
+              <strong>{run.title}</strong>
+            </Link>
           ))}
         </div>
-      </RevealOnScroll>
+      </section>
 
       <SiteFooter />
-    </PageShell>
-  );
-}
-
-function RunAtlasBoard({
-  runs,
-  activeSlug,
-}: {
-  runs: SampleRun[];
-  activeSlug: string;
-}) {
-  const activeRun = runs.find((run) => run.slug === activeSlug) ?? runs[0];
-  const remainingRuns = runs.filter((run) => run.slug !== activeRun.slug);
-  const perimeter = remainingRuns.slice(0, 2);
-
-  return (
-    <div className="sample-atlas">
-      <div className="sample-atlas__surface">
-        <div className="sample-atlas__board">
-          <div className="sample-atlas__focus">
-            <div className="sample-atlas__focus-header">
-              <p className="eyebrow">{activeRun.industry}</p>
-              <StatusBadge tone="accent">{activeRun.outputs.length} cuts</StatusBadge>
-            </div>
-            <p className="sample-atlas__focus-title">{activeRun.title}</p>
-            <p className="sample-atlas__focus-copy">{activeRun.brief}</p>
-            <div className="sample-atlas__preview">
-              <div className="sample-atlas__preview-main">
-                <EditorialMediaFrame
-                  asset={mediaForRun(activeRun.slug)}
-                  aspect="wide"
-                  className="sample-atlas__preview-media"
-                  sizes="(min-width: 1280px) 44vw, 100vw"
-                />
-                <div className="sample-atlas__preview-output">
-                  <span>{activeRun.outputs[0]?.aspect}</span>
-                  <strong>{activeRun.outputs[0]?.name}</strong>
-                </div>
-              </div>
-            </div>
-            <div className="sample-atlas__support-row">
-              <div className="sample-atlas__preview-asset">
-                <span>Source set</span>
-                <strong>{activeRun.selectedAssets.slice(0, 3).join(" · ")}</strong>
-                <p>{activeRun.selectedGoals.slice(0, 2).join(" · ")}</p>
-              </div>
-              <div className="sample-atlas__preview-rail">
-                {activeRun.outputs.slice(0, 3).map((output) => (
-                  <div key={`${activeRun.slug}-${output.name}`} className="sample-atlas__mini-output">
-                    <span>{output.aspect}</span>
-                    <strong>{output.name}</strong>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="sample-atlas__perimeter">
-            {perimeter.map((run, index) => (
-              <Link
-                key={run.slug}
-                href={`/sample-runs/${run.slug}`}
-                className={[
-                  "sample-atlas__tile",
-                  index % 3 === 0
-                    ? "sample-atlas__tile--amber"
-                    : index % 3 === 1
-                      ? "sample-atlas__tile--cobalt"
-                      : "sample-atlas__tile--neutral",
-                ].join(" ")}
-              >
-            <div className="sample-atlas__tile-media">
-              <EditorialMediaFrame
-                asset={mediaForRun(run.slug)}
-                aspect="landscape"
-                className="sample-atlas__tile-media-frame"
-                    sizes="280px"
-                  />
-                </div>
-                <p>{run.industry}</p>
-                <strong>{run.title}</strong>
-                <span>{run.outputs[0]?.aspect} · {run.outputs[0]?.name}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="sample-atlas__ledger">
-          <span>Script approved</span>
-          <span>Storyboard approved</span>
-          <span>One clip pool / four cut routes</span>
-          <span>9:16, 1:1, 16:9</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LeadRunBoard({ run }: { run: SampleRun }) {
-  return (
-    <article className="sample-proof-board">
-      <aside className="sample-proof-board__rail">
-        <div className="sample-proof-board__panel">
-          <p className="eyebrow">Brief</p>
-          <p className="sample-proof-board__copy">{run.brief}</p>
-          <div className="page-meta-line mt-4">
-            {run.selectedGoals.map((goal) => (
-              <span key={`${run.slug}-goal-${goal}`}>{goal}</span>
-            ))}
-          </div>
-        </div>
-        <div className="sample-proof-board__panel">
-          <p className="eyebrow">Source set</p>
-          <div className="mt-4 space-y-3">
-            {run.selectedAssets.map((asset) => (
-              <div key={`${run.slug}-${asset}`} className="sample-proof-board__asset">
-                <span>Asset</span>
-                <strong>{asset}</strong>
-              </div>
-            ))}
-          </div>
-        </div>
-      </aside>
-
-      <div className="sample-proof-board__canvas">
-        <div className="sample-proof-board__stage">
-            <div className="sample-proof-board__stage-header">
-              <div>
-                <p className="eyebrow">Active sequence</p>
-                <h3>Approved scene structure and output mapping</h3>
-              </div>
-              <div className="page-meta-line">
-                <span>Script approved</span>
-                <span>Storyboard approved</span>
-              </div>
-            </div>
-
-          <div className="sample-proof-board__stage-visual">
-            <div className="sample-proof-board__preview">
-              <EditorialMediaFrame
-                asset={mediaForRun(run.slug)}
-                aspect="landscape"
-                className="sample-proof-board__preview-media"
-                sizes="(min-width: 1280px) 34vw, 100vw"
-              />
-              <div className="sample-proof-board__preview-label">
-                <span>Live preview</span>
-                <strong>{run.outputs[0]?.name}</strong>
-                <p>{run.outputs[0]?.note}</p>
-              </div>
-            </div>
-
-            <div className="sample-proof-board__scene-stack">
-              {run.storyboard.slice(0, 2).map((frame) => (
-                <div key={`${run.slug}-${frame.scene}`} className="sample-proof-board__scene">
-                  <span>{frame.scene}</span>
-                  <strong>{frame.overlay}</strong>
-                  <p>{frame.note}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="sample-proof-board__lower">
-          <div className="sample-proof-board__script">
-            <p className="eyebrow">Approved script</p>
-            <div className="mt-4 space-y-3">
-              {run.approvedScript.map((line, index) => (
-                <div key={`${run.slug}-script-${index + 1}`} className="sample-proof-board__script-line">
-                  <span>0{index + 1}</span>
-                  <p>{line}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="sample-proof-board__outputs">
-            <p className="eyebrow">Output family</p>
-            <div className="mt-4 grid gap-3">
-              {run.outputs.map((output, index) => (
-                <div
-                  key={`${run.slug}-${output.name}`}
-                  className={[
-                    "sample-proof-board__output",
-                    index === 0
-                      ? "sample-proof-board__output--accent"
-                      : output.aspect === "16:9"
-                        ? "sample-proof-board__output--cobalt"
-                        : "",
-                  ].join(" ")}
-                >
-                  <div>
-                    <span>{output.aspect}</span>
-                    <strong>{output.name}</strong>
-                  </div>
-                  <p>{output.note}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function RunProofRow({
-  run,
-  accent,
-  reversed,
-}: {
-  run: SampleRun;
-  accent: AccentTone;
-  reversed?: boolean;
-}) {
-  return (
-    <Link
-      href={`/sample-runs/${run.slug}`}
-      className={[
-        "sample-proof-row",
-        reversed ? "sample-proof-row--reverse" : "",
-        accent === "amber"
-          ? "sample-proof-row--amber"
-          : accent === "cobalt"
-            ? "sample-proof-row--cobalt"
-            : "sample-proof-row--neutral",
-      ].join(" ")}
-    >
-      <div className="sample-proof-row__visual">
-        <EditorialMediaFrame
-          asset={mediaForRun(run.slug)}
-          aspect="landscape"
-          className="sample-proof-row__visual-media"
-          sizes="(min-width: 1280px) 32vw, 100vw"
-        />
-        <div className="sample-proof-row__visual-ledger">
-          <p>{run.industry}</p>
-          <span>{run.outputs.length} cuts</span>
-        </div>
-        <div className="sample-proof-row__visual-stage">
-          {run.storyboard.slice(0, 3).map((frame) => (
-            <div key={`${run.slug}-${frame.scene}`} className="sample-proof-row__scene-chip">
-              <span>{frame.scene}</span>
-              <strong>{frame.overlay}</strong>
-            </div>
-          ))}
-        </div>
-        <div className="sample-proof-row__visual-foot">
-          {run.outputs.slice(0, 3).map((output) => (
-            <span key={`${run.slug}-${output.name}`}>{output.aspect}</span>
-          ))}
-        </div>
-      </div>
-
-      <div className="sample-proof-row__content">
-        <div className="space-y-3">
-          <p className="eyebrow">{run.industry}</p>
-          <h3>{run.title}</h3>
-          <p>{run.summary}</p>
-        </div>
-
-        <div className="sample-proof-row__details">
-          <div>
-            <span>Brief</span>
-            <p>{run.brief}</p>
-          </div>
-          <div>
-            <span>Delivered cuts</span>
-            <p>{run.outputs.map((output) => output.name).join(" · ")}</p>
-          </div>
-        </div>
-      </div>
-    </Link>
+    </main>
   );
 }

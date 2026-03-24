@@ -69,27 +69,14 @@ pub fn provider_suite_from_env() -> ProviderSuite {
         .build()
         .unwrap_or_else(|_| Client::new());
 
-    let openai_key = env::var("OPENAI_API_KEY")
-        .ok()
-        .filter(|value| is_live_credential(value));
-    let gemini_key = env::var("GEMINI_API_KEY")
-        .ok()
-        .filter(|value| is_live_credential(value));
-    let project_id = env::var("PROJECT_ID")
-        .ok()
-        .or_else(|| env::var("GCP_PROJECT_ID").ok())
-        .filter(|value| !value.trim().is_empty());
-    let region = env::var("REGION")
-        .ok()
-        .filter(|value| !value.trim().is_empty())
+    let openai_key = clean_env_var("OPENAI_API_KEY").filter(|value| is_live_credential(value));
+    let gemini_key = clean_env_var("GEMINI_API_KEY").filter(|value| is_live_credential(value));
+    let project_id = clean_env_var("PROJECT_ID").or_else(|| clean_env_var("GCP_PROJECT_ID"));
+    let region = clean_env_var("REGION")
         .unwrap_or_else(|| DEFAULT_VERTEX_REGION.to_string());
-    let openai_model = env::var("OPENAI_SCRIPT_MODEL")
-        .ok()
-        .filter(|value| !value.trim().is_empty())
+    let openai_model = clean_env_var("OPENAI_SCRIPT_MODEL")
         .unwrap_or_else(|| DEFAULT_OPENAI_MODEL.to_string());
-    let gemini_model = env::var("GEMINI_VIDEO_MODEL")
-        .ok()
-        .filter(|value| !value.trim().is_empty())
+    let gemini_model = clean_env_var("GEMINI_VIDEO_MODEL")
         .unwrap_or_else(|| DEFAULT_GEMINI_MODEL.to_string());
 
     let script: Arc<dyn ScriptProvider> = if let Some(api_key) = openai_key.clone() {
@@ -687,6 +674,13 @@ fn file_uri_for_path(path: &PathBuf) -> String {
 
 fn is_live_credential(value: &str) -> bool {
     !value.trim().is_empty() && !value.starts_with("REPLACE_")
+}
+
+fn clean_env_var(key: &str) -> Option<String> {
+    env::var(key)
+        .ok()
+        .map(|value| value.trim().to_string())
+        .filter(|value| !value.is_empty())
 }
 
 enum GoogleAuth {

@@ -2,17 +2,9 @@ import Link from "next/link";
 import Script from "next/script";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import {
-  ButtonLink,
-  EditorialDivider,
-  MarketingHeader,
-  PageShell,
-  ProseBlock,
-  SectionIntro,
-  SiteFooter,
-  StatusBadge,
-} from "@/components/site-primitives";
+import { EditorialMediaFrame, mediaForJournal } from "@/components/media-system";
 import { getJournalArticle, journalArticles } from "@/components/site-data";
+import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
 import { absoluteUrl, breadcrumbJsonLd, buildJsonLd, createPublicPageMetadata } from "../../seo";
 
 function toAnchorId(value: string) {
@@ -85,8 +77,8 @@ export default async function JournalArticlePage({
   };
 
   return (
-    <PageShell className="pb-16">
-      <MarketingHeader />
+    <main className="aether-marketing-page aether-marketing-page--detail" id="main-content">
+      <MarketingHeader active="journal" />
       <Script
         id={`journal-jsonld-${article.slug}`}
         type="application/ld+json"
@@ -106,176 +98,110 @@ export default async function JournalArticlePage({
         }}
       />
 
-      <section className="page-hero">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-end">
-          <SectionIntro eyebrow={article.category} title={article.title} body={article.dek} />
-          <div className="space-y-3">
-            <div className="rail-panel">
-              <p className="eyebrow">Article</p>
-              <p className="text-sm leading-7 text-[color:var(--text-secondary)]">
-                {article.author}
-                <br />
-                {article.date}
-                <br />
-                {article.readTime}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <StatusBadge tone="default">Editorial note</StatusBadge>
-              <StatusBadge tone="accent">Search depth</StatusBadge>
-              <StatusBadge tone="success">Commercial angle</StatusBadge>
-            </div>
+      <section className="aether-article-detail__hero">
+        <div className="aether-article-detail__hero-copy">
+          <div className="aether-run-detail__eyebrow-row">
+            <span>{article.category}</span>
+            <span>{article.readTime}</span>
           </div>
+          <Link href="/journal" className="aether-tier-link">
+            Back to journal
+          </Link>
+          <h1>{article.title}</h1>
+          <p>{article.dek}</p>
+          <div className="aether-article-detail__meta">
+            <span>{article.author}</span>
+            <span>{article.date}</span>
+          </div>
+        </div>
+        <div className="aether-article-detail__hero-media">
+          <EditorialMediaFrame
+            asset={mediaForJournal(article.slug)}
+            aspect="wide"
+            className="aether-article-detail__hero-frame"
+            sizes="(min-width: 1024px) 54vw, 100vw"
+            priority
+          />
         </div>
       </section>
 
-      {article.summaryPoints ? (
-        <section className="grid gap-4 lg:grid-cols-3">
+      {article.summaryPoints?.length ? (
+        <section className="aether-article-detail__summary">
           {article.summaryPoints.map((point) => (
-            <div
-              key={point}
-              className="rounded-[28px] border border-[color:var(--border-subtle)] bg-[color:var(--surface)] p-5"
-            >
-              <p className="eyebrow">Key point</p>
-              <p className="mt-3 text-lg leading-8 text-[color:var(--text-primary)]">{point}</p>
-            </div>
+            <article key={point}>
+              <span>Key point</span>
+              <p>{point}</p>
+            </article>
           ))}
         </section>
       ) : null}
 
-      {article.metrics ? (
-        <section className="mt-6 grid gap-4 md:grid-cols-3">
-          {article.metrics.map((metric) => (
-            <div
-              key={metric.label}
-              className="rounded-[28px] border border-[color:var(--border-default)] bg-[color:var(--surface)] p-5"
-            >
-              <p className="eyebrow">{metric.label}</p>
-              <div className="mt-3 text-3xl tracking-[-0.04em]">{metric.value}</div>
-              <p className="mt-2 text-sm leading-7 text-[color:var(--text-secondary)]">
-                {metric.note}
-              </p>
-            </div>
-          ))}
-        </section>
-      ) : null}
-
-      <ProseBlock
-        aside={
-          <div className="space-y-4">
-            <div className="rail-panel">
-              <p className="eyebrow">Metadata</p>
-              <div className="mt-3 space-y-2 text-sm leading-7 text-[color:var(--text-secondary)]">
-                <div>{article.author}</div>
-                <div>{article.date}</div>
-                <div>{article.readTime}</div>
-              </div>
-            </div>
-            <div className="rail-panel">
-              <p className="eyebrow">Contents</p>
-              <nav className="mt-3 space-y-3">
-                {toc.map((entry) => (
-                  <a
-                    key={entry.id}
-                    href={`#${entry.id}`}
-                    className="block text-sm leading-7 text-[color:var(--text-secondary)] transition-colors hover:text-[color:var(--text-primary)]"
-                  >
-                    {entry.heading}
-                  </a>
-                ))}
-              </nav>
-            </div>
-            {relatedArticles.length ? (
-              <div className="rail-panel">
-                <p className="eyebrow">Related reading</p>
-                <div className="mt-3 space-y-3">
-                  {relatedArticles.slice(0, 3).map((item) => (
-                    <Link
-                      key={item.slug}
-                      href={`/journal/${item.slug}`}
-                      className="block rounded-[20px] border border-[color:var(--border-subtle)] px-4 py-3 transition-colors hover:bg-[color:var(--surface-raised)]"
-                    >
-                      <p className="text-sm font-medium text-[color:var(--text-primary)]">{item.title}</p>
-                      <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[color:var(--text-soft)]">
-                        {item.category}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ) : null}
+      <section className="aether-article-detail__body">
+        <aside className="aether-article-detail__rail">
+          <div className="aether-article-detail__rail-block">
+            <p className="aether-kicker">Contents</p>
+            <nav>
+              {toc.map((entry) => (
+                <a key={entry.id} href={`#${entry.id}`}>
+                  {entry.heading}
+                </a>
+              ))}
+            </nav>
           </div>
-        }
-      >
-        <section className="space-y-6">
+
+          {article.metrics?.length ? (
+            <div className="aether-article-detail__rail-block">
+              <p className="aether-kicker">Signals</p>
+              <div className="aether-article-detail__metric-list">
+                {article.metrics.map((metric) => (
+                  <div key={metric.label}>
+                    <span>{metric.label}</span>
+                    <strong>{metric.value}</strong>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {relatedArticles.length ? (
+            <div className="aether-article-detail__rail-block">
+              <p className="aether-kicker">Related</p>
+              <div className="aether-article-detail__related-list">
+                {relatedArticles.slice(0, 3).map((item) => (
+                  <Link key={item.slug} href={`/journal/${item.slug}`}>
+                    {item.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </aside>
+
+        <div className="aether-article-detail__content">
           {article.sections.map((section) => (
-            <section
-              key={section.heading}
-              id={toAnchorId(section.heading)}
-              className="article-section scroll-mt-28"
-            >
-              <EditorialDivider label={section.heading} />
+            <section key={section.heading} id={toAnchorId(section.heading)}>
+              <div className="aether-article-detail__section-head">
+                <span />
+                <p>{section.heading}</p>
+              </div>
               <p>{section.body}</p>
             </section>
           ))}
-        </section>
 
-        {article.cta ? (
-          <section className="mt-14 rounded-[32px] border border-[color:var(--border-default)] bg-[color:var(--surface)] p-6 shadow-[var(--shadow-soft)]">
-            <div className="space-y-4">
-              <p className="eyebrow">{article.cta.eyebrow}</p>
-              <h2 className="text-3xl leading-[1.05] tracking-[-0.045em]">{article.cta.title}</h2>
-              <p className="max-w-3xl text-[color:var(--text-secondary)] leading-8">
-                {article.cta.body}
-              </p>
-              <ButtonLink href={article.cta.href} variant="primary">
+          {article.cta ? (
+            <section className="aether-article-detail__cta">
+              <p className="aether-kicker">{article.cta.eyebrow}</p>
+              <h2>{article.cta.title}</h2>
+              <p>{article.cta.body}</p>
+              <Link href={article.cta.href} className="aether-btn aether-btn--primary">
                 {article.cta.label}
-              </ButtonLink>
-            </div>
-          </section>
-        ) : null}
-
-        {relatedArticles.length ? (
-          <section className="mt-14 space-y-6">
-            <EditorialDivider label="Related reading" detail="Continue the editorial path" />
-            <div className="grid gap-4 md:grid-cols-3">
-              {relatedArticles.slice(0, 3).map((item) => (
-                <Link
-                  key={item.slug}
-                  href={`/journal/${item.slug}`}
-                  className="group rounded-[28px] border border-[color:var(--border-subtle)] bg-[color:var(--surface)] p-5 transition-transform duration-200 hover:-translate-y-1"
-                >
-                  <p className="eyebrow">{item.category}</p>
-                  <h3 className="mt-3 text-2xl leading-[1.05] tracking-[-0.035em]">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[color:var(--text-secondary)]">
-                    {item.dek}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ) : null}
-      </ProseBlock>
-
-      <section className="mt-16 rounded-[32px] border border-[color:var(--border-default)] bg-[color:var(--surface)] px-6 py-8 shadow-[var(--shadow-soft)] sm:px-8">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-          <div className="space-y-3">
-            <p className="eyebrow">Journal</p>
-            <h2 className="text-3xl leading-[1.05] tracking-[-0.045em]">
-              This note belongs to the production system, not just the content layer.
-            </h2>
-            <p className="max-w-3xl text-[color:var(--text-secondary)] leading-8">
-              The journal is designed to rank, support handoff, and make the product story easier
-              to trust.
-            </p>
-          </div>
-          <ButtonLink href="/case-studies" variant="secondary">
-            Read case studies
-          </ButtonLink>
+              </Link>
+            </section>
+          ) : null}
         </div>
       </section>
 
       <SiteFooter />
-    </PageShell>
+    </main>
   );
 }

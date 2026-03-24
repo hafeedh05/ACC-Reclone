@@ -63,6 +63,1140 @@
   --motion-slow: 560ms;
 }
 
+/* Aether UI */
+
+:root {
+  --aether-bg: #131313;
+  --aether-bg-deep: #0e0e0e;
+  --aether-surface: #1c1b1b;
+  --aether-surface-high: #2a2a2a;
+  --aether-surface-top: #353534;
+  --aether-text: #e5e2e1;
+  --aether-muted: #d7c3b2;
+  --aether-soft: #c8c6c1;
+  --aether-accent: #ffb86f;
+  --aether-accent-deep: #d9903f;
+  --aether-outline: rgba(159, 142, 126, 0.16);
+}
+
+.aether-marketing-page,
+.aether-app {
+  min-height: 100vh;
+  background: var(--aether-bg);
+  color: var(--aether-text);
+}
+
+.aether-wordmark {
+  color: var(--aether-text);
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+.aether-wordmark--compact {
+  font-size: 0.95rem;
+}
+
+.aether-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(19, 19, 19, 0.72);
+  backdrop-filter: blur(20px);
+}
+
+.aether-header__inner,
+.aether-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 1.35rem 3rem;
+}
+
+.aether-header__nav,
+.aether-header__actions,
+.aether-footer__links,
+.aether-hero-actions,
+.aether-home-hero__proof,
+.aether-filter-row,
+.aether-pricing-ledger__meta,
+.aether-run-detail__eyebrow-row,
+.aether-run-detail__stage-pills,
+.aether-project-grid__featured-actions,
+.aether-app__meta-pair {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.aether-header__nav {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.aether-header__link {
+  color: var(--aether-muted);
+  padding-bottom: 0.2rem;
+  transition: color 180ms ease, border-color 180ms ease;
+  border-bottom: 1px solid transparent;
+}
+
+.aether-header__link.is-active,
+.aether-header__link:hover {
+  color: var(--aether-accent);
+  border-bottom-color: var(--aether-accent);
+}
+
+.aether-header__icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aether-header__icon span {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.aether-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.85rem;
+  padding: 0.8rem 1.25rem;
+  border-radius: 0.45rem;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease,
+    border-color 180ms ease;
+}
+
+.aether-btn:hover {
+  transform: translateY(-1px);
+}
+
+.aether-btn--primary {
+  background: linear-gradient(135deg, var(--aether-accent), var(--aether-accent-deep));
+  color: #2c1600;
+}
+
+.aether-btn--secondary {
+  background: var(--aether-surface-top);
+  color: var(--aether-text);
+}
+
+.aether-btn--ghost {
+  color: var(--aether-text);
+  border-bottom: 1px solid var(--aether-accent);
+  border-radius: 0;
+  padding-inline: 0;
+}
+
+.aether-btn--full {
+  width: 100%;
+}
+
+.aether-kicker {
+  color: var(--aether-accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.aether-marketing-page {
+  padding-top: 5.75rem;
+}
+
+.aether-home-hero,
+.aether-pricing-hero,
+.aether-editorial-hero,
+.aether-sample-index-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 3rem;
+  align-items: center;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 2rem 3rem 5rem;
+}
+
+.aether-home-hero {
+  position: relative;
+  overflow: clip;
+  min-height: calc(100svh - 5.75rem);
+  padding-top: 6rem;
+}
+
+.aether-home-hero__media,
+.aether-home-cta__media {
+  position: absolute;
+  inset: 0;
+}
+
+.aether-home-hero__media::after,
+.aether-home-cta__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(14, 14, 14, 0.82), rgba(19, 19, 19, 0.2) 40%, rgba(19, 19, 19, 0.92));
+}
+
+.aether-home-hero__media-frame,
+.aether-home-cta__frame {
+  height: 100%;
+  border-radius: 0;
+}
+
+.aether-home-hero__content,
+.aether-home-cta__content {
+  position: relative;
+  z-index: 1;
+  max-width: 44rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.aether-home-hero__content h1,
+.aether-home-cta__content h2,
+.aether-pricing-hero__copy h1,
+.aether-editorial-hero__copy h1,
+.aether-sample-index-hero__copy h1,
+.aether-phase__copy h2,
+.aether-final-banner__panel h2,
+.aether-editorial-band__copy h2,
+.aether-editorial-column__copy h2,
+.aether-run-detail__header-copy h1,
+.aether-sample-index-hero__feature-copy h2,
+.aether-project-grid__featured-copy h3,
+.aether-command-lead__overlay strong {
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+  font-weight: 900;
+  margin-top: 1rem;
+}
+
+.aether-home-hero__content p,
+.aether-home-cta__content p,
+.aether-pricing-hero__copy p,
+.aether-editorial-hero__copy p,
+.aether-sample-index-hero__copy p,
+.aether-phase__copy > p,
+.aether-run-detail__header-copy p:last-child {
+  max-width: 42rem;
+  margin: 1.5rem auto 0;
+  color: var(--aether-muted);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.aether-home-hero__proof {
+  justify-content: center;
+  margin-top: 2rem;
+  color: var(--aether-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  flex-wrap: wrap;
+}
+
+.aether-home-band {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1rem 3rem;
+}
+
+.aether-home-band__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  max-width: 120rem;
+  margin: 0 auto;
+  color: var(--aether-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  flex-wrap: wrap;
+}
+
+.aether-phase {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 0.8fr);
+  gap: 5rem;
+  align-items: center;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 8rem 3rem;
+}
+
+.aether-phase--reverse {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.95fr);
+}
+
+.aether-phase--reverse .aether-phase__media {
+  order: 2;
+}
+
+.aether-phase--reverse .aether-phase__copy {
+  order: 1;
+}
+
+.aether-phase--surface {
+  background: var(--aether-surface);
+}
+
+.aether-phase__frame,
+.aether-editorial-hero__frame,
+.aether-editorial-column__frame,
+.aether-archive__frame,
+.aether-sample-index-hero__frame,
+.aether-run-detail__media-stage-frame,
+.aether-run-detail__variant-frame,
+.aether-run-detail__storyboard-frame,
+.aether-project-grid__featured-frame,
+.aether-project-tile__frame,
+.aether-command-lead__frame,
+.aether-project-detail__frame {
+  border-radius: 0.75rem;
+}
+
+.aether-phase__copy {
+  max-width: 32rem;
+}
+
+.aether-phase__bullet {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.aether-phase__bullet span {
+  width: 2.5rem;
+  height: 1px;
+  background: var(--aether-accent);
+}
+
+.aether-phase__checklist {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: grid;
+  gap: 1rem;
+  color: var(--aether-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.aether-inline-link,
+.aether-tier-link {
+  color: var(--aether-accent);
+  display: inline-flex;
+  margin-top: 2rem;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.aether-home-cta {
+  position: relative;
+  overflow: clip;
+  padding: 10rem 3rem;
+  margin-top: 4rem;
+}
+
+.aether-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 6rem;
+}
+
+.aether-footer__brand p,
+.aether-footer__copy,
+.aether-footer__links a {
+  color: var(--aether-soft);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aether-pricing-hero__copy {
+  max-width: 36rem;
+}
+
+.aether-pricing-ledger {
+  background: var(--aether-surface);
+  border-radius: 0.75rem;
+  padding: 2rem;
+}
+
+.aether-pricing-ledger__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.aether-pricing-ledger__top span,
+.aether-pricing-ledger__meta,
+.aether-pricing-tier__amount span,
+.aether-pricing-tier__amount em,
+.aether-spec-table th,
+.aether-archive__card span,
+.aether-event-feed__item span,
+.aether-stage-list__meta span,
+.aether-run-detail__eyebrow-row,
+.aether-run-detail__storyboard-frame + div span,
+.aether-project-detail__rail span,
+.aether-project-grid__featured-copy span,
+.aether-command-lead__overlay p,
+.aether-command-lead__overlay span,
+.aether-workspace-section__head span,
+.aether-run-card__meta span,
+.aether-app__header p,
+.aether-app__meta-pair span,
+.aether-asset-table__row--head span {
+  color: var(--aether-soft);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aether-pricing-ledger__top strong {
+  display: block;
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-top: 0.35rem;
+}
+
+.aether-pricing-ledger__top strong em {
+  color: var(--aether-accent);
+  font-size: 0.8rem;
+  font-style: normal;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aether-pricing-ledger__bar {
+  height: 0.38rem;
+  background: var(--aether-surface-high);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.aether-pricing-ledger__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--aether-accent), var(--aether-accent-deep));
+}
+
+.aether-pricing-ledger__meta {
+  justify-content: space-between;
+  margin: 1rem 0 1.75rem;
+}
+
+.aether-logic-grid,
+.aether-command-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 3rem 6rem;
+}
+
+.aether-logic-grid article,
+.aether-command-block,
+.aether-command-panel,
+.aether-run-detail__explorer,
+.aether-run-detail__script,
+.aether-project-detail__rail,
+.aether-asset-table {
+  background: var(--aether-surface);
+  border-radius: 0.75rem;
+  padding: 2rem;
+}
+
+.aether-logic-grid article h3,
+.aether-workspace-section__head h2,
+.aether-command-block h2,
+.aether-run-detail__script h2,
+.aether-spec-table h3,
+.aether-archive__head h3 {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  margin-top: 0.75rem;
+}
+
+.aether-logic-grid article p,
+.aether-run-card__top p,
+.aether-project-tile span,
+.aether-command-panel__row span,
+.aether-stage-list__item p,
+.aether-event-feed__item em,
+.aether-asset-table__row span,
+.aether-project-detail__rail p,
+.aether-run-detail__explorer p,
+.aether-run-detail__script-head p {
+  color: var(--aether-muted);
+  line-height: 1.7;
+}
+
+.aether-pricing-list,
+.aether-spec-table,
+.aether-final-banner,
+.aether-editorial-column,
+.aether-editorial-band,
+.aether-archive,
+.aether-sample-index-hero,
+.aether-run-detail__header,
+.aether-run-detail__hero,
+.aether-run-detail__script,
+.aether-run-detail__related,
+.aether-project-detail,
+.aether-workspace-section {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 3rem 6rem;
+}
+
+.aether-pricing-tier {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 3.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.aether-pricing-tier__copy {
+  max-width: 36rem;
+}
+
+.aether-pricing-tier__copy h2 {
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  margin: 0.75rem 0;
+}
+
+.aether-pricing-tier__amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 0.35rem;
+}
+
+.aether-pricing-tier__amount strong {
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.aether-spec-table__wrap {
+  overflow-x: auto;
+}
+
+.aether-spec-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.aether-spec-table th,
+.aether-spec-table td {
+  text-align: left;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-spec-table td {
+  color: var(--aether-muted);
+}
+
+.aether-final-banner__panel,
+.aether-editorial-band {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(53, 53, 52, 0.8), rgba(28, 27, 27, 0.85));
+  border-radius: 0.9rem;
+  padding: 4rem;
+}
+
+.aether-editorial-hero__copy,
+.aether-sample-index-hero__copy {
+  max-width: 30rem;
+}
+
+.aether-editorial-hero__media,
+.aether-sample-index-hero__feature,
+.aether-project-grid__featured,
+.aether-command-lead__media,
+.aether-run-detail__media-stage {
+  position: relative;
+}
+
+.aether-editorial-hero__media span {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1;
+  background: rgba(53, 53, 52, 0.68);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.aether-editorial-column {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+.aether-editorial-column__copy {
+  max-width: 26rem;
+}
+
+.aether-editorial-author,
+.aether-proof-list,
+.aether-editorial-band__columns {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-editorial-author {
+  grid-template-columns: 3rem minmax(0, 1fr);
+  margin-top: 2rem;
+  align-items: center;
+}
+
+.aether-editorial-author > div:first-child {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(255, 184, 111, 0.28), rgba(56, 75, 96, 0.18));
+}
+
+.aether-proof-list {
+  margin-top: 2rem;
+}
+
+.aether-proof-list div span {
+  display: block;
+  color: var(--aether-soft);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aether-proof-list div strong {
+  display: block;
+  margin-top: 0.55rem;
+}
+
+.aether-editorial-band__columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 2rem;
+}
+
+.aether-archive__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.aether-archive__grid,
+.aether-run-detail__variants,
+.aether-run-detail__storyboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.aether-archive__card,
+.aether-run-detail__variant,
+.aether-project-tile {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-sample-index-hero__feature-copy,
+.aether-project-grid__featured-copy,
+.aether-command-lead__overlay {
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1;
+}
+
+.aether-filter-row {
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.aether-filter-row button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--aether-muted);
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+}
+
+.aether-filter-row button.is-active,
+.aether-filter-row button:hover {
+  border-color: rgba(255, 184, 111, 0.28);
+  color: var(--aether-text);
+  background: rgba(255, 184, 111, 0.06);
+}
+
+.aether-run-detail__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-top: 2rem;
+}
+
+.aether-run-detail__header-copy {
+  max-width: 42rem;
+}
+
+.aether-run-detail__hero {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  gap: 2rem;
+}
+
+.aether-run-detail__sidebar,
+.aether-app__sidebar {
+  background: var(--aether-bg-deep);
+  padding: 2rem 1.25rem;
+}
+
+.aether-run-detail__sidebar {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  height: fit-content;
+}
+
+.aether-run-detail__sidebar h3,
+.aether-app__brand p {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.aether-run-detail__sidebar p,
+.aether-app__brand span,
+.aether-run-detail__explorer-list div span,
+.aether-stage-list__meta b {
+  color: var(--aether-soft);
+}
+
+.aether-run-detail__sidebar-nav,
+.aether-app__nav,
+.aether-run-detail__explorer-list,
+.aether-stage-list,
+.aether-event-feed,
+.aether-app__sidebar-footer,
+.aether-app__sidebar-meta {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.aether-run-detail__sidebar-nav a,
+.aether-app__nav-link {
+  display: flex;
+  align-items: center;
+  min-height: 2.9rem;
+  border-radius: 999px;
+  padding: 0 1rem;
+  color: var(--aether-muted);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.aether-run-detail__sidebar-nav a.is-active,
+.aether-run-detail__sidebar-nav a:hover,
+.aether-app__nav-link.is-active,
+.aether-app__nav-link:hover {
+  background: var(--aether-surface-high);
+  color: var(--aether-accent);
+}
+
+.aether-run-detail__body {
+  display: grid;
+  gap: 2rem;
+}
+
+.aether-run-detail__explorer-list div,
+.aether-command-panel__row,
+.aether-stage-list__item,
+.aether-event-feed__item,
+.aether-run-card__top,
+.aether-run-card__meta,
+.aether-workspace-section__head,
+.aether-app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.aether-run-detail__explorer-list div {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.55rem;
+  padding: 0.9rem 1rem;
+}
+
+.aether-run-detail__explorer-list div.is-active {
+  border-color: rgba(255, 184, 111, 0.4);
+  background: rgba(255, 184, 111, 0.08);
+}
+
+.aether-run-detail__script-grid,
+.aether-project-detail {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 2rem;
+}
+
+.aether-run-detail__script-copy {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aether-run-detail__script-copy article span {
+  display: block;
+  color: var(--aether-accent);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+
+.aether-run-detail__script-copy article p {
+  color: var(--aether-muted);
+  line-height: 1.85;
+}
+
+.aether-run-detail__storyboard-grid article {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.aether-app {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+}
+
+.aether-app__sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-app__canvas {
+  min-width: 0;
+}
+
+.aether-app__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 2rem 3rem;
+  background: rgba(19, 19, 19, 0.86);
+  backdrop-filter: blur(18px);
+}
+
+.aether-app__header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.aether-app__content {
+  padding: 1rem 3rem 4rem;
+  display: grid;
+  gap: 3rem;
+}
+
+.aether-run-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.aether-run-card {
+  background: var(--aether-surface);
+  padding: 1.8rem;
+}
+
+.aether-run-card.is-live {
+  background: var(--aether-surface-high);
+}
+
+.aether-run-card__top strong {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.aether-run-card__top span {
+  color: var(--aether-accent);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.aether-run-card__progress {
+  height: 0.32rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--aether-surface-top);
+  margin: 1.25rem 0 0.85rem;
+}
+
+.aether-run-card__progress b {
+  display: block;
+  height: 100%;
+  background: var(--aether-accent);
+}
+
+.aether-project-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.48fr);
+  gap: 1.5rem;
+}
+
+.aether-project-grid__featured,
+.aether-project-tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.8rem;
+  background: var(--aether-surface);
+}
+
+.aether-project-grid__featured-actions em,
+.aether-project-grid__badge {
+  display: inline-flex;
+  background: rgba(19, 19, 19, 0.58);
+  padding: 0.55rem 0.8rem;
+  border-radius: 0.35rem;
+  color: var(--aether-text);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+.aether-project-grid__badge {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1;
+}
+
+.aether-project-grid__stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-project-tile div {
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1;
+}
+
+.aether-asset-table {
+  display: grid;
+  gap: 0;
+}
+
+.aether-asset-table__row {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: grid;
+  grid-template-columns: 2.2fr 1fr 0.8fr 1fr;
+}
+
+.aether-asset-table__row strong {
+  color: var(--aether-text);
+}
+
+.aether-command-lead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.45fr);
+  gap: 1.5rem;
+}
+
+.aether-command-lead__overlay {
+  background: linear-gradient(180deg, rgba(19, 19, 19, 0), rgba(19, 19, 19, 0.75));
+  padding-top: 5rem;
+}
+
+.aether-command-lead__rail {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-command-panel__row {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-stage-list__item,
+.aether-event-feed__item {
+  align-items: flex-start;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-stage-list__meta,
+.aether-project-detail__rail {
+  display: grid;
+  gap: 0.35rem;
+  text-align: right;
+}
+
+.aether-event-feed__item {
+  grid-template-columns: 4rem minmax(0, 1fr);
+  display: grid;
+}
+
+.aether-project-detail__rail {
+  background: var(--aether-surface);
+  border-radius: 0.8rem;
+  padding: 2rem;
+  text-align: left;
+}
+
+.aether-project-detail__rail div + div {
+  margin-top: 1.35rem;
+}
+
+@media (max-width: 1100px) {
+  .aether-home-hero,
+  .aether-pricing-hero,
+  .aether-editorial-hero,
+  .aether-phase,
+  .aether-editorial-column,
+  .aether-sample-index-hero,
+  .aether-run-detail__header,
+  .aether-run-detail__hero,
+  .aether-run-detail__script-grid,
+  .aether-command-lead,
+  .aether-command-grid,
+  .aether-project-grid,
+  .aether-project-detail,
+  .aether-logic-grid,
+  .aether-archive__grid,
+  .aether-run-detail__variants,
+  .aether-run-detail__storyboard-grid,
+  .aether-run-grid,
+  .aether-app {
+    grid-template-columns: 1fr;
+  }
+
+  .aether-app__sidebar,
+  .aether-run-detail__sidebar {
+    position: static;
+    min-height: auto;
+    border-right: 0;
+  }
+
+  .aether-app__header,
+  .aether-app__content,
+  .aether-home-hero,
+  .aether-phase,
+  .aether-pricing-hero,
+  .aether-pricing-list,
+  .aether-spec-table,
+  .aether-final-banner,
+  .aether-editorial-hero,
+  .aether-editorial-column,
+  .aether-editorial-band,
+  .aether-archive,
+  .aether-sample-index-hero,
+  .aether-run-detail__header,
+  .aether-run-detail__hero,
+  .aether-run-detail__script,
+  .aether-run-detail__related,
+  .aether-project-detail,
+  .aether-workspace-section,
+  .aether-home-band,
+  .aether-header__inner,
+  .aether-footer__inner {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .aether-header__nav,
+  .aether-run-detail__sidebar {
+    display: none;
+  }
+
+  .aether-header__inner {
+    padding: 1rem 1.1rem;
+  }
+
+  .aether-home-hero {
+    padding-top: 4rem;
+  }
+
+  .aether-hero-actions,
+  .aether-home-hero__proof,
+  .aether-pricing-ledger__meta,
+  .aether-footer__inner,
+  .aether-footer__links {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .aether-asset-table__row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
 @theme inline {
   --color-background: var(--bg-canvas);
   --color-foreground: var(--text-primary);
@@ -16307,5 +17441,296 @@ select:focus-visible {
     grid-template-columns: 1fr;
     display: grid;
     justify-content: stretch;
+  }
+}
+
+.aether-editorial-column__stack {
+  display: grid;
+  gap: 18px;
+}
+
+.aether-run-detail__sidebar--context {
+  gap: 18px;
+}
+
+.aether-run-detail__sidebar-block {
+  display: grid;
+  gap: 12px;
+}
+
+.aether-run-detail__pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.aether-run-detail__pill-list span,
+.aether-run-detail__stage-pills span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 242, 234, 0.1);
+  background: rgba(246, 242, 234, 0.04);
+  color: rgba(246, 242, 234, 0.7);
+}
+
+.aether-run-detail__asset-list,
+.aether-case-detail__rail-block ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.aether-run-detail__asset-list li,
+.aether-case-detail__rail-block li {
+  color: rgba(246, 242, 234, 0.72);
+  line-height: 1.6;
+}
+
+.aether-article-detail__hero,
+.aether-case-detail__hero,
+.aether-article-detail__body,
+.aether-case-detail__body,
+.aether-case-detail__compare {
+  display: grid;
+  gap: 28px;
+}
+
+.aether-article-detail__hero,
+.aether-case-detail__hero {
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: end;
+  padding: 64px 0 32px;
+}
+
+.aether-article-detail__hero-copy,
+.aether-case-detail__copy {
+  display: grid;
+  gap: 18px;
+  max-width: 34rem;
+}
+
+.aether-article-detail__hero-copy h1,
+.aether-case-detail__copy h1 {
+  margin: 0;
+  font-size: clamp(3rem, 2.1rem + 3.6vw, 5.3rem);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+
+.aether-article-detail__hero-copy p:last-child,
+.aether-case-detail__copy p:last-child {
+  margin: 0;
+  font-size: 1.06rem;
+  line-height: 1.85;
+  color: rgba(246, 242, 234, 0.7);
+}
+
+.aether-article-detail__hero-frame,
+.aether-case-detail__frame {
+  border-radius: 34px;
+}
+
+.aether-article-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: rgba(246, 242, 234, 0.48);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aether-article-detail__summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.aether-article-detail__summary article,
+.aether-case-detail__compare article,
+.aether-case-detail__approach-list article,
+.aether-case-detail__lesson-grid article {
+  display: grid;
+  gap: 12px;
+  padding: 22px 0 0;
+  border-top: 1px solid rgba(246, 242, 234, 0.08);
+}
+
+.aether-article-detail__summary span,
+.aether-case-detail__compare span {
+  color: rgba(246, 242, 234, 0.58);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.aether-article-detail__summary p,
+.aether-case-detail__compare p,
+.aether-case-detail__compare li,
+.aether-case-detail__approach-list p,
+.aether-case-detail__lesson-grid p {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.8;
+  color: rgba(246, 242, 234, 0.9);
+}
+
+.aether-article-detail__body,
+.aether-case-detail__body {
+  grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
+  align-items: start;
+  margin-top: 26px;
+}
+
+.aether-article-detail__rail,
+.aether-case-detail__rail {
+  position: sticky;
+  top: 108px;
+  display: grid;
+  gap: 20px;
+}
+
+.aether-article-detail__rail-block,
+.aether-case-detail__rail-block,
+.aether-article-detail__cta,
+.aether-case-detail__cta {
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+  border-radius: 28px;
+  background: rgba(246, 242, 234, 0.03);
+  border: 1px solid rgba(246, 242, 234, 0.08);
+}
+
+.aether-article-detail__rail-block nav,
+.aether-article-detail__related-list,
+.aether-article-detail__metric-list {
+  display: grid;
+  gap: 12px;
+}
+
+.aether-article-detail__rail-block a,
+.aether-article-detail__metric-list span,
+.aether-case-detail__rail-block li {
+  color: rgba(246, 242, 234, 0.66);
+}
+
+.aether-article-detail__metric-list strong {
+  color: rgba(246, 242, 234, 0.96);
+  font-size: 1.5rem;
+  letter-spacing: -0.04em;
+}
+
+.aether-article-detail__content,
+.aether-case-detail__content {
+  display: grid;
+  gap: 34px;
+}
+
+.aether-article-detail__content > section,
+.aether-case-detail__content > section {
+  display: grid;
+  gap: 18px;
+}
+
+.aether-article-detail__content > section > p,
+.aether-case-detail__content > section > p,
+.aether-article-detail__cta p:last-of-type,
+.aether-case-detail__cta p:last-of-type {
+  margin: 0;
+  max-width: 48rem;
+  color: rgba(246, 242, 234, 0.76);
+  font-size: 1.02rem;
+  line-height: 1.9;
+}
+
+.aether-article-detail__section-head,
+.aether-case-detail__section-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.aether-article-detail__section-head span,
+.aether-case-detail__section-head span {
+  flex: 1;
+  max-width: 88px;
+  height: 1px;
+  background: rgba(246, 242, 234, 0.12);
+}
+
+.aether-article-detail__section-head p,
+.aether-case-detail__section-head p {
+  margin: 0;
+  color: rgba(246, 242, 234, 0.48);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.aether-article-detail__cta h2,
+.aether-case-detail__cta h2 {
+  margin: 0;
+  font-size: clamp(2rem, 1.7rem + 1.5vw, 3rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+}
+
+.aether-case-detail__compare {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 20px;
+}
+
+.aether-case-detail__compare ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.aether-case-detail__approach-list,
+.aether-case-detail__lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1200px) {
+  .aether-article-detail__hero,
+  .aether-case-detail__hero,
+  .aether-article-detail__body,
+  .aether-case-detail__body {
+    grid-template-columns: 1fr;
+  }
+
+  .aether-article-detail__rail,
+  .aether-case-detail__rail {
+    position: static;
+  }
+
+  .aether-case-detail__compare,
+  .aether-article-detail__summary,
+  .aether-case-detail__approach-list,
+  .aether-case-detail__lesson-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .aether-article-detail__hero,
+  .aether-case-detail__hero,
+  .aether-case-detail__compare,
+  .aether-article-detail__summary,
+  .aether-case-detail__approach-list,
+  .aether-case-detail__lesson-grid {
+    grid-template-columns: 1fr;
   }
 }

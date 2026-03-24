@@ -17,7 +17,21 @@ export const qaRoutes = [
   },
   { key: "pricing", path: "/pricing", label: "Pricing", public: true, flagship: false },
   { key: "journal", path: "/journal", label: "Journal", public: true, flagship: false },
+  {
+    key: "journal-detail",
+    path: "/journal/why-creative-approval-belongs-before-generation",
+    label: "Journal Detail",
+    public: true,
+    flagship: false,
+  },
   { key: "case-studies", path: "/case-studies", label: "Case Studies", public: true, flagship: false },
+  {
+    key: "case-study-detail",
+    path: "/case-studies/northstar-launch-system",
+    label: "Case Study Detail",
+    public: true,
+    flagship: false,
+  },
 ];
 
 export const viewports = [
@@ -36,7 +50,9 @@ export const performanceThresholds = {
   "sample-run-detail": 0.68,
   pricing: 0.68,
   journal: 0.68,
+  "journal-detail": 0.68,
   "case-studies": 0.68,
+  "case-study-detail": 0.68,
 };
 
 export const bannedPhrases = [
@@ -72,13 +88,14 @@ export const bannedPhrases = [
 
 export const flowExpectations = {
   home: [
-    { name: "See How It Works", href: "/how-it-works" },
-    { name: "Watch a Sample Run", href: "/sample-runs" },
-    { name: "Command Center", href: "/app/command-center" },
+    { name: "Open Workspace", href: "/app" },
+    { name: "Watch Sample Run", href: "/sample-runs/cobalt-travel-charger" },
+    { name: "Review pricing", href: "/pricing" },
   ],
   "command-center": [
-    { name: "Outputs Library", href: "/app/outputs" },
+    { name: "Dashboard", href: "/app" },
     { name: "Project Detail", href: "/app/projects/aster-house-launch" },
+    { name: "Sample Run Detail", href: "/sample-runs/cobalt-travel-charger" },
   ],
   "sample-runs": [
     { name: "Northstar Serum Launch", href: "/sample-runs/northstar-serum-launch" },
@@ -95,7 +112,9 @@ export const flowExpectations = {
   journal: [
     { name: "Storyboards are where ad quality gets saved or lost", href: "/journal/storyboards-save-or-lose-ad-quality" },
   ],
+  "journal-detail": [{ name: "Back to journal", href: "/journal" }],
   "case-studies": [
     { name: "Northstar turned a sparse asset set into a disciplined launch system", href: "/case-studies/northstar-launch-system" },
   ],
+  "case-study-detail": [{ name: "Back to case studies", href: "/case-studies" }],
 };

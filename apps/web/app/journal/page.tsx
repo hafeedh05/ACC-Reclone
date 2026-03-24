@@ -1,226 +1,114 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  ButtonLink,
-  Chip,
-  MarketingHeader,
-  PageShell,
-  SiteFooter,
-} from "@/components/site-primitives";
 import { EditorialMediaFrame, mediaForJournal } from "@/components/media-system";
 import { journalArticles } from "@/components/site-data";
+import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
 import { createPublicPageMetadata } from "../seo";
 
 export const metadata: Metadata = createPublicPageMetadata({
   title: "Journal",
   description:
-    "Articles on launch craft, review logic, output systems, storyboard approvals, and campaign production decisions.",
+    "Operating notes on campaign systems, review logic, storyboard approvals, and output design.",
   canonicalPath: "/journal",
 });
 
 export default function JournalIndexPage() {
-  const [featured, leadEssay, systemsNote, fieldMemo, ...archive] = journalArticles;
+  const [featured, second, third, ...archive] = journalArticles;
 
   return (
-    <PageShell className="pb-16">
-      <MarketingHeader />
+    <main className="aether-marketing-page" id="main-content">
+      <MarketingHeader active="journal" />
 
-      <section className="page-hero journal-hero">
-        <div className="journal-hero__copy">
-          <Chip tone="accent">Journal</Chip>
-          <h1 className="hero-title max-w-[8ch]">Editorial depth for teams improving campaign systems</h1>
-          <p className="hero-body">
-            Essays, field notes, and operating lessons for teams shaping briefs, reviewing
-            storyboards, packaging output families, and keeping campaign production coherent
-            after handoff.
-          </p>
-          <div className="hero-proof-row">
-            <span>{journalArticles.length} articles</span>
-            <span>Essays, notes, how-tos</span>
-            <span>Linked to runs and studies</span>
-          </div>
-        </div>
-
-        <FeaturedJournalBoard article={featured} />
-      </section>
-
-      <section className="journal-grid journal-grid--simple">
-        <div className="journal-grid__stack">
-          <LeadEssayCard article={leadEssay} />
-          <div className="journal-grid__notes">
-            <JournalNoteCard article={systemsNote} accent="cobalt" />
-            <JournalNoteCard article={fieldMemo} accent="amber" />
-          </div>
+      <section className="aether-editorial-hero">
+        <Link href={`/journal/${featured.slug}`} className="aether-editorial-hero__media">
+          <EditorialMediaFrame
+            asset={mediaForJournal(featured.slug)}
+            aspect="wide"
+            className="aether-editorial-hero__frame"
+            sizes="(min-width: 1024px) 62vw, 100vw"
+          />
+          <span>Feature / Workflow systems</span>
+        </Link>
+        <div className="aether-editorial-hero__copy">
+          <p className="aether-kicker">Journal</p>
+          <h1>{featured.title}</h1>
+          <p>{featured.dek}</p>
+          <Link href={`/journal/${featured.slug}`} className="aether-inline-link">
+            Read story
+          </Link>
         </div>
       </section>
 
-      <section className="journal-archive">
-        <div className="journal-archive__heading">
-          <div className="space-y-3">
-            <p className="eyebrow">Archive</p>
-            <h2 className="text-4xl leading-[0.98] tracking-[-0.05em] text-[color:var(--text-primary)]">
-              Essays, notes, and sharp how-tos in one editorial system.
-            </h2>
-            <p className="max-w-3xl text-base leading-8 text-[color:var(--text-secondary)]">
-              Some pieces carry the broader operating argument. Others solve one production problem
-              cleanly. The archive should feel readable, varied, and useful.
-            </p>
+      <section className="aether-editorial-column">
+        <div className="aether-editorial-column__copy">
+          <span className="aether-kicker">Case note</span>
+          <h2>{second.title}</h2>
+          <p>{second.dek}</p>
+          <div className="aether-editorial-author">
+            <div />
+            <div>
+              <strong>{second.author}</strong>
+              <span>{second.category}</span>
+            </div>
           </div>
-          <ButtonLink href="/sample-runs" variant="secondary">
-            Move into sample runs
-          </ButtonLink>
         </div>
-
-        <div className="journal-archive__list">
-          {archive.map((article, index) => (
-            <JournalArchiveRow
-              key={article.slug}
-              article={article}
-              accent={index % 3 === 0 ? "amber" : index % 3 === 1 ? "cobalt" : "neutral"}
+        <div className="aether-editorial-column__stack">
+          <Link href={`/journal/${second.slug}`} className="aether-tier-link">
+            Read case note
+          </Link>
+          <Link href={`/journal/${second.slug}`} className="aether-editorial-column__media">
+            <EditorialMediaFrame
+              asset={mediaForJournal(second.slug)}
+              aspect="landscape"
+              className="aether-editorial-column__frame"
+              sizes="(min-width: 1024px) 42vw, 100vw"
             />
+          </Link>
+        </div>
+      </section>
+
+      <section className="aether-editorial-band">
+        <div className="aether-editorial-band__copy">
+          <span className="aether-kicker">Journal entry</span>
+          <h2>{third.title}</h2>
+          <div className="aether-editorial-band__columns">
+            <p>{third.summaryPoints?.[0] ?? third.dek}</p>
+            <p>{third.summaryPoints?.[1] ?? third.dek}</p>
+          </div>
+          <Link href={`/journal/${third.slug}`} className="aether-tier-link">
+            Read full thesis
+          </Link>
+        </div>
+      </section>
+
+      <section className="aether-archive">
+        <div className="aether-archive__head">
+          <div>
+            <p className="aether-kicker">The archive</p>
+            <h3>Previous editions.</h3>
+          </div>
+          <Link href="/case-studies" className="aether-inline-link">
+            View case studies
+          </Link>
+        </div>
+
+        <div className="aether-archive__grid">
+          {archive.map((article) => (
+            <Link key={article.slug} href={`/journal/${article.slug}`} className="aether-archive__card">
+              <EditorialMediaFrame
+                asset={mediaForJournal(article.slug)}
+                aspect="portrait"
+                className="aether-archive__frame"
+                sizes="(min-width: 1024px) 22vw, 100vw"
+              />
+              <span>{article.date}</span>
+              <strong>{article.title}</strong>
+            </Link>
           ))}
         </div>
       </section>
 
       <SiteFooter />
-    </PageShell>
-  );
-}
-
-function FeaturedJournalBoard({ article }: { article: (typeof journalArticles)[number] }) {
-  return (
-    <Link href={`/journal/${article.slug}`} className="journal-lead">
-      <div className="journal-lead__copy">
-        <p className="eyebrow">{article.category}</p>
-        <h2>{article.title}</h2>
-        <p>{article.dek}</p>
-        <div className="page-meta-line">
-          <span>{article.date}</span>
-          <span>{article.readTime}</span>
-          <span>{article.author}</span>
-        </div>
-      </div>
-
-      <div className="journal-lead__media">
-        <EditorialMediaFrame
-          asset={mediaForJournal(article.slug)}
-          aspect="landscape"
-          className="journal-lead__media-frame"
-          sizes="(min-width: 1280px) 26vw, 100vw"
-        />
-      </div>
-    </Link>
-  );
-}
-
-function LeadEssayCard({ article }: { article: (typeof journalArticles)[number] }) {
-  return (
-    <Link href={`/journal/${article.slug}`} className="journal-essay">
-      <EditorialMediaFrame
-        asset={mediaForJournal(article.slug)}
-        aspect="wide"
-        className="journal-essay__media"
-        sizes="(min-width: 1280px) 48vw, 100vw"
-      />
-      <div className="journal-essay__top">
-        <div>
-          <p className="eyebrow">{article.category}</p>
-          <h2>{article.title}</h2>
-        </div>
-        <span className="journal-meta-pill">{article.readTime}</span>
-      </div>
-      <p className="journal-essay__dek">{article.dek}</p>
-      <div className="journal-essay__grid">
-        {(article.summaryPoints ?? []).slice(0, 3).map((point, index) => (
-          <div key={`${article.slug}-${point}`} className="journal-essay__point">
-            <span>0{index + 1}</span>
-            <p>{point}</p>
-          </div>
-        ))}
-      </div>
-    </Link>
-  );
-}
-
-function JournalNoteCard({
-  article,
-  accent,
-}: {
-  article: (typeof journalArticles)[number];
-  accent: "amber" | "cobalt";
-}) {
-  return (
-    <Link
-      href={`/journal/${article.slug}`}
-      className={[
-        "journal-note",
-        accent === "amber" ? "journal-note--amber" : "journal-note--cobalt",
-      ].join(" ")}
-    >
-      <EditorialMediaFrame
-        asset={mediaForJournal(article.slug)}
-        aspect="landscape"
-        className="journal-note__media"
-        sizes="(min-width: 1280px) 22vw, 100vw"
-      />
-      <p className="eyebrow">{article.category}</p>
-      <h3>{article.title}</h3>
-      <p>{article.dek}</p>
-      <div className="page-meta-line">
-        <span>{article.date}</span>
-        <span>{article.readTime}</span>
-      </div>
-    </Link>
-  );
-}
-
-function JournalArchiveRow({
-  article,
-  accent,
-}: {
-  article: (typeof journalArticles)[number];
-  accent: "amber" | "cobalt" | "neutral";
-}) {
-  return (
-    <Link
-      href={`/journal/${article.slug}`}
-      className={[
-        "journal-archive-row",
-        accent === "amber"
-          ? "journal-archive-row--amber"
-          : accent === "cobalt"
-            ? "journal-archive-row--cobalt"
-            : "journal-archive-row--neutral",
-      ].join(" ")}
-    >
-      <div className="journal-archive-row__media">
-        <EditorialMediaFrame
-          asset={mediaForJournal(article.slug)}
-          aspect="landscape"
-          className="journal-archive-row__media-frame"
-          sizes="(min-width: 1280px) 22vw, 100vw"
-        />
-      </div>
-      <div className="journal-archive-row__intro">
-        <p className="eyebrow">{article.category}</p>
-        <span>{article.date}</span>
-      </div>
-
-      <div className="journal-archive-row__content">
-        <h3>{article.title}</h3>
-        <p>{article.dek}</p>
-      </div>
-
-      <div className="journal-archive-row__points">
-        {(article.summaryPoints ?? []).slice(0, 2).map((point) => (
-          <span key={`${article.slug}-${point}`}>{point}</span>
-        ))}
-      </div>
-
-      <div className="journal-archive-row__cta">
-        <span>{article.readTime}</span>
-        <strong>{article.cta?.label ?? "Read article"}</strong>
-      </div>
-    </Link>
+    </main>
   );
 }

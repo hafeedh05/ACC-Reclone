@@ -1,7 +1,5 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { MarketingNavLinks } from "./experience-chrome";
-import { marketingNav } from "./site-data";
 
 function cn(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ");
@@ -109,31 +107,41 @@ function contactCopy(title: string) {
 
 export function SiteWordmark({ compact = false }: { compact?: boolean }) {
   return (
-    <Link href="/" className="group inline-flex items-center gap-3">
-      <span className="wordmark-chip">
-        <span className="wordmark-chip__core" />
-      </span>
-      <span className={cn("leading-none", compact ? "text-base" : "text-lg")}>
-        <span className="block font-semibold tracking-[-0.02em] text-[color:var(--text-primary)]">
-          Ad Command Center
-        </span>
-      </span>
+    <Link href="/" className={cn("aether-wordmark", compact && "aether-wordmark--compact")}>
+      <span>AETHER HYVE</span>
     </Link>
   );
 }
 
-export function MarketingHeader() {
+export function MarketingHeader({ active }: { active?: string }) {
   return (
-    <header className="site-shell site-shell--tight">
-      <div className="topbar topbar--quiet">
+    <header className="aether-header">
+      <div className="aether-header__inner">
         <SiteWordmark />
-        <nav className="hidden items-center gap-8 text-sm text-[color:var(--text-secondary)] lg:flex">
-          <MarketingNavLinks items={marketingNav} />
+        <nav className="aether-header__nav" aria-label="Primary">
+          {[
+            { key: "platform", href: "/app/command-center", label: "Platform" },
+            { key: "sample-runs", href: "/sample-runs", label: "Sample Runs" },
+            { key: "case-studies", href: "/case-studies", label: "Case Studies" },
+            { key: "pricing", href: "/pricing", label: "Pricing" },
+            { key: "journal", href: "/journal", label: "Journal" },
+          ].map((item) => (
+            <Link
+              key={item.key}
+              href={item.href}
+              className={cn(
+                "aether-header__link",
+                active === item.key && "is-active",
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
-        <div className="md:hidden">
-          <ButtonLink href="/sample-runs" variant="secondary" compact>
-            Sample Runs
-          </ButtonLink>
+        <div className="aether-header__actions">
+          <Link href="/app" className="aether-btn aether-btn--primary">
+            Open Workspace
+          </Link>
         </div>
       </div>
     </header>
@@ -172,65 +180,23 @@ export function ProductHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="site-shell site-shell--footer">
-      <div className="footer-grid">
-        <div className="space-y-5">
+    <footer className="aether-footer">
+      <div className="aether-footer__inner">
+        <div className="aether-footer__brand">
           <SiteWordmark compact />
-          <p className="max-w-md text-sm leading-7 text-[color:var(--text-secondary)]">
-            A premium operating system for turning assets, review logic, and production discipline
-            into campaign-ready variants that a team can actually use.
-          </p>
+          <p>Architectural precision in motion.</p>
         </div>
-        <div className="footer-links">
-          <FooterColumn
-            heading="Product"
-            items={[
-              { href: "/how-it-works", label: "How It Works" },
-              { href: "/sample-runs", label: "Sample Runs" },
-              { href: "/gallery", label: "Gallery" },
-              { href: "/pricing", label: "Pricing" },
-            ]}
-          />
-          <FooterColumn
-            heading="Company"
-            items={[
-              { href: "/journal", label: "Journal" },
-              { href: "/case-studies", label: "Case Studies" },
-              { href: "/enterprise", label: "Enterprise" },
-              { href: "/contact", label: "Contact" },
-            ]}
-          />
-          <FooterColumn
-            heading="Legal"
-            items={[
-              { href: "/privacy", label: "Privacy" },
-              { href: "/terms", label: "Terms" },
-            ]}
-          />
+        <div className="aether-footer__links">
+          <Link href="/privacy">Privacy</Link>
+          <Link href="/terms">Terms</Link>
+          <a href="https://ad-command-center-dev-api-k66jrtxjhq-uc.a.run.app/v1/admin/health" target="_blank" rel="noreferrer">
+            API Status
+          </a>
+          <Link href="/contact">Contact</Link>
         </div>
+        <div className="aether-footer__copy">© 2026 AETHER HYVE.</div>
       </div>
     </footer>
-  );
-}
-
-function FooterColumn({
-  heading,
-  items,
-}: {
-  heading: string;
-  items: Array<{ href: string; label: string }>;
-}) {
-  return (
-    <div className="space-y-4">
-      <p className="eyebrow">{heading}</p>
-      <div className="space-y-3">
-        {items.map((item) => (
-          <Link key={item.href} href={item.href} className="footer-link">
-            {item.label}
-          </Link>
-        ))}
-      </div>
-    </div>
   );
 }
 

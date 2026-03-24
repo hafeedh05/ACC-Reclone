@@ -1,155 +1,169 @@
 import type { Metadata } from "next";
-import {
-  ButtonLink,
-  Chip,
-  EditorialDivider,
-  MarketingHeader,
-  PageShell,
-  SectionIntro,
-  SiteFooter,
-} from "@/components/site-primitives";
+import Link from "next/link";
+import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
 import { pricingTiers } from "@/components/site-data";
 import { createPublicPageMetadata } from "../seo";
-
-function creditRate(price: string, credits: string) {
-  const priceValue = Number(price.replace(/[^0-9.]/g, ""));
-  const creditValue = Number(credits.replace(/[^0-9.]/g, ""));
-
-  if (!priceValue || !creditValue) {
-    return null;
-  }
-
-  return `$${(priceValue / creditValue).toFixed(2)} / credit`;
-}
 
 export const metadata: Metadata = createPublicPageMetadata({
   title: "Pricing",
   description:
-    "Choose the Ad Command Center operating model that fits your team, from campaign-by-campaign use through enterprise workflow governance.",
+    "Credits fund the workspace balance, then generation spends against that balance when a run actually starts.",
   canonicalPath: "/pricing",
 });
 
+const logic = [
+  {
+    index: "01",
+    title: "1 credit = controlled generation time",
+    body: "Spend begins when approved runs move into media generation, not while the team is still briefing or reviewing.",
+  },
+  {
+    index: "02",
+    title: "4K output families",
+    body: "Performance, brand, feature, and platform cuts are packaged from one controlled system instead of separate manual edits.",
+  },
+  {
+    index: "03",
+    title: "Workspace balance, not single-user spend",
+    body: "Credits live on the account so multiple operators can share one launch calendar and one review flow.",
+  },
+];
+
 export default function PricingPage() {
   return (
-    <PageShell className="pb-16">
-      <MarketingHeader />
+    <main className="aether-marketing-page" id="main-content">
+      <MarketingHeader active="pricing" />
 
-      <section className="page-hero page-hero--pricing">
-        <div className="pricing-hero-v2">
-          <SectionIntro
-            eyebrow="Pricing"
-            title="Buy credits into the workspace. Use them when a run is worth making."
-            body="Every paid workspace carries a credit balance. Credits are consumed when generation starts, while the brief, approvals, storyboard, and exports stay inside the same account."
-          />
-          <div className="pricing-hero-v2__ledger">
+      <section className="aether-pricing-hero">
+        <div className="aether-pricing-hero__copy">
+          <p className="aether-kicker">Strategic value</p>
+          <h1>Investment in intelligence.</h1>
+          <p>
+            Buy credits into the workspace, keep the balance visible to the team, and only spend
+            when a run actually enters generation.
+          </p>
+        </div>
+
+        <div className="aether-pricing-ledger">
+          <div className="aether-pricing-ledger__top">
             <div>
-              <span>Guided run</span>
-              <strong>45 to 90 credits</strong>
-              <p>Depends on scene count, clip volume, and how heavy the output family is.</p>
+              <span>Current balance</span>
+              <strong>
+                1,240 <em>credits</em>
+              </strong>
             </div>
-            <div>
-              <span>Refresh or extension</span>
-              <strong>18 to 30 credits</strong>
-              <p>Best for cutdown work, platform refreshes, or new output variants from an existing system.</p>
-            </div>
-            <div>
-              <span>Workspace balance</span>
-              <strong>Credits live on the account</strong>
-              <p>Billing stays attached to the workspace, not to a single user or campaign.</p>
-            </div>
-            <div>
-              <span>Credits are spent</span>
-              <strong>Only when generation starts</strong>
-              <p>Briefing, script review, storyboard approval, and workspace setup do not burn credits.</p>
-            </div>
+            <b>⚡</b>
           </div>
+          <div className="aether-pricing-ledger__bar">
+            <span style={{ width: "62%" }} />
+          </div>
+          <div className="aether-pricing-ledger__meta">
+            <span>Monthly allocation</span>
+            <span>2,000 credits</span>
+          </div>
+          <Link href="/contact" className="aether-btn aether-btn--secondary aether-btn--full">
+            Add credits
+          </Link>
         </div>
       </section>
 
-      <section className="pricing-cascade">
+      <section className="aether-logic-grid">
+        {logic.map((item) => (
+          <article key={item.index}>
+            <span>{item.index}</span>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="aether-pricing-list">
         {pricingTiers.map((tier) => (
-          <article
-            key={tier.name}
-            className={tier.featured ? "pricing-cascade__tier is-featured" : "pricing-cascade__tier"}
-          >
-            <div className="pricing-cascade__header">
-              <div>
-                <p className="eyebrow">{tier.name}</p>
-                <h2>{tier.price}</h2>
-                <div className="pricing-cascade__credit-line">
-                  <strong>{tier.credits}</strong>
-                  <span>{tier.runRange}</span>
-                </div>
-                {creditRate(tier.price, tier.credits) ? (
-                  <p className="pricing-cascade__rate">{creditRate(tier.price, tier.credits)}</p>
-                ) : null}
-              </div>
-              {tier.featured ? <Chip tone="accent">Best rate</Chip> : null}
+          <article key={tier.name} className="aether-pricing-tier">
+            <div className="aether-pricing-tier__copy">
+              <p className="aether-kicker">{tier.name}</p>
+              <h2>{tier.name}</h2>
+              <p>{tier.note}</p>
             </div>
-            <p>{tier.note}</p>
-            <ul className="bullet-list">
-              {tier.points.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
-            <div className="pricing-cascade__footer">
-              <ButtonLink href={tier.href} variant={tier.featured ? "primary" : "secondary"}>
+            <div className="aether-pricing-tier__amount">
+              <span>Monthly pack</span>
+              <strong>{tier.price}</strong>
+              <em>{tier.credits}</em>
+              <Link href={tier.href} className="aether-tier-link">
                 {tier.ctaLabel}
-              </ButtonLink>
+              </Link>
             </div>
           </article>
         ))}
       </section>
 
-      <EditorialDivider label="Credit logic" detail="How the balance is actually used" />
-
-      <section className="pricing-logic pricing-logic--credits">
-        <article>
-          <p className="eyebrow">1. Fund the workspace</p>
-          <h3>Credits are purchased into the account, not attached to a single campaign.</h3>
-          <p>
-            The workspace holds the balance so the team can brief, review, approve, and launch without
-            re-billing every time a run starts.
-          </p>
-        </article>
-        <article>
-          <p className="eyebrow">2. Spend on generation</p>
-          <h3>Credits are consumed when clips, variants, and export families are actually generated.</h3>
-          <p>
-            Review stages stay cheap. Spend happens when the approved script and storyboard are ready to
-            turn into real outputs.
-          </p>
-        </article>
-        <article>
-          <p className="eyebrow">3. Refill before bottlenecks</p>
-          <h3>Teams top up the balance before launches, seasonal pushes, or heavy paid cycles.</h3>
-          <p>
-            Enterprise accounts can pool credits, set billing controls, and coordinate volume across
-            multiple teams and markets.
-          </p>
-        </article>
+      <section className="aether-spec-table">
+        <h3>System specifications</h3>
+        <div className="aether-spec-table__wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>Starter</th>
+                <th>Growth</th>
+                <th>Enterprise</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Base credits / month</td>
+                <td>500</td>
+                <td>2,500</td>
+                <td>Unlimited pool</td>
+              </tr>
+              <tr>
+                <td>Rendering resolution</td>
+                <td>Up to 1080p</td>
+                <td>Up to 4K</td>
+                <td>4K master + custom handling</td>
+              </tr>
+              <tr>
+                <td>Concurrent generations</td>
+                <td>2 runs</td>
+                <td>10 runs</td>
+                <td>Priority queue</td>
+              </tr>
+              <tr>
+                <td>Review governance</td>
+                <td>Basic</td>
+                <td>Shared approvals</td>
+                <td>Cross-team controls</td>
+              </tr>
+              <tr>
+                <td>API workflow access</td>
+                <td>-</td>
+                <td>Limited</td>
+                <td>Full</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
-      <section className="pricing-faq-v2">
-        <article>
-          <p className="eyebrow">What counts as a run?</p>
-          <h3>One approved brief moving through script, storyboard, generation, and delivery.</h3>
+      <section className="aether-final-banner">
+        <div className="aether-final-banner__panel">
+          <h2>Ready to begin?</h2>
           <p>
-            Heavier runs with more scenes, more clip attempts, or broader output families draw more
-            credits than lighter refreshes.
+            Join teams using Aether Hyve to move from approved creative to delivered output without
+            rebuilding the workflow every launch.
           </p>
-        </article>
-        <article>
-          <p className="eyebrow">What is already included?</p>
-          <h3>Review flow, approvals, export packaging, and the workspace itself.</h3>
-          <p>
-            The credit balance covers generation. The product surface, approvals, delivery structure,
-            and workspace organization stay part of the account.
-          </p>
-        </article>
+          <div className="aether-hero-actions">
+            <Link href="/app" className="aether-btn aether-btn--primary">
+              Start a run
+            </Link>
+            <Link href="/contact" className="aether-btn aether-btn--secondary">
+              Request pricing
+            </Link>
+          </div>
+        </div>
       </section>
 
       <SiteFooter />
-    </PageShell>
+    </main>
   );
 }

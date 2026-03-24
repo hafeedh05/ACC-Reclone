@@ -1,69 +1,50 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ButtonLink,
-  Chip,
-  MarketingHeader,
-  PageShell,
-  SiteFooter,
-} from "@/components/site-primitives";
-import { RevealOnScroll } from "@/components/experience-chrome";
-import {
   EditorialMediaFrame,
-  mediaForCaseStudy,
-  mediaForOutput,
   mediaLibrary,
-  type MediaAsset,
+  mediaForRun,
 } from "@/components/media-system";
-import { CommandCenterShowcase } from "@/components/product-surfaces";
-import {
-  caseStudies,
-  pricingTiers,
-  sampleOutputs,
-  sampleRuns,
-  trustMarks,
-} from "@/components/site-data";
-import {
-  buildJsonLd,
-  createPublicPageMetadata,
-  organizationJsonLd,
-  softwareApplicationJsonLd,
-} from "./seo";
-
-const heroRun = sampleRuns[0];
-const heroOutputs = heroRun.outputs.slice(0, 3);
-const proofStudies = caseStudies.slice(0, 2);
-const featuredOutput = sampleOutputs[1];
-const outputRail = sampleOutputs.filter((output) => output.slug !== featuredOutput.slug).slice(0, 3);
-
-const workflowMoments = [
-  {
-    label: "Source set",
-    title: "Start with the assets, the offer, and one clean production direction.",
-    note: "The brief should settle the campaign before anything expensive starts moving.",
-  },
-  {
-    label: "Creative package",
-    title: "Shape the script and storyboard while the work is still easy to steer.",
-    note: "The strongest angle, scene order, and claim hierarchy are locked before clips are made.",
-  },
-  {
-    label: "Output family",
-    title: "Route one shared clip pool into the cuts the campaign actually needs.",
-    note: "Performance, brand, feature, and platform exports stay related without feeling duplicated.",
-  },
-];
+import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
+import { buildJsonLd, createPublicPageMetadata, organizationJsonLd, softwareApplicationJsonLd } from "./seo";
 
 export const metadata: Metadata = createPublicPageMetadata({
-  title: "Turn a brief into campaign-ready ads",
+  title: "Campaign motion, perfected",
   description:
-    "Ad Command Center turns uploaded assets, reviewed creative, and production logic into finished ad variants across the formats a campaign actually needs.",
+    "Aether Hyve turns asset sets, creative approvals, and live generation into cinematic ad systems that ship across the cuts a campaign actually needs.",
   canonicalPath: "/",
 });
 
+const phases = [
+  {
+    tag: "Phase 01",
+    title: "Raw asset ingest.",
+    body:
+      "Bring the source set in once. Product stills, motion references, handheld coverage, and pack shots stay intact before any generation spend starts.",
+    media: mediaLibrary.chargerStill,
+    layout: "media-left",
+  },
+  {
+    tag: "Phase 02",
+    title: "Narrative direction.",
+    body:
+      "Lock the angle, the hook, and the scene order while the campaign is still easy to steer. The brief, script, and storyboard stay visible as one system.",
+    media: mediaLibrary.residentialStill,
+    layout: "media-right",
+  },
+  {
+    tag: "Phase 03",
+    title: "Automated mastery.",
+    body:
+      "Approved scenes move into generation, route into performance and brand cuts, and stay recoverable if one beat slips or a fallback still-pack has to take over.",
+    media: mediaForRun("cobalt-travel-charger"),
+    layout: "media-left",
+  },
+];
+
 export default function HomePage() {
   return (
-    <PageShell className="pb-16">
+    <main className="aether-marketing-page" id="main-content">
       <script
         id="organization-jsonld"
         type="application/ld+json"
@@ -77,298 +58,119 @@ export default function HomePage() {
 
       <MarketingHeader />
 
-      <section id="home-hero" className="home-hero-v2 journey-section journey-section--hero">
-        <div className="home-hero-v2__copy">
-          <p className="eyebrow">Campaign production</p>
-          <h1 className="hero-title">Turn a brief into campaign-ready ads</h1>
-          <p className="hero-body">
-            Upload the asset set, review the angle, and leave with polished cuts for 9:16, 1:1,
-            and 16:9.
-          </p>
-          <div className="hero-actions">
-            <ButtonLink href="/how-it-works" variant="primary">
-              See How It Works
-            </ButtonLink>
-            <ButtonLink href="/sample-runs" variant="secondary">
-              Watch a Sample Run
-            </ButtonLink>
-          </div>
-        <div className="hero-proof-row" aria-label="What the run produces">
-          <span>Reviewed creative</span>
-          <span>Four-cut family</span>
-          <span>9:16 / 1:1 / 16:9</span>
-        </div>
-        </div>
-
-        <HeroConsole />
-      </section>
-
-      <RevealOnScroll as="section" className="trust-whisper journey-section" delay={40}>
-        <p className="eyebrow">Trusted by teams that care what the work looks like</p>
-        <div className="trust-whisper__marks" aria-label="Who the product is for">
-          {trustMarks.map((mark) => (
-            <span key={mark}>{mark}</span>
-          ))}
-        </div>
-      </RevealOnScroll>
-
-      <RevealOnScroll
-        as="section"
-        id="home-workflow"
-        className="home-sequence-v2 journey-section"
-        variant="mask"
-      >
-        <div className="home-sequence-v2__copy">
-          <p className="eyebrow">Workflow</p>
-          <h2>One source set in. One disciplined output family out.</h2>
-          <p>
-            The material, the creative package, and the finished exports each get their own clear
-            moment, so the run stays readable from first upload to final delivery.
-          </p>
-
-          <ol className="workflow-ledger">
-            {workflowMoments.map((moment, index) => (
-              <li key={moment.label}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <div>
-                  <p>{moment.label}</p>
-                  <strong>{moment.title}</strong>
-                  <em>{moment.note}</em>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <div className="home-sequence-v2__proof">
-          <article className="featured-output">
-            <MediaPlate
-              asset={mediaForOutput(featuredOutput.slug)}
-              tone="amber"
-              ratio={featuredOutput.aspect.split(" / ")[0]}
-              title={featuredOutput.title}
-              label="Sample output"
-              highlight="Brand cut"
-            />
-            <div className="featured-output__copy">
-              <p className="eyebrow">{featuredOutput.category}</p>
-              <strong>{featuredOutput.title}</strong>
-              <p>{featuredOutput.summary}</p>
-              <div className="chip-row">
-                <Chip tone="accent">{featuredOutput.aspect}</Chip>
-                <Chip tone="cobalt">Reviewed before generation</Chip>
-              </div>
-            </div>
-          </article>
-
-          <div className="output-rail-v2">
-            {outputRail.map((output, index) => (
-              <Link key={output.slug} href="/gallery" className="output-rail-v2__item">
-                <MediaPlate
-                  asset={mediaForOutput(output.slug)}
-                  tone={index === 0 ? "cobalt" : index === 1 ? "neutral" : "amber"}
-                  ratio={output.aspect.split(" / ")[0]}
-                  title={output.title}
-                  label={output.category}
-                  highlight={output.aspect.split(" / ")[1] ?? output.aspect}
-                  compact
-                />
-                <div>
-                  <strong>{output.title}</strong>
-                  <p>{output.summary}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </RevealOnScroll>
-
-      <RevealOnScroll
-        as="section"
-        id="home-command"
-        className="home-command-v2 journey-section"
-        delay={60}
-      >
-        <div className="home-command-v2__lead">
-          <div className="home-command-v2__lead-copy">
-            <p className="eyebrow">Command Center</p>
-            <h2>See the run while it is still steerable.</h2>
-            <p>
-              Review gates, live artifacts, scene focus, route mapping, and fallback readiness stay
-              visible in one calm operating surface.
-            </p>
-          </div>
-          <div className="home-command-v2__lead-action">
-            <ButtonLink href="/app/command-center" variant="secondary">
-              Open the screen
-            </ButtonLink>
-          </div>
-        </div>
-        <CommandCenterShowcase compact />
-      </RevealOnScroll>
-
-      <RevealOnScroll
-        as="section"
-        id="home-proof"
-        className="home-proof-v2 journey-section"
-        delay={90}
-      >
-        <div className="home-proof-v2__studies">
-          <div className="home-proof-v2__intro">
-            <p className="eyebrow">Proof</p>
-            <h2>Two proof pages worth opening.</h2>
-            <p>
-              Show the brief, the constraints, the decisions, and the delivered cuts clearly enough
-              that the work sells itself.
-            </p>
-          </div>
-
-          <div className="case-strip-v2">
-            {proofStudies.map((study, index) => (
-              <Link key={study.slug} href={`/case-studies/${study.slug}`} className="case-strip-v2__item">
-                <MediaPlate
-                  asset={mediaForCaseStudy(study.slug)}
-                  tone={index === 0 ? "amber" : "cobalt"}
-                  ratio="16:9"
-                  title={study.title}
-                  label={study.category}
-                  highlight="Case study"
-                  compact
-                />
-                <div className="case-strip-v2__copy">
-                  <strong>{study.title}</strong>
-                  <p>{study.dek}</p>
-                  <div className="case-strip-v2__metrics">
-                    {(study.metrics ?? []).slice(0, 2).map((metric) => (
-                      <div key={metric.label}>
-                        <span>{metric.label}</span>
-                        <b>{metric.value}</b>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <aside className="home-commercial-v2">
-          <div className="home-commercial-v2__pricing">
-            <p className="eyebrow">Pricing</p>
-            <h3>Credits are bought into the workspace balance and spent when a run starts.</h3>
-            <div className="pricing-column-v2">
-              {pricingTiers.map((tier) => (
-                <article key={tier.name}>
-                  <div>
-                    <p className="eyebrow">{tier.name}</p>
-                    <strong>{tier.price}</strong>
-                    <b>{tier.credits}</b>
-                  </div>
-                  <span>{tier.runRange}</span>
-                </article>
-              ))}
-            </div>
-            <ButtonLink href="/pricing" variant="secondary">
-              Review pricing
-            </ButtonLink>
-          </div>
-
-          <div className="enterprise-note-v2">
-            <p className="eyebrow">Enterprise</p>
-            <h3>Governance, approvals, and operational visibility for teams running at scale.</h3>
-            <p>
-              Keep brand control, review logic, and output oversight intact across launches,
-              markets, and stakeholders.
-            </p>
-            <ButtonLink href="/enterprise" variant="primary">
-              Talk to Enterprise
-            </ButtonLink>
-          </div>
-        </aside>
-      </RevealOnScroll>
-
-      <SiteFooter />
-    </PageShell>
-  );
-}
-
-function HeroConsole() {
-  return (
-    <div className="hero-console hero-console--open" style={{ containerType: "inline-size" }}>
-      <section className="hero-canvas">
-        <div className="hero-canvas__stage hero-canvas__stage--poster">
+      <section className="aether-home-hero">
+        <div className="aether-home-hero__media">
           <EditorialMediaFrame
             asset={mediaLibrary.heroSerum}
-            aspect="landscape"
-            className="hero-canvas__media"
+            aspect="wide"
+            className="aether-home-hero__media-frame"
             motion
             priority
-            sizes="(min-width: 1280px) 52vw, 100vw"
+            sizes="100vw"
           />
-          <div className="hero-canvas__caption hero-canvas__caption--poster">
-            <p className="eyebrow">Live preview</p>
-            <h3>{heroRun.title}</h3>
-            <span>Pack shot, offer line, and close are already resolved.</span>
-          </div>
-          <div className="hero-canvas__status hero-canvas__status--poster">
-            <span>Scene 03 live</span>
-          </div>
         </div>
 
-        <div className="hero-canvas__info-row hero-canvas__info-row--poster">
-          <p className="eyebrow">Four-cut family</p>
-
-          <div className="hero-console__format-list">
-            {heroOutputs.map((output, index) => (
-              <div key={`${output.name}-${output.aspect}`} className="hero-console__format-item">
-                <span>{output.aspect}</span>
-                <strong>{output.name}</strong>
-                <b>{index === 0 ? "Live" : index === 1 ? "Ready" : "Queued"}</b>
-              </div>
-            ))}
+        <div className="aether-home-hero__content">
+          <p className="aether-kicker">Aether Hyve</p>
+          <h1>Campaign Motion. Perfected.</h1>
+          <p>
+            Upload the source set, settle the creative direction, and leave with a cinematic
+            output family built for 9:16, 1:1, and 16:9.
+          </p>
+          <div className="aether-hero-actions">
+            <Link href="/app" className="aether-btn aether-btn--primary">
+              Open Workspace
+            </Link>
+            <Link
+              href="/sample-runs/cobalt-travel-charger"
+              className="aether-btn aether-btn--ghost"
+            >
+              Watch Sample Run
+            </Link>
+          </div>
+          <div className="aether-home-hero__proof">
+            <span>Reviewed creative</span>
+            <span>Live generation</span>
+            <span>Multi-cut delivery</span>
           </div>
         </div>
       </section>
-    </div>
-  );
-}
 
-function MediaPlate({
-  asset,
-  tone,
-  ratio,
-  title,
-  label,
-  highlight,
-  compact = false,
-}: {
-  asset: MediaAsset;
-  tone: "amber" | "cobalt" | "neutral";
-  ratio: string;
-  title: string;
-  label: string;
-  highlight: string;
-  compact?: boolean;
-}) {
-  return (
-    <div className={["media-plate", `media-plate--${tone}`, compact ? "is-compact" : ""].join(" ")}>
-      <div className="media-plate__shell">
-        <EditorialMediaFrame
-          asset={asset}
-          aspect={ratio === "9:16" ? "portrait" : ratio === "1:1" ? "square" : "landscape"}
-          className="media-plate__media"
-          motion={Boolean(asset.videoSrc && !compact)}
-          sizes={compact ? "220px" : "420px"}
-        />
-        <div className="media-plate__meta">
-          <span>{ratio}</span>
-          <b>{highlight}</b>
+      <section className="aether-home-band">
+        <div className="aether-home-band__inner">
+          <span>Launch teams</span>
+          <span>Brand studios</span>
+          <span>Growth operators</span>
+          <span>Enterprise creative</span>
         </div>
-      </div>
-      <div className="media-plate__copy">
-        <p>{label}</p>
-        <strong>{title}</strong>
-      </div>
-    </div>
+      </section>
+
+      {phases.map((phase, index) => (
+        <section
+          key={phase.title}
+          className={[
+            "aether-phase",
+            phase.layout === "media-right" ? "aether-phase--reverse" : "",
+            index === 1 ? "aether-phase--surface" : "",
+          ].join(" ")}
+        >
+          <div className="aether-phase__media">
+            <EditorialMediaFrame
+              asset={phase.media}
+              aspect="landscape"
+              className="aether-phase__frame"
+              motion={index === 2}
+              sizes="(min-width: 1024px) 42vw, 100vw"
+            />
+          </div>
+          <div className="aether-phase__copy">
+            <p className="aether-kicker">{phase.tag}</p>
+            <h2>{phase.title}</h2>
+            <p>{phase.body}</p>
+            {index === 1 ? (
+              <div className="aether-phase__bullet">
+                <span />
+                <strong>Script, storyboard, and generation cues stay in one view.</strong>
+              </div>
+            ) : null}
+            {index === 2 ? (
+              <ul className="aether-phase__checklist">
+                <li>Real-time scene routing</li>
+                <li>Fallback-ready exports</li>
+                <li>Command-center traceability</li>
+              </ul>
+            ) : null}
+          </div>
+        </section>
+      ))}
+
+      <section className="aether-home-cta">
+        <div className="aether-home-cta__media">
+          <EditorialMediaFrame
+            asset={mediaLibrary.residentialStill}
+            aspect="wide"
+            className="aether-home-cta__frame"
+            sizes="100vw"
+          />
+        </div>
+        <div className="aether-home-cta__content">
+          <h2>Seamless delivery.</h2>
+          <p>
+            Final exports stay ready for paid media, product launches, and higher-touch stakeholder
+            review without rebuilding the system from scratch.
+          </p>
+          <div className="aether-hero-actions">
+            <Link href="/pricing" className="aether-btn aether-btn--primary">
+              Review pricing
+            </Link>
+            <Link href="/case-studies" className="aether-btn aether-btn--secondary">
+              View case studies
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <SiteFooter />
+    </main>
   );
 }

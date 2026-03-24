@@ -1,179 +1,112 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  Chip,
-  MarketingHeader,
-  PageShell,
-  SiteFooter,
-} from "@/components/site-primitives";
 import { EditorialMediaFrame, mediaForCaseStudy } from "@/components/media-system";
 import { caseStudies } from "@/components/site-data";
+import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
 import { createPublicPageMetadata } from "../seo";
 
 export const metadata: Metadata = createPublicPageMetadata({
   title: "Case Studies",
   description:
-    "Case studies showing the brief, constraints, workflow decisions, output family, and commercial outcome behind real campaign systems.",
+    "Commercial proof pages showing brief, constraints, workflow choices, outputs, and outcomes.",
   canonicalPath: "/case-studies",
 });
 
 export default function CaseStudiesPage() {
-  const [featured, ...supporting] = caseStudies;
+  const [featured, second, third, ...archive] = caseStudies;
 
   return (
-    <PageShell className="pb-16">
-      <MarketingHeader />
+    <main className="aether-marketing-page" id="main-content">
+      <MarketingHeader active="case-studies" />
 
-      <section className="page-hero case-hero">
-        <div className="case-hero__copy">
-          <Chip tone="accent">Case studies</Chip>
-          <h1 className="hero-title max-w-[8ch]">Case studies built around the actual launch decisions</h1>
-          <p className="hero-body">
-            Brief, constraints, workflow choices, approval logic, output structure, and what
-            changed commercially all stay together so the page proves the system instead of
-            summarizing it.
-          </p>
-          <div className="hero-proof-row">
-            <span>{caseStudies.length} studies</span>
-            <span>Before / after logic</span>
-            <span>Outputs tied to outcomes</span>
-          </div>
+      <section className="aether-editorial-hero">
+        <Link href={`/case-studies/${featured.slug}`} className="aether-editorial-hero__media">
+          <EditorialMediaFrame
+            asset={mediaForCaseStudy(featured.slug)}
+            aspect="wide"
+            className="aether-editorial-hero__frame"
+            sizes="(min-width: 1024px) 62vw, 100vw"
+          />
+          <span>Feature / Commercial proof</span>
+        </Link>
+        <div className="aether-editorial-hero__copy">
+          <p className="aether-kicker">Case study</p>
+          <h1>{featured.title}</h1>
+          <p>{featured.dek}</p>
+          <Link href={`/case-studies/${featured.slug}`} className="aether-inline-link">
+            Read study
+          </Link>
         </div>
-
-        <FeaturedCaseBoard study={featured} />
       </section>
 
-      <section className="case-system case-system--simple">
-        <div className="case-system__list">
-          {supporting.map((study, index) => (
-            <CaseStudyRow
-              key={study.slug}
-              study={study}
-              accent={index % 3 === 0 ? "amber" : index % 3 === 1 ? "cobalt" : "neutral"}
-              reversed={index % 2 === 1}
-            />
+      <section className="aether-editorial-column">
+        <div className="aether-editorial-column__copy">
+          <span className="aether-kicker">Before / after</span>
+          <h2>{second.title}</h2>
+          <p>{second.challenge}</p>
+          <div className="aether-proof-list">
+            <div>
+              <span>Workflow choice</span>
+              <strong>{second.approach?.[0]}</strong>
+            </div>
+            <div>
+              <span>What changed</span>
+              <strong>{second.outcomes?.[0]}</strong>
+            </div>
+          </div>
+        </div>
+        <Link href={`/case-studies/${second.slug}`} className="aether-editorial-column__media">
+          <EditorialMediaFrame
+            asset={mediaForCaseStudy(second.slug)}
+            aspect="landscape"
+            className="aether-editorial-column__frame"
+            sizes="(min-width: 1024px) 42vw, 100vw"
+          />
+        </Link>
+      </section>
+
+      <section className="aether-editorial-band">
+        <div className="aether-editorial-band__copy">
+          <span className="aether-kicker">Study focus</span>
+          <h2>{third.title}</h2>
+          <div className="aether-editorial-band__columns">
+            <p>{third.constraints?.join(" · ")}</p>
+            <p>{third.lessons?.[0] ?? third.dek}</p>
+          </div>
+          <Link href={`/case-studies/${third.slug}`} className="aether-tier-link">
+            Open proof page
+          </Link>
+        </div>
+      </section>
+
+      <section className="aether-archive">
+        <div className="aether-archive__head">
+          <div>
+            <p className="aether-kicker">The archive</p>
+            <h3>Previous studies.</h3>
+          </div>
+          <Link href="/sample-runs" className="aether-inline-link">
+            Review sample runs
+          </Link>
+        </div>
+
+        <div className="aether-archive__grid">
+          {archive.slice(0, 3).map((study) => (
+            <Link key={study.slug} href={`/case-studies/${study.slug}`} className="aether-archive__card">
+              <EditorialMediaFrame
+                asset={mediaForCaseStudy(study.slug)}
+                aspect="portrait"
+                className="aether-archive__frame"
+                sizes="(min-width: 1024px) 22vw, 100vw"
+              />
+              <span>{study.date}</span>
+              <strong>{study.title}</strong>
+            </Link>
           ))}
         </div>
       </section>
 
       <SiteFooter />
-    </PageShell>
-  );
-}
-
-function FeaturedCaseBoard({ study }: { study: (typeof caseStudies)[number] }) {
-  return (
-    <Link href={`/case-studies/${study.slug}`} className="case-lead">
-      <div className="case-lead__copy">
-        <p className="eyebrow">{study.category}</p>
-        <h2>{study.title}</h2>
-        <p>{study.dek}</p>
-        <div className="page-meta-line">
-          <span>{study.date}</span>
-          <span>{study.readTime}</span>
-          <span>{study.author}</span>
-        </div>
-
-        <div className="case-lead__logic">
-          <div>
-            <span>Before</span>
-            <p>{study.challenge}</p>
-          </div>
-          <div>
-            <span>Workflow choice</span>
-            <p>{(study.approach ?? [])[0] ?? ""}</p>
-          </div>
-          <div>
-            <span>After</span>
-            <p>{(study.outcomes ?? [])[0] ?? ""}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="case-lead__media">
-        <EditorialMediaFrame
-          asset={mediaForCaseStudy(study.slug)}
-          aspect="landscape"
-          className="case-lead__media-frame"
-          sizes="(min-width: 1280px) 28vw, 100vw"
-        />
-      </div>
-    </Link>
-  );
-}
-
-function CaseStudyRow({
-  study,
-  accent,
-  reversed,
-}: {
-  study: (typeof caseStudies)[number];
-  accent: "amber" | "cobalt" | "neutral";
-  reversed?: boolean;
-}) {
-  return (
-    <Link
-      href={`/case-studies/${study.slug}`}
-      className={[
-        "case-row",
-        reversed ? "case-row--reverse" : "",
-        accent === "amber"
-          ? "case-row--amber"
-          : accent === "cobalt"
-            ? "case-row--cobalt"
-            : "case-row--neutral",
-      ].join(" ")}
-    >
-      <div className="case-row__visual">
-        <EditorialMediaFrame
-          asset={mediaForCaseStudy(study.slug)}
-          aspect="landscape"
-          className="case-row__visual-media"
-          sizes="(min-width: 1280px) 28vw, 100vw"
-        />
-        <div className="case-row__visual-top">
-          <p>{study.category}</p>
-          <span>{study.metrics?.[0]?.value ?? "Case study"}</span>
-        </div>
-        <div className="case-row__band">
-          <div>
-            <span>Brief</span>
-            <strong>{study.challenge}</strong>
-          </div>
-          <div>
-            <span>What changed</span>
-            <strong>{(study.outcomes ?? [])[0] ?? ""}</strong>
-          </div>
-        </div>
-        <div className="case-row__outputs">
-          {(study.outputs ?? []).slice(0, 3).map((output) => (
-            <span key={`${study.slug}-${output}`}>{output}</span>
-          ))}
-        </div>
-      </div>
-
-      <div className="case-row__content">
-        <div className="space-y-3">
-          <p className="eyebrow">{study.category}</p>
-          <h3>{study.title}</h3>
-          <p>{study.dek}</p>
-        </div>
-
-        <div className="case-row__logic">
-          <div>
-            <span>Constraints</span>
-            <p>{(study.constraints ?? []).join(" · ")}</p>
-          </div>
-          <div>
-            <span>Workflow choice</span>
-            <p>{(study.approach ?? [])[1] ?? (study.approach ?? [])[0] ?? ""}</p>
-          </div>
-          <div>
-            <span>Why it mattered</span>
-            <p>{(study.lessons ?? [])[0] ?? ""}</p>
-          </div>
-        </div>
-      </div>
-    </Link>
+    </main>
   );
 }

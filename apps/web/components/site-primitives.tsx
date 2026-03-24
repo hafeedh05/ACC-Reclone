@@ -113,14 +113,22 @@ export function SiteWordmark({ compact = false }: { compact?: boolean }) {
   );
 }
 
-export function MarketingHeader({ active }: { active?: string }) {
+export function MarketingHeader({
+  active,
+  workspaceHref = "/sign-in",
+  workspaceLabel = "Sign In",
+}: {
+  active?: string;
+  workspaceHref?: string;
+  workspaceLabel?: string;
+}) {
   return (
     <header className="aether-header">
       <div className="aether-header__inner">
         <SiteWordmark />
         <nav className="aether-header__nav" aria-label="Primary">
           {[
-            { key: "platform", href: "/app/command-center", label: "Platform" },
+            { key: "platform", href: workspaceHref, label: "Platform" },
             { key: "sample-runs", href: "/sample-runs", label: "Sample Runs" },
             { key: "case-studies", href: "/case-studies", label: "Case Studies" },
             { key: "pricing", href: "/pricing", label: "Pricing" },
@@ -139,8 +147,8 @@ export function MarketingHeader({ active }: { active?: string }) {
           ))}
         </nav>
         <div className="aether-header__actions">
-          <Link href="/app" className="aether-btn aether-btn--primary">
-            Open Workspace
+          <Link href={workspaceHref} className="aether-btn aether-btn--primary">
+            {workspaceLabel}
           </Link>
         </div>
       </div>
@@ -148,7 +156,13 @@ export function MarketingHeader({ active }: { active?: string }) {
   );
 }
 
-export function ProductHeader() {
+export function ProductHeader({
+  sessionName = "Workspace live",
+  workspaceId,
+}: {
+  sessionName?: string;
+  workspaceId?: string;
+}) {
   return (
     <header className="site-shell site-shell--tight">
       <div className="topbar topbar--product">
@@ -157,8 +171,8 @@ export function ProductHeader() {
           <ButtonLink href="/app" variant="ghost" compact>
             Dashboard
           </ButtonLink>
-          <ButtonLink href="/app/projects/aster-house-launch" variant="ghost" compact>
-            Project
+          <ButtonLink href="/app/projects/new" variant="ghost" compact>
+            New Project
           </ButtonLink>
           <ButtonLink href="/app/command-center" variant="ghost" compact>
             Command Center
@@ -168,9 +182,13 @@ export function ProductHeader() {
           </ButtonLink>
         </nav>
         <div className="flex items-center gap-3">
-          <span className="status-badge status-badge--success">Workspace live</span>
+          <span className="status-badge status-badge--success">{sessionName}</span>
+          {workspaceId ? <span className="status-badge">{workspaceId}</span> : null}
           <ButtonLink href="/" variant="secondary" compact>
             Marketing site
+          </ButtonLink>
+          <ButtonLink href="/sign-out" variant="ghost" compact prefetch={false}>
+            Sign out
           </ButtonLink>
         </div>
       </div>
@@ -205,15 +223,18 @@ export function ButtonLink({
   children,
   variant = "primary",
   compact = false,
+  prefetch,
 }: {
   href: string;
   children: ReactNode;
   variant?: "primary" | "secondary" | "ghost";
   compact?: boolean;
+  prefetch?: boolean;
 }) {
   return (
     <Link
       href={href}
+      prefetch={prefetch}
       className={cn(
         "button-link",
         `button-link--${variant}`,

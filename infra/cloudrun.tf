@@ -63,6 +63,16 @@ resource "google_cloud_run_service" "web" {
         }
 
         env {
+          name = "JWT_SECRET"
+          value_from {
+            secret_key_ref {
+              name = google_secret_manager_secret.jwt_secret.secret_id
+              key  = "latest"
+            }
+          }
+        }
+
+        env {
           name  = "PUBLIC_STORAGE_UPLOADS_BUCKET"
           value = google_storage_bucket.uploads.name
         }

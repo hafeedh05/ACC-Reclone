@@ -3,7 +3,8 @@ import Link from "next/link";
 import { AetherAppShell } from "@/components/aether-app";
 import { EditorialMediaFrame, mediaForRun } from "@/components/media-system";
 import { commandStages, eventRows, outputsLibrary } from "@/components/site-data";
-import { getAdminSnapshot } from "@/lib/aether-api";
+import { getAdminSnapshot, getWorkspaceProjects } from "@/lib/aether-api";
+import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../../seo";
 
 export const metadata: Metadata = createPrivatePageMetadata({
@@ -13,13 +14,18 @@ export const metadata: Metadata = createPrivatePageMetadata({
 });
 
 export default async function CommandCenterPage() {
+  const session = await requireSession();
   const metrics = await getAdminSnapshot();
+  const workspaceProjects = await getWorkspaceProjects(session.workspaceId);
+  const leadProject = workspaceProjects[0];
 
   return (
     <AetherAppShell
       active="runs"
+      session={session}
+      projectHref={leadProject ? `/app/projects/${leadProject.id}` : "/app/projects/new"}
       title="Command Center"
-      subtitle="Live generation surface"
+      subtitle={leadProject ? `${leadProject.name} is ready to move through generation.` : "Reference command surface until your first run is approved."}
       actions={
         <div className="aether-app__meta-pair">
           <span>{metrics.overview.active_runs} active runs</span>
@@ -39,8 +45,11 @@ export default async function CommandCenterPage() {
           />
           <div className="aether-command-lead__overlay">
             <p>Live artifact</p>
-            <strong>Aster House Launch</strong>
-            <span>Reveal sequence / storyboard queued for editor desk</span>
+            <strong>{leadProject?.name ?? "Aster House Launch"}</strong>
+            <span>
+              {leadProject?.description ??
+                "Reference scene board showing how live routing, approvals, and output mapping will appear once your run starts."}
+            </span>
           </div>
         </article>
 

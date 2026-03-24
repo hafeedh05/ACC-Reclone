@@ -4,6 +4,8 @@ import Link from "next/link";
 import { AetherAppShell } from "@/components/aether-app";
 import { EditorialMediaFrame, mediaForRun } from "@/components/media-system";
 import { getProject } from "@/components/site-data";
+import { getWorkspaceProject } from "@/lib/aether-api";
+import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../../../seo";
 
 export default async function ProjectDetailPage({
@@ -11,20 +13,30 @@ export default async function ProjectDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const session = await requireSession();
   const { slug } = await params;
-  const project = getProject(slug);
+  const seededProject = getProject(slug);
+  const workspaceProject = await getWorkspaceProject(slug, session.workspaceId);
+  const project = seededProject ?? workspaceProject;
 
   if (!project) {
     notFound();
   }
 
-  const mediaSlug = project.slug === "aster-house-launch" ? "aster-house-launch" : "northstar-serum-launch";
+  const isWorkspaceProject = "workspace_id" in project;
+  const mediaSlug = isWorkspaceProject
+    ? "cobalt-travel-charger"
+    : project.slug === "aster-house-launch"
+      ? "aster-house-launch"
+      : "northstar-serum-launch";
 
   return (
     <AetherAppShell
       active="projects"
+      session={session}
+      projectHref={isWorkspaceProject ? `/app/projects/${project.id}` : "/app/projects/new"}
       title={project.name}
-      subtitle={project.status}
+      subtitle={isWorkspaceProject ? "Ready for first brief and asset ingest" : project.status}
       actions={
         <Link href="/app/command-center" className="aether-btn aether-btn--secondary">
           Open live run
@@ -44,19 +56,19 @@ export default async function ProjectDetailPage({
         <aside className="aether-project-detail__rail">
           <div>
             <span>Brief</span>
-            <strong>{project.brief}</strong>
+            <strong>{isWorkspaceProject ? project.description || "No brief captured yet." : project.brief}</strong>
           </div>
           <div>
             <span>Goals</span>
-            <p>{project.goals.join(" · ")}</p>
+            <p>{isWorkspaceProject ? "Capture goals once the brief is opened." : project.goals.join(" · ")}</p>
           </div>
           <div>
             <span>Formats</span>
-            <p>{project.formats.join(" · ")}</p>
+            <p>{isWorkspaceProject ? "9:16 · 1:1 · 16:9" : project.formats.join(" · ")}</p>
           </div>
           <div>
             <span>Assets</span>
-            <p>{project.assets.join(" · ")}</p>
+            <p>{isWorkspaceProject ? "No uploads yet" : project.assets.join(" · ")}</p>
           </div>
         </aside>
       </section>

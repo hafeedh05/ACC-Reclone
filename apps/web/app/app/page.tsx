@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { AetherAppShell } from "@/components/aether-app";
 import { EditorialMediaFrame, mediaForRun } from "@/components/media-system";
-import { projects } from "@/components/site-data";
-import { getAdminSnapshot } from "@/lib/aether-api";
+import { getAdminSnapshot, getWorkspaceProjects } from "@/lib/aether-api";
+import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../seo";
 
 export const metadata: Metadata = createPrivatePageMetadata({
@@ -13,18 +13,24 @@ export const metadata: Metadata = createPrivatePageMetadata({
 });
 
 export default async function AppPage() {
+  const session = await requireSession();
   const metrics = await getAdminSnapshot();
-  const [featured, sideOne, sideTwo] = [
-    projects.find((item) => item.slug === "northstar-serum-launch") ?? projects[0],
-    projects.find((item) => item.slug === "aster-house-launch") ?? projects[0],
-    projects[0],
+  const workspaceProjects = await getWorkspaceProjects(session.workspaceId);
+  const featuredHref = workspaceProjects[0]
+    ? `/app/projects/${workspaceProjects[0].id}`
+    : "/app/projects/new";
+  const referenceProjects = [
+    { slug: "cobalt-travel-charger", name: "Cobalt Travel Charger", status: "Reference sample run" },
+    { slug: "aster-house-launch", name: "Aster House Launch", status: "Reference command system" },
   ];
 
   return (
     <AetherAppShell
       active="dashboard"
+      session={session}
+      projectHref={featuredHref}
       title="Workspace"
-      subtitle="Active runs, project systems, and source assets"
+      subtitle={`Signed in as ${session.email}`}
       actions={
         <>
           <div className="aether-app__meta-pair">
@@ -36,49 +42,84 @@ export default async function AppPage() {
     >
       <section className="aether-workspace-section">
         <div className="aether-workspace-section__head">
-          <h2>Active video generations</h2>
-          <span>{metrics.overview.active_runs} active processes</span>
+          <h2>Workspace status</h2>
+          <span>{workspaceProjects.length} projects in your workspace</span>
         </div>
-        <div className="aether-run-grid">
-          <article className="aether-run-card is-live">
-            <div className="aether-run-card__top">
-              <div>
-                <strong>Northstar Serum Launch</strong>
-                <p>Script approved, storyboard locked, generation in progress</p>
-              </div>
-              <span>Processing</span>
+        {workspaceProjects.length ? (
+          <div className="aether-run-grid">
+            {workspaceProjects.slice(0, 2).map((project, index) => (
+              <article key={project.id} className={index === 0 ? "aether-run-card is-live" : "aether-run-card"}>
+                <div className="aether-run-card__top">
+                  <div>
+                    <strong>{project.name}</strong>
+                    <p>{project.description || "Project created and waiting for brief approval."}</p>
+                  </div>
+                  <span>{index === 0 ? "Ready" : "Queued"}</span>
+                </div>
+                <div className="aether-run-card__progress">
+                  <b style={{ width: index === 0 ? "18%" : "6%" }} />
+                </div>
+                <div className="aether-run-card__meta">
+                  <span>{index === 0 ? "Brief and assets pending" : "Project initialized"}</span>
+                  <span>{new Date(project.updated_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="aether-empty-state">
+            <div>
+              <span>No active runs yet</span>
+              <h3>Your workspace is ready for the first brief.</h3>
+              <p>Create a project, add the offer and assets, then the active run surface will populate from your own workflow instead of shared demo data.</p>
             </div>
-            <div className="aether-run-card__progress">
-              <b style={{ width: "64%" }} />
-            </div>
-            <div className="aether-run-card__meta">
-              <span>64% rendered</span>
-              <span>Est. 02:14 remaining</span>
-            </div>
-          </article>
-          <article className="aether-run-card">
-            <div className="aether-run-card__top">
-              <div>
-                <strong>Cobalt Travel Charger</strong>
-                <p>Queued for multi-cut export and delivery packaging</p>
-              </div>
-              <span>Queued</span>
-            </div>
-            <div className="aether-run-card__progress">
-              <b style={{ width: "8%" }} />
-            </div>
-            <div className="aether-run-card__meta">
-              <span>Waiting for GPU node</span>
-              <span>Est. 12:00 remaining</span>
-            </div>
-          </article>
-        </div>
+            <Link href="/app/projects/new" className="aether-btn aether-btn--primary">
+              Create project
+            </Link>
+          </div>
+        )}
       </section>
 
       <section className="aether-workspace-section">
         <div className="aether-workspace-section__head">
-          <h2>Recent campaign systems</h2>
-          <Link href="/sample-runs">View archive</Link>
+          <h2>Your project workspace</h2>
+          <Link href="/app/projects/new">Create project</Link>
+        </div>
+        {workspaceProjects.length ? (
+          <div className="aether-workspace-projects">
+            {workspaceProjects.map((project, index) => (
+              <Link
+                key={project.id}
+                href={`/app/projects/${project.id}`}
+                className={index === 0 ? "aether-workspace-project aether-workspace-project--lead" : "aether-workspace-project"}
+              >
+                <div>
+                  <span>{index === 0 ? "Lead project" : "Project"}</span>
+                  <strong>{project.name}</strong>
+                  <p>{project.description || "Ready for brief, assets, and first generation run."}</p>
+                </div>
+                <em>Open workspace</em>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="aether-empty-state">
+            <div>
+              <span>Workspace ready</span>
+              <h3>Create your first project</h3>
+              <p>Start with a project name and description. The brief, assets, and generation steps follow inside the workspace.</p>
+            </div>
+            <Link href="/app/projects/new" className="aether-btn aether-btn--primary">
+              Create first project
+            </Link>
+          </div>
+        )}
+      </section>
+
+      <section className="aether-workspace-section">
+        <div className="aether-workspace-section__head">
+          <h2>Reference systems</h2>
+          <span>Seeded sample runs</span>
         </div>
         <div className="aether-project-grid">
           <Link href="/sample-runs/cobalt-travel-charger" className="aether-project-grid__featured">
@@ -96,14 +137,14 @@ export default async function AppPage() {
                 <em>Inspect outputs</em>
               </div>
             </div>
-            <div className="aether-project-grid__badge">v2.4 ready</div>
+            <div className="aether-project-grid__badge">Reference</div>
           </Link>
 
           <div className="aether-project-grid__stack">
-            {[sideOne, sideTwo].map((project) => (
-              <Link key={project.slug} href={`/app/projects/${project.slug}`} className="aether-project-tile">
+            {referenceProjects.map((project) => (
+              <Link key={project.slug} href={`/sample-runs/${project.slug}`} className="aether-project-tile">
                 <EditorialMediaFrame
-                  asset={mediaForRun(project.slug === "aster-house-launch" ? "aster-house-launch" : "northstar-serum-launch")}
+                  asset={mediaForRun(project.slug)}
                   aspect="landscape"
                   className="aether-project-tile__frame"
                   sizes="(min-width: 1200px) 22vw, 100vw"
@@ -115,29 +156,6 @@ export default async function AppPage() {
               </Link>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="aether-workspace-section">
-        <div className="aether-workspace-section__head">
-          <h2>Asset library repository</h2>
-          <span>{featured.assets.length} source assets</span>
-        </div>
-        <div className="aether-asset-table">
-          <div className="aether-asset-table__row aether-asset-table__row--head">
-            <span>Name / File format</span>
-            <span>Resolution</span>
-            <span>Duration</span>
-            <span>Last modified</span>
-          </div>
-          {featured.assets.map((asset, index) => (
-            <div key={asset} className="aether-asset-table__row">
-              <strong>{asset.replace(/\s+/g, "_").toLowerCase()}.png</strong>
-              <span>{index === 0 ? "3840 × 2160" : "2160 × 2160"}</span>
-              <span>{index === 0 ? "00:05.2" : "-"}</span>
-              <span>{index === 0 ? "Mar 24, 2026" : "Mar 23, 2026"}</span>
-            </div>
-          ))}
         </div>
       </section>
     </AetherAppShell>

@@ -6,6 +6,7 @@ import {
   mediaForRun,
 } from "@/components/media-system";
 import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
+import { getSession } from "@/lib/auth";
 import { buildJsonLd, createPublicPageMetadata, organizationJsonLd, softwareApplicationJsonLd } from "./seo";
 
 export const metadata: Metadata = createPublicPageMetadata({
@@ -42,7 +43,11 @@ const phases = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await getSession();
+  const workspaceHref = session ? "/app" : "/sign-in";
+  const workspaceLabel = session ? "Open Workspace" : "Sign In";
+
   return (
     <main className="aether-marketing-page" id="main-content">
       <script
@@ -56,7 +61,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: buildJsonLd(softwareApplicationJsonLd()) }}
       />
 
-      <MarketingHeader />
+      <MarketingHeader workspaceHref={workspaceHref} workspaceLabel={workspaceLabel} />
 
       <section className="aether-home-hero">
         <div className="aether-home-hero__media">
@@ -78,8 +83,8 @@ export default function HomePage() {
             output family built for 9:16, 1:1, and 16:9.
           </p>
           <div className="aether-hero-actions">
-            <Link href="/app" className="aether-btn aether-btn--primary">
-              Open Workspace
+            <Link href={workspaceHref} className="aether-btn aether-btn--primary">
+              {session ? "Open Workspace" : "Sign in to Platform"}
             </Link>
             <Link
               href="/sample-runs/cobalt-travel-charger"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { MarketingHeader, SiteFooter } from "@/components/site-primitives";
 import { pricingTiers } from "@/components/site-data";
+import { getSession } from "@/lib/auth";
 import { createPublicPageMetadata } from "../seo";
 
 export const metadata: Metadata = createPublicPageMetadata({
@@ -29,10 +30,14 @@ const logic = [
   },
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const session = await getSession();
+  const workspaceHref = session ? "/app" : "/sign-in";
+  const workspaceLabel = session ? "Open Workspace" : "Sign In";
+
   return (
     <main className="aether-marketing-page" id="main-content">
-      <MarketingHeader active="pricing" />
+      <MarketingHeader active="pricing" workspaceHref={workspaceHref} workspaceLabel={workspaceLabel} />
 
       <section className="aether-pricing-hero">
         <div className="aether-pricing-hero__copy">
@@ -153,8 +158,8 @@ export default function PricingPage() {
             rebuilding the workflow every launch.
           </p>
           <div className="aether-hero-actions">
-            <Link href="/app" className="aether-btn aether-btn--primary">
-              Start a run
+            <Link href={workspaceHref} className="aether-btn aether-btn--primary">
+              {session ? "Start a run" : "Sign in to start a run"}
             </Link>
             <Link href="/contact" className="aether-btn aether-btn--secondary">
               Request pricing

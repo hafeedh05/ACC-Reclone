@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { OutputsLibrarySurface } from "@/components/product-surfaces";
 import { ProductHeader } from "@/components/site-primitives";
+import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../../seo";
 
 export const metadata: Metadata = createPrivatePageMetadata({
@@ -9,10 +10,12 @@ export const metadata: Metadata = createPrivatePageMetadata({
   canonicalPath: "/app/outputs",
 });
 
-export default function OutputsPage() {
+export default async function OutputsPage() {
+  const session = await requireSession();
+
   return (
     <main className="site-shell pb-16" id="main-content">
-      <ProductHeader />
+      <ProductHeader sessionName={session.name} workspaceId={session.workspaceId} />
       <OutputsLibrarySurface />
     </main>
   );

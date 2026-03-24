@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { requireSession } from "@/lib/auth";
 
 export const metadata: Metadata = {
   robots: {
@@ -7,10 +8,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AppLayout({
+export default async function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await requireSession();
   return children;
 }

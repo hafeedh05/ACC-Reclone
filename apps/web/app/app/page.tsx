@@ -26,6 +26,7 @@ export default async function AppPage() {
     ? ["Confirm the brief", "Upload assets", "Open command center"]
     : ["Create project", "Add the brief", "Upload assets"];
   const recentProjects = workspaceProjects.slice(0, 3);
+  const hasProjects = workspaceProjects.length > 0;
 
   return (
     <AetherAppShell
@@ -52,23 +53,25 @@ export default async function AppPage() {
               <Link href={projectHref} className="aether-btn aether-btn--primary">
                 {leadProject ? "Open project" : "Create project"}
               </Link>
-              <Link href="/app/command-center" className="aether-btn aether-btn--secondary">
-                Open command center
-              </Link>
+              {hasProjects ? (
+                <Link href="/app/command-center" className="aether-btn aether-btn--secondary">
+                  Open command center
+                </Link>
+              ) : null}
             </div>
           </article>
 
-          <div className="aether-overview__list">
-            <div className="aether-overview__list-head">
-              <div>
-                <h3>Recent projects</h3>
-                <span>{workspaceProjects.length} in workspace</span>
+          {hasProjects ? (
+            <div className="aether-overview__list">
+              <div className="aether-overview__list-head">
+                <div>
+                  <h3>Recent projects</h3>
+                  <span>{workspaceProjects.length} in workspace</span>
+                </div>
+                <Link href="/app/projects" className="aether-inline-link">
+                  View all
+                </Link>
               </div>
-              <Link href="/app/projects" className="aether-inline-link">
-                View all
-              </Link>
-            </div>
-            {recentProjects.length ? (
               <div className="aether-overview__rows">
                 {recentProjects.map((project) => (
                   <Link key={project.id} href={`/app/projects/${project.id}`} className="aether-overview__row">
@@ -85,49 +88,38 @@ export default async function AppPage() {
                   </Link>
                 ))}
               </div>
-            ) : (
-              <div className="aether-panel aether-overview__empty">
-                <p className="aether-kicker">Workspace ready</p>
-                <h3>Create your first project</h3>
-                <p>The overview will track brief, assets, and outputs once a project exists.</p>
-                <Link href="/app/projects/new" className="aether-btn aether-btn--primary">
-                  Create project
-                </Link>
-              </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="aether-panel aether-overview__zero">
+              <p className="aether-kicker">Workspace ready</p>
+              <h3>What happens next</h3>
+              <p>Once the first project exists, this overview tracks brief, assets, approvals, and outputs.</p>
+              <ol className="aether-step-list">
+                {nextSteps.map((step, index) => (
+                  <li key={step}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <strong>{step}</strong>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
         </div>
 
         <aside className="aether-overview__rail">
-          <div className="aether-panel">
-            <p className="aether-kicker">Workspace pulse</p>
-            <div className="aether-overview__metrics">
-              <div>
-                <span>Active runs</span>
-                <strong>{metrics.overview.active_runs}</strong>
-              </div>
-              <div>
-                <span>Queued jobs</span>
-                <strong>{metrics.overview.queued_jobs}</strong>
-              </div>
-              <div>
-                <span>Ready variants</span>
-                <strong>{metrics.summary.variant_count}</strong>
-              </div>
+          {hasProjects ? (
+            <div className="aether-panel">
+              <p className="aether-kicker">Next action</p>
+              <ol className="aether-step-list">
+                {nextSteps.map((step, index) => (
+                  <li key={step}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    <strong>{step}</strong>
+                  </li>
+                ))}
+              </ol>
             </div>
-          </div>
-
-          <div className="aether-panel">
-            <p className="aether-kicker">Next action</p>
-            <ol className="aether-step-list">
-              {nextSteps.map((step, index) => (
-                <li key={step}>
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <strong>{step}</strong>
-                </li>
-              ))}
-            </ol>
-          </div>
+          ) : null}
 
           <div className="aether-panel aether-overview__reference">
             <p className="aether-kicker">Reference run</p>

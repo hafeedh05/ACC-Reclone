@@ -24,6 +24,7 @@ function apiBaseUrl() {
   return (
     process.env.AD_COMMAND_CENTER_API_URL ??
     process.env.NEXT_PUBLIC_API_URL ??
+    process.env.API_BASE_URL ??
     "https://ad-command-center-dev-api-k66jrtxjhq-uc.a.run.app"
   );
 }

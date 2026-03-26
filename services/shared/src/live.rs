@@ -69,10 +69,16 @@ pub fn provider_suite_from_env() -> ProviderSuite {
         .build()
         .unwrap_or_else(|_| Client::new());
 
-    let openai_key = clean_env_var("OPENAI_API_KEY").filter(|value| is_live_credential(value));
-    let gemini_key = clean_env_var("GEMINI_API_KEY").filter(|value| is_live_credential(value));
+    let openai_key = clean_env_var("OPENAI_API_KEY")
+        .or_else(|| clean_env_var("OPENAI_KEY"))
+        .filter(|value| is_live_credential(value));
+    let gemini_key = clean_env_var("GEMINI_API_KEY")
+        .or_else(|| clean_env_var("GOOGLE_API_KEY"))
+        .filter(|value| is_live_credential(value));
     let project_id = clean_env_var("PROJECT_ID").or_else(|| clean_env_var("GCP_PROJECT_ID"));
-    let region = clean_env_var("REGION").unwrap_or_else(|| DEFAULT_VERTEX_REGION.to_string());
+    let region = clean_env_var("REGION")
+        .or_else(|| clean_env_var("GCP_REGION"))
+        .unwrap_or_else(|| DEFAULT_VERTEX_REGION.to_string());
     let openai_model =
         clean_env_var("OPENAI_SCRIPT_MODEL").unwrap_or_else(|| DEFAULT_OPENAI_MODEL.to_string());
     let gemini_model =

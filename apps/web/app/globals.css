@@ -18783,3 +18783,34 @@ select:focus-visible {
   color: var(--aether-muted);
   font-size: 0.8rem;
 }
+.aether-overview__zero {
+  gap: 1.1rem;
+}
+
+.aether-overview__zero p {
+  color: var(--aether-soft);
+}
+
+.aether-command-brief {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.aether-command-brief__block {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.aether-command-brief__block + .aether-command-brief__block {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-command-panel__note {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 0.35rem;
+  color: var(--aether-soft);
+}

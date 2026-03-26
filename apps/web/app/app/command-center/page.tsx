@@ -42,41 +42,39 @@ export default async function CommandCenterPage() {
     >
       <section className="aether-command-shell">
         <aside className="aether-command-shell__rail">
-          <div className="aether-command-panel">
-            <p className="aether-kicker">Brief</p>
-            <strong>{leadProject?.name ?? "Reference run"}</strong>
-            <span>{briefSummary}</span>
-          </div>
-          <div className="aether-command-panel">
-            <p className="aether-kicker">Assets</p>
-            {assets.map((asset) => (
-              <div key={asset} className="aether-command-panel__row">
-                <strong>{asset}</strong>
-                <span>Queued</span>
-              </div>
-            ))}
-          </div>
-          <div className="aether-command-panel">
-            <p className="aether-kicker">Formats</p>
-            {[
-              "9:16",
-              "1:1",
-              "16:9",
-            ].map((format) => (
-              <div key={format} className="aether-command-panel__row">
-                <strong>{format}</strong>
-                <span>Planned</span>
-              </div>
-            ))}
-          </div>
-          <div className="aether-command-panel">
-            <p className="aether-kicker">Approvals</p>
-            {approvals.map((approval) => (
-              <div key={approval} className="aether-command-panel__row">
-                <strong>{approval}</strong>
-                <span>Waiting</span>
-              </div>
-            ))}
+          <div className="aether-panel aether-command-brief">
+            <div className="aether-command-brief__block">
+              <p className="aether-kicker">Brief</p>
+              <strong>{leadProject?.name ?? "Reference run"}</strong>
+              <span>{briefSummary}</span>
+            </div>
+            <div className="aether-command-brief__block">
+              <p className="aether-kicker">Assets</p>
+              {assets.map((asset) => (
+                <div key={asset} className="aether-command-panel__row">
+                  <strong>{asset}</strong>
+                  <span>Queued</span>
+                </div>
+              ))}
+            </div>
+            <div className="aether-command-brief__block">
+              <p className="aether-kicker">Formats</p>
+              {["9:16", "1:1", "16:9"].map((format) => (
+                <div key={format} className="aether-command-panel__row">
+                  <strong>{format}</strong>
+                  <span>Planned</span>
+                </div>
+              ))}
+            </div>
+            <div className="aether-command-brief__block">
+              <p className="aether-kicker">Approvals</p>
+              {approvals.map((approval) => (
+                <div key={approval} className="aether-command-panel__row">
+                  <strong>{approval}</strong>
+                  <span>Waiting</span>
+                </div>
+              ))}
+            </div>
           </div>
         </aside>
 
@@ -131,6 +129,10 @@ export default async function CommandCenterPage() {
                 <span>{output.status}</span>
               </div>
             ))}
+            <div className="aether-command-panel__note">
+              <strong>Recovery ready</strong>
+              <span>Still-led assembly keeps the run moving if a motion beat slips.</span>
+            </div>
           </div>
           <div className="aether-command-panel">
             <div className="aether-workspace-section__head">
@@ -152,14 +154,6 @@ export default async function CommandCenterPage() {
             <Link href="/sample-runs/cobalt-travel-charger" className="aether-inline-link">
               Review sample run
             </Link>
-          </div>
-          <div className="aether-command-panel">
-            <div className="aether-workspace-section__head">
-              <h2>Recovery</h2>
-              <span>Fallback ready</span>
-            </div>
-            <strong>Still-led assembly is armed for the live scene.</strong>
-            <span>Performance and brand cuts keep moving even if one motion beat slips.</span>
           </div>
         </aside>
       </section>

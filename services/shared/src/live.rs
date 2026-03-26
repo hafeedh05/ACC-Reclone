@@ -72,12 +72,11 @@ pub fn provider_suite_from_env() -> ProviderSuite {
     let openai_key = clean_env_var("OPENAI_API_KEY").filter(|value| is_live_credential(value));
     let gemini_key = clean_env_var("GEMINI_API_KEY").filter(|value| is_live_credential(value));
     let project_id = clean_env_var("PROJECT_ID").or_else(|| clean_env_var("GCP_PROJECT_ID"));
-    let region = clean_env_var("REGION")
-        .unwrap_or_else(|| DEFAULT_VERTEX_REGION.to_string());
-    let openai_model = clean_env_var("OPENAI_SCRIPT_MODEL")
-        .unwrap_or_else(|| DEFAULT_OPENAI_MODEL.to_string());
-    let gemini_model = clean_env_var("GEMINI_VIDEO_MODEL")
-        .unwrap_or_else(|| DEFAULT_GEMINI_MODEL.to_string());
+    let region = clean_env_var("REGION").unwrap_or_else(|| DEFAULT_VERTEX_REGION.to_string());
+    let openai_model =
+        clean_env_var("OPENAI_SCRIPT_MODEL").unwrap_or_else(|| DEFAULT_OPENAI_MODEL.to_string());
+    let gemini_model =
+        clean_env_var("GEMINI_VIDEO_MODEL").unwrap_or_else(|| DEFAULT_GEMINI_MODEL.to_string());
 
     let script: Arc<dyn ScriptProvider> = if let Some(api_key) = openai_key.clone() {
         Arc::new(OpenAiScriptProvider {

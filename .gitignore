@@ -1,0 +1,39 @@
+# Node
+node_modules/
+.pnpm-store/
+.next/
+dist/
+.terraform/
+
+# Rust
+target/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Nested generator repos that should not survive into the root repo
+apps/web/.git/
+services/api/.git/
+services/orchestrator/.git/
+services/workers/.git/
+
+# Legacy prototype runtime artifacts
+legacy/prototype/.env
+legacy/prototype/venv/
+legacy/prototype/generated_videos/
+legacy/prototype/helper/generated_videos/
+legacy/prototype/__pycache__/
+legacy/prototype/helper/__pycache__/
+legacy/prototype/helper/kie/__pycache__/
+
+# Local build artifacts
+coverage/
+output/
+tmp/

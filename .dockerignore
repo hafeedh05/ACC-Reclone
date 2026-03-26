@@ -1,0 +1,13 @@
+.git
+.github
+.DS_Store
+node_modules
+.pnpm-store
+apps/web/.next
+apps/web/node_modules
+services/target
+legacy/prototype/venv
+legacy/prototype/generated_videos
+legacy/prototype/helper/generated_videos
+legacy/prototype/.env
+*.log

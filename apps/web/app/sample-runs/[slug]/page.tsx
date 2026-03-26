@@ -70,7 +70,7 @@ export default async function SampleRunDetailPage({
         <div className="aether-run-detail__header-copy">
           <div className="aether-run-detail__eyebrow-row">
             <span>{run.industry}</span>
-            <span>Version 2.4</span>
+            <span>Sample system</span>
           </div>
           <h1>{run.title}</h1>
           <p>{run.brief}</p>
@@ -162,7 +162,7 @@ export default async function SampleRunDetailPage({
                     className={index === 0 ? "is-active" : undefined}
                   >
                     <span>{output.name}</span>
-                    <b>{index === 0 ? "●" : "○"}</b>
+                    <em>{index === 0 ? "Active" : "Queued"}</em>
                   </div>
                 ))}
               </div>

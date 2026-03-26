@@ -18081,3 +18081,705 @@ select:focus-visible {
     min-width: 0;
   }
 }
+
+/* App flow refinement */
+.aether-app {
+  grid-template-columns: 15rem minmax(0, 1fr);
+}
+
+.aether-app__sidebar {
+  padding: 2.25rem 1.5rem;
+}
+
+.aether-app__nav-link {
+  min-height: 2.5rem;
+  border-radius: 0.85rem;
+  padding: 0 0.9rem;
+  color: rgba(229, 226, 225, 0.62);
+  background: transparent;
+  letter-spacing: 0.02em;
+}
+
+.aether-app__nav-link:hover {
+  color: var(--aether-text);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.aether-app__nav-link.is-active {
+  color: var(--aether-text);
+  background: rgba(255, 184, 111, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 184, 111, 0.25);
+}
+
+.aether-app__header {
+  padding: 1.75rem 2.5rem;
+}
+
+.aether-app__header-title p {
+  color: var(--aether-soft);
+  max-width: 38rem;
+}
+
+.aether-app__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.aether-app__session-chip {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.aether-app__content {
+  padding: 1.5rem 2.5rem 4rem;
+  gap: 2rem;
+}
+
+.aether-app__flow {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.2rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(28, 27, 27, 0.65);
+}
+
+.aether-app__flow-label {
+  color: var(--aether-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.6rem;
+  font-weight: 700;
+}
+
+.aether-app__flow-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.6rem;
+}
+
+.aether-app__flow-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--aether-soft);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.8rem;
+}
+
+.aether-app__flow-step.is-active {
+  color: var(--aether-text);
+  border-color: rgba(255, 184, 111, 0.35);
+  background: rgba(255, 184, 111, 0.12);
+}
+
+.aether-panel {
+  background: var(--aether-surface);
+  border-radius: 0.95rem;
+  padding: 1.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: grid;
+  gap: 0.85rem;
+}
+
+.aether-step-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.aether-step-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--aether-text);
+}
+
+.aether-step-list span {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aether-muted);
+}
+
+.aether-step-list li.is-active span {
+  color: var(--aether-accent);
+  border-color: rgba(255, 184, 111, 0.4);
+}
+
+.aether-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.aether-overview__main {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aether-overview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.aether-overview__list {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-overview__list-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.aether-overview__list-head span {
+  color: var(--aether-soft);
+  font-size: 0.85rem;
+}
+
+.aether-overview__rows {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.aether-overview__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--aether-text);
+}
+
+.aether-overview__row span {
+  color: var(--aether-soft);
+  font-size: 0.85rem;
+}
+
+.aether-overview__row em {
+  color: var(--aether-muted);
+  font-style: normal;
+  font-size: 0.8rem;
+}
+
+.aether-overview__metrics {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.aether-overview__metrics div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.aether-overview__reference {
+  gap: 1rem;
+}
+
+.aether-overview__reference-frame {
+  border-radius: 0.7rem;
+  overflow: hidden;
+}
+
+.aether-projects {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.aether-projects__main {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aether-projects__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.aether-projects__head p {
+  color: var(--aether-soft);
+}
+
+.aether-projects__list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.aether-project-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.35rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--aether-text);
+}
+
+.aether-project-row span {
+  color: var(--aether-soft);
+  font-size: 0.85rem;
+}
+
+.aether-project-row__meta {
+  text-align: right;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.aether-project-row__meta em {
+  color: var(--aether-accent);
+  font-style: normal;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.aether-projects__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--aether-soft);
+}
+
+.aether-btn.is-disabled {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.aether-project-create--flow {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: 2.5rem;
+}
+
+.aether-project-create__rail {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aether-project-create__meta {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.9rem;
+  padding: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-project-flow {
+  display: grid;
+  grid-template-columns: 14rem minmax(0, 1fr) 20rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.aether-project-flow__nav {
+  display: grid;
+  gap: 0.6rem;
+  position: sticky;
+  top: 7.5rem;
+}
+
+.aether-project-flow__nav-link {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--aether-soft);
+}
+
+.aether-project-flow__nav-link strong {
+  color: var(--aether-text);
+  font-size: 0.9rem;
+}
+
+.aether-project-flow__nav-link span {
+  font-size: 0.75rem;
+}
+
+.aether-project-flow__nav-link.is-active {
+  border-color: rgba(255, 184, 111, 0.35);
+  background: rgba(255, 184, 111, 0.08);
+  color: var(--aether-text);
+}
+
+.aether-project-flow__content {
+  min-width: 0;
+}
+
+.aether-project-flow__rail {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-project-flow__rail-actions {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.aether-project-view {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aether-project-view__hero {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-project-view__hero-copy {
+  max-width: 32rem;
+}
+
+.aether-project-view__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.aether-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.aether-bullet-list li {
+  padding-left: 1rem;
+  position: relative;
+  color: var(--aether-soft);
+}
+
+.aether-bullet-list li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: var(--aether-accent);
+}
+
+.aether-chip-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.aether-chip-grid span {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.8rem;
+}
+
+.aether-asset-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.aether-asset-list div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.aether-asset-list span {
+  color: var(--aether-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.aether-approval-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.aether-approval-list span {
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.85rem;
+}
+
+.aether-output-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.aether-output-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-command-shell {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr) 20rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.aether-command-shell__rail,
+.aether-command-shell__ops {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-command-shell__stage {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aether-command-stage {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: var(--aether-surface);
+}
+
+.aether-command-stage__overlay {
+  position: absolute;
+  inset: auto 1.5rem 1.5rem 1.5rem;
+  background: rgba(19, 19, 19, 0.7);
+  border-radius: 0.85rem;
+  padding: 1rem 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.aether-command-stage__overlay span {
+  color: var(--aether-soft);
+  font-size: 0.85rem;
+}
+
+.aether-command-stage__spine {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-outputs-lead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.6rem 2rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.aether-outputs-lead p {
+  color: var(--aether-soft);
+}
+
+.aether-outputs-lead__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.outputs-library-header--compact {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.outputs-library-header__compact {
+  color: var(--aether-soft);
+  max-width: 30rem;
+}
+
+.outputs-library-header--compact .outputs-library-header__actions {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.aether-settings {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.aether-settings__main {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.aether-settings__rail {
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-settings__actions {
+  margin-top: 0.75rem;
+}
+
+.aether-run-detail__sidebar {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.aether-run-detail__sidebar-block {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.aether-run-detail__sidebar-block:last-child {
+  border-bottom: none;
+}
+
+.aether-run-detail__hero {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 3rem;
+}
+
+.aether-run-detail__variants {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.aether-run-detail__variant h3,
+.aether-run-detail__explorer h3 {
+  font-size: 1rem;
+}
+
+.aether-run-detail__explorer {
+  border-radius: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 1.5rem;
+}
+
+.aether-run-detail__script {
+  border-radius: 1rem;
+}
+
+@media (max-width: 1200px) {
+  .aether-app {
+    grid-template-columns: 13.5rem minmax(0, 1fr);
+  }
+
+  .aether-project-flow {
+    grid-template-columns: 12rem minmax(0, 1fr) 18rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .aether-overview,
+  .aether-projects,
+  .aether-project-flow,
+  .aether-command-shell,
+  .aether-settings {
+    grid-template-columns: 1fr;
+  }
+
+  .aether-project-view__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .aether-overview__rail,
+  .aether-projects__rail,
+  .aether-project-flow__rail,
+  .aether-command-shell__rail,
+  .aether-command-shell__ops,
+  .aether-settings__rail {
+    order: 2;
+  }
+
+  .aether-project-flow__nav {
+    position: static;
+  }
+
+  .aether-command-shell__stage {
+    order: 1;
+  }
+
+  .aether-run-detail__hero {
+    grid-template-columns: 1fr;
+  }
+
+  .aether-run-detail__variants {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .aether-app__header {
+    padding: 1.4rem 1.5rem;
+  }
+
+  .aether-app__content {
+    padding: 1.2rem 1.5rem 3rem;
+  }
+
+  .aether-outputs-lead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .aether-app__flow-steps {
+    grid-template-columns: 1fr;
+  }
+}
+.aether-command-shell .aether-command-panel {
+  padding: 1.4rem;
+}
+.aether-project-view__frame {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.outputs-library-header--compact {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.outputs-library-header--compact .outputs-library-header__actions {
+  align-items: flex-start;
+  width: 100%;
+}
+.aether-run-detail__explorer-list em {
+  font-style: normal;
+  color: var(--aether-muted);
+  font-size: 0.8rem;
+}

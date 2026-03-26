@@ -852,7 +852,7 @@ function CommandBriefRail() {
   );
 }
 
-export function OutputsLibrarySurface() {
+export function OutputsLibrarySurface({ compact = false }: { compact?: boolean }) {
   const [mode, setMode] = useState<"grid" | "list">("grid");
   const [selectedFilter, setSelectedFilter] = useState<(typeof outputFilterOptions)[number]>("All");
 
@@ -862,12 +862,19 @@ export function OutputsLibrarySurface() {
 
   return (
     <div className="app-surface app-surface--outputs">
-      <section className="outputs-library-header">
-        <SectionIntro
-          eyebrow="Outputs"
-          title="An output library that feels finished instead of leftover"
-          body="Variants stay easy to scan, actions stay elegant, and the final package is useful to the next team the moment it arrives."
-        />
+      <section className={compact ? "outputs-library-header outputs-library-header--compact" : "outputs-library-header"}>
+        {compact ? (
+          <div className="outputs-library-header__compact">
+            <p className="aether-kicker">Library filters</p>
+            <p>View variants by intent and output type.</p>
+          </div>
+        ) : (
+          <SectionIntro
+            eyebrow="Outputs"
+            title="An output library that feels finished instead of leftover"
+            body="Variants stay easy to scan, actions stay elegant, and the final package is useful to the next team the moment it arrives."
+          />
+        )}
         <div className="outputs-library-header__actions">
           <div className="toggle-row" role="tablist" aria-label="View mode">
             <button

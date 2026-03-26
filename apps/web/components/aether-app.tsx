@@ -7,15 +7,16 @@ function cn(...parts: Array<string | false | null | undefined>) {
 }
 
 const workspaceNav = [
-  { key: "dashboard", label: "Dashboard", href: "/app" },
-  { key: "projects", label: "Projects", href: "/app/projects/aster-house-launch" },
-  { key: "assets", label: "Assets", href: "/sample-runs" },
-  { key: "runs", label: "Runs", href: "/app/command-center" },
-  { key: "settings", label: "Settings", href: "/pricing" },
+  { key: "overview", label: "Overview", href: "/app" },
+  { key: "projects", label: "Projects", href: "/app/projects" },
+  { key: "command", label: "Command Center", href: "/app/command-center" },
+  { key: "outputs", label: "Outputs", href: "/app/outputs" },
+  { key: "settings", label: "Settings", href: "/app/settings" },
 ];
 
 export function AetherAppShell({
   active,
+  flowStep,
   title,
   subtitle,
   session,
@@ -24,6 +25,7 @@ export function AetherAppShell({
   children,
 }: {
   active: string;
+  flowStep?: string;
   title: string;
   subtitle: string;
   session: PlatformSession;
@@ -31,6 +33,14 @@ export function AetherAppShell({
   actions?: ReactNode;
   children: ReactNode;
 }) {
+  const flowSteps = [
+    { key: "overview", label: "Overview", href: "/app" },
+    { key: "projects", label: "Projects & brief", href: "/app/projects" },
+    { key: "setup", label: "Project setup", href: projectHref },
+    { key: "command", label: "Command center", href: "/app/command-center" },
+    { key: "outputs", label: "Outputs", href: "/app/outputs" },
+  ];
+
   return (
     <main className="aether-app" id="main-content">
       <aside className="aether-app__sidebar">
@@ -43,7 +53,7 @@ export function AetherAppShell({
           {workspaceNav.map((item) => (
             <Link
               key={item.key}
-              href={item.key === "projects" ? projectHref : item.href}
+              href={item.key === "projects" ? "/app/projects" : item.href}
               className={cn(
                 "aether-app__nav-link",
                 active === item.key && "is-active",
@@ -70,20 +80,41 @@ export function AetherAppShell({
 
       <div className="aether-app__canvas">
         <header className="aether-app__header">
-          <div>
+          <div className="aether-app__header-title">
             <h1>{title}</h1>
             <p>{subtitle}</p>
           </div>
           <div className="aether-app__header-actions">
+            {actions}
             <div className="aether-app__session-chip">
               <strong>{session.name}</strong>
               <span>{session.workspaceId}</span>
             </div>
-            {actions}
           </div>
         </header>
 
-        <div className="aether-app__content">{children}</div>
+        <div className="aether-app__content">
+          {flowStep ? (
+            <nav className="aether-app__flow" aria-label="Workflow">
+              <p className="aether-app__flow-label">Workflow path</p>
+              <div className="aether-app__flow-steps">
+                {flowSteps.map((step) => (
+                  <Link
+                    key={step.key}
+                    href={step.href}
+                    className={cn(
+                      "aether-app__flow-step",
+                      flowStep === step.key && "is-active",
+                    )}
+                  >
+                    <span>{step.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </nav>
+          ) : null}
+          {children}
+        </div>
       </div>
     </main>
   );

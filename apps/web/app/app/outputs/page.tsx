@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { OutputsLibrarySurface } from "@/components/product-surfaces";
-import { ProductHeader } from "@/components/site-primitives";
+import { AetherAppShell } from "@/components/aether-app";
+import { getWorkspaceProjects } from "@/lib/aether-api";
 import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../../seo";
 
@@ -12,11 +13,33 @@ export const metadata: Metadata = createPrivatePageMetadata({
 
 export default async function OutputsPage() {
   const session = await requireSession();
+  const workspaceProjects = await getWorkspaceProjects(session.workspaceId);
+  const leadProject = workspaceProjects[0];
 
   return (
-    <main className="site-shell pb-16" id="main-content">
-      <ProductHeader sessionName={session.name} workspaceId={session.workspaceId} />
-      <OutputsLibrarySurface />
-    </main>
+    <AetherAppShell
+      active="outputs"
+      flowStep="outputs"
+      session={session}
+      projectHref={leadProject ? `/app/projects/${leadProject.id}` : "/app/projects/new"}
+      title="Outputs"
+      subtitle="Deliverable variants grouped by intent and ratio."
+    >
+      <section className="aether-outputs-lead">
+        <div>
+          <h2>Delivery pack</h2>
+          <p>Outputs stay grouped by intent with clear actions for publish, download, or share.</p>
+        </div>
+        <div className="aether-outputs-lead__actions">
+          <button type="button" className="aether-btn aether-btn--primary">
+            Download pack
+          </button>
+          <button type="button" className="aether-btn aether-btn--secondary">
+            Share package
+          </button>
+        </div>
+      </section>
+      <OutputsLibrarySurface compact />
+    </AetherAppShell>
   );
 }

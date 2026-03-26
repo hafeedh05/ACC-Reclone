@@ -47,19 +47,42 @@ export default async function NewProjectPage({
   return (
     <AetherAppShell
       active="projects"
+      flowStep="setup"
       session={session}
       projectHref={workspaceProjects[0] ? `/app/projects/${workspaceProjects[0].id}` : "/app/projects/new"}
       title="Create project"
-      subtitle="Start a user-scoped workspace project"
+      subtitle="Start the brief and asset flow for a new run."
     >
-      <section className="aether-project-create">
-        <div className="aether-project-create__intro">
-          <span>Workspace owner</span>
-          <h2>{session.name}</h2>
+      <section className="aether-project-create aether-project-create--flow">
+        <div className="aether-project-create__rail">
+          <p className="aether-kicker">Project setup</p>
+          <h2>Begin with a clean brief.</h2>
           <p>
-            Projects created here are scoped to <strong>{session.email}</strong> and stay tied to
-            workspace <strong>{session.workspaceId}</strong>.
+            Projects stay scoped to your workspace. Add the campaign intent now, then attach assets
+            and approvals inside the project workspace.
           </p>
+          <ol className="aether-step-list">
+            <li className="is-active">
+              <span>01</span>
+              <strong>Project basics</strong>
+            </li>
+            <li>
+              <span>02</span>
+              <strong>Brief and assets</strong>
+            </li>
+            <li>
+              <span>03</span>
+              <strong>Approval gates</strong>
+            </li>
+          </ol>
+          <div className="aether-project-create__meta">
+            <span>Workspace owner</span>
+            <strong>{session.name}</strong>
+            <p>
+              Projects created here are scoped to <strong>{session.email}</strong> and tied to workspace
+              <strong> {session.workspaceId}</strong>.
+            </p>
+          </div>
         </div>
 
         <form action={createProjectAction} className="aether-project-create__form">

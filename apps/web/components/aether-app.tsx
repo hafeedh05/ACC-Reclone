@@ -16,31 +16,19 @@ const workspaceNav = [
 
 export function AetherAppShell({
   active,
-  flowStep,
   title,
   subtitle,
   session,
-  projectHref = "/app/projects/new",
   actions,
   children,
 }: {
   active: string;
-  flowStep?: string;
   title: string;
   subtitle: string;
   session: PlatformSession;
-  projectHref?: string;
   actions?: ReactNode;
   children: ReactNode;
 }) {
-  const flowSteps = [
-    { key: "overview", label: "Overview", href: "/app" },
-    { key: "projects", label: "Projects & brief", href: "/app/projects" },
-    { key: "setup", label: "Project setup", href: projectHref },
-    { key: "command", label: "Command center", href: "/app/command-center" },
-    { key: "outputs", label: "Outputs", href: "/app/outputs" },
-  ];
-
   return (
     <main className="aether-app" id="main-content">
       <aside className="aether-app__sidebar">
@@ -65,9 +53,6 @@ export function AetherAppShell({
         </nav>
 
         <div className="aether-app__sidebar-footer">
-          <Link href="/app/projects/new" className="aether-btn aether-btn--primary aether-btn--full">
-            New generation
-          </Link>
           <div className="aether-app__sidebar-meta">
             <span>{session.name}</span>
             <span>{session.email}</span>
@@ -88,31 +73,12 @@ export function AetherAppShell({
             {actions}
             <div className="aether-app__session-chip">
               <strong>{session.name}</strong>
-              <span>{session.workspaceId}</span>
+              <span>{session.email}</span>
             </div>
           </div>
         </header>
 
         <div className="aether-app__content">
-          {flowStep ? (
-            <nav className="aether-app__flow" aria-label="Workflow">
-              <p className="aether-app__flow-label">Workflow path</p>
-              <div className="aether-app__flow-steps">
-                {flowSteps.map((step) => (
-                  <Link
-                    key={step.key}
-                    href={step.href}
-                    className={cn(
-                      "aether-app__flow-step",
-                      flowStep === step.key && "is-active",
-                    )}
-                  >
-                    <span>{step.label}</span>
-                  </Link>
-                ))}
-              </div>
-            </nav>
-          ) : null}
           {children}
         </div>
       </div>

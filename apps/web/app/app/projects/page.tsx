@@ -21,7 +21,6 @@ export default async function ProjectsPage({
   const session = await requireSession();
   const workspaceProjects = await getWorkspaceProjects(session.workspaceId);
   const leadProject = workspaceProjects[0];
-  const projectHref = leadProject ? `/app/projects/${leadProject.id}` : "/app/projects/new";
   const params = await searchParams;
   const pageParam = Number(params.page ?? "1");
   const page = Number.isFinite(pageParam) && pageParam > 0 ? pageParam : 1;
@@ -32,9 +31,7 @@ export default async function ProjectsPage({
   return (
     <AetherAppShell
       active="projects"
-      flowStep="projects"
       session={session}
-      projectHref={projectHref}
       title="Projects"
       subtitle="Briefs, assets, and approvals stay scoped to each project."
       actions={
@@ -82,9 +79,6 @@ export default async function ProjectsPage({
               <p className="aether-kicker">No projects yet</p>
               <h3>Start a new workspace brief.</h3>
               <p>Each project captures the offer, assets, and approvals before the run begins.</p>
-              <Link href="/app/projects/new" className="aether-btn aether-btn--primary">
-                Create project
-              </Link>
             </div>
           )}
 
@@ -138,12 +132,11 @@ export default async function ProjectsPage({
                 ? leadProject.description || "Open the project to finalize the brief and assets."
                 : "Create a project to open the brief workspace."}
             </p>
-            <Link
-              href={leadProject ? `/app/projects/${leadProject.id}` : "/app/projects/new"}
-              className="aether-btn aether-btn--secondary"
-            >
-              {leadProject ? "Open project" : "Create project"}
-            </Link>
+            {leadProject ? (
+              <Link href={`/app/projects/${leadProject.id}`} className="aether-btn aether-btn--secondary">
+                Open project
+              </Link>
+            ) : null}
           </div>
         </aside>
       </section>

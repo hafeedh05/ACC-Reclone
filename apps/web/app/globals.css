@@ -18814,3 +18814,159 @@ select:focus-visible {
   gap: 0.35rem;
   color: var(--aether-soft);
 }
+
+/* Project shell + manual approval updates */
+.aether-project-shell {
+  display: grid;
+  gap: 2rem;
+}
+
+.aether-project-shell__header {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.aether-project-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.75rem;
+}
+
+.aether-project-step {
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  display: grid;
+  gap: 0.25rem;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.aether-project-step strong {
+  font-size: 0.95rem;
+  color: var(--aether-cream);
+}
+
+.aether-project-step span {
+  font-size: 0.75rem;
+  color: var(--aether-muted);
+}
+
+.aether-project-step.is-active {
+  border-color: rgba(216, 158, 95, 0.55);
+  background: rgba(216, 158, 95, 0.12);
+}
+
+.aether-project-shell__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.aether-project-shell__rail {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.aether-brief-form {
+  margin-top: 1.6rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.aether-brief-form label {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.aether-brief-form__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.9rem;
+}
+
+.aether-brief-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.4rem;
+  align-items: center;
+  color: var(--aether-muted);
+  font-size: 0.85rem;
+}
+
+.aether-format-select {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.aether-format-select legend {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--aether-muted);
+  margin-bottom: 0.5rem;
+}
+
+.aether-chip-grid--tight {
+  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  gap: 0.6rem;
+}
+
+.aether-chip-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--aether-cream);
+  font-size: 0.85rem;
+}
+
+.aether-chip-select input {
+  accent-color: var(--aether-amber);
+}
+
+.aether-command-script {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.aether-command-script__body {
+  color: var(--aether-soft);
+  font-size: 0.95rem;
+}
+
+.aether-command-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.aether-muted {
+  color: var(--aether-muted);
+  font-size: 0.9rem;
+}
+
+.aether-command-shell--empty {
+  max-width: 46rem;
+}
+
+@media (max-width: 1024px) {
+  .aether-project-shell__body {
+    grid-template-columns: 1fr;
+  }
+
+  .aether-project-shell__rail {
+    order: 2;
+  }
+}

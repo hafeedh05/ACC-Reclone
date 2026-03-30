@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { AetherAppShell } from "@/components/aether-app";
-import { createWorkspaceProject, getWorkspaceProjects } from "@/lib/aether-api";
+import { createWorkspaceProject } from "@/lib/aether-api";
 import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../../../seo";
 
@@ -41,15 +41,12 @@ export default async function NewProjectPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const session = await requireSession();
-  const workspaceProjects = await getWorkspaceProjects(session.workspaceId);
   const { error } = await searchParams;
 
   return (
     <AetherAppShell
       active="projects"
-      flowStep="setup"
       session={session}
-      projectHref={workspaceProjects[0] ? `/app/projects/${workspaceProjects[0].id}` : "/app/projects/new"}
       title="Create project"
       subtitle="Start the brief and asset flow for a new run."
     >
@@ -79,8 +76,7 @@ export default async function NewProjectPage({
             <span>Workspace owner</span>
             <strong>{session.name}</strong>
             <p>
-              Projects created here are scoped to <strong>{session.email}</strong> and tied to workspace
-              <strong> {session.workspaceId}</strong>.
+              Projects created here are scoped to <strong>{session.email}</strong>.
             </p>
           </div>
         </div>

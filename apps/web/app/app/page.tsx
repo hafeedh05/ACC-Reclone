@@ -31,9 +31,7 @@ export default async function AppPage() {
   return (
     <AetherAppShell
       active="overview"
-      flowStep="overview"
       session={session}
-      projectHref={projectHref}
       title="Workspace overview"
       subtitle={`Signed in as ${session.email}`}
       actions={

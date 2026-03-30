@@ -20,6 +20,102 @@ export type WorkspaceProject = {
   updated_at: string;
 };
 
+export type AspectRatio = "r16x9" | "r1x1" | "r9x16";
+
+export type WorkflowStage =
+  | "ingest"
+  | "normalize"
+  | "writers_room"
+  | "storyboard"
+  | "clip_generation"
+  | "clip_qc"
+  | "edit_planning"
+  | "assembly"
+  | "delivery";
+
+export type RunStatus =
+  | "draft"
+  | "awaiting_script_approval"
+  | "awaiting_storyboard_approval"
+  | "running"
+  | "partial_success"
+  | "completed"
+  | "failed"
+  | "cancelled";
+
+export type ScriptSection = {
+  heading: string;
+  copy: string;
+};
+
+export type ScriptPackage = {
+  id: string;
+  version: number;
+  headline: string;
+  logline: string;
+  voiceover: string;
+  on_screen_text: string[];
+  sections: ScriptSection[];
+};
+
+export type SceneSpec = {
+  id: string;
+  index: number;
+  duration_seconds: number;
+  visual_direction: string;
+  camera_direction: string;
+  prompt: string;
+};
+
+export type StoryboardDraft = {
+  id: string;
+  version: number;
+  scenes: SceneSpec[];
+};
+
+export type GenerationRun = {
+  id: string;
+  project_id: string;
+  workspace_id: string;
+  status: RunStatus;
+  stage: WorkflowStage;
+  brief: {
+    objective: string;
+    audience: string;
+    tone: string;
+    call_to_action: string;
+    formats: AspectRatio[];
+  };
+  script?: ScriptPackage | null;
+  storyboard?: StoryboardDraft | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RunEvent = {
+  event_id: string;
+  run_id: string;
+  project_id: string;
+  stage: WorkflowStage;
+  step: string;
+  status: string;
+  attempt: number;
+  actor: string;
+  message: string;
+  progress: number;
+  emitted_at: string;
+};
+
+export type RenderedVariant = {
+  id: string;
+  recipe_id: string;
+  name: string;
+  aspect_ratio: AspectRatio;
+  uri: string;
+  thumbnail_uri: string;
+  published: boolean;
+};
+
 function apiBaseUrl() {
   return (
     process.env.AD_COMMAND_CENTER_API_URL ??
@@ -110,4 +206,50 @@ export async function createWorkspaceProject(input: {
     name: input.name,
     description: input.description?.trim() || null,
   });
+}
+
+export async function createRun(input: {
+  projectId: string;
+  objective: string;
+  audience: string;
+  tone: string;
+  callToAction: string;
+  formats: AspectRatio[];
+}) {
+  return writeJson<GenerationRun>("/v1/runs", {
+    project_id: input.projectId,
+    objective: input.objective,
+    audience: input.audience,
+    tone: input.tone,
+    call_to_action: input.callToAction,
+    formats: input.formats,
+  });
+}
+
+export async function getRun(runId: string) {
+  return readJson<GenerationRun>(`/v1/runs/${runId}`);
+}
+
+export async function approveScript(runId: string) {
+  return writeJson<GenerationRun>(`/v1/runs/${runId}/approve-script`, {});
+}
+
+export async function regenerateScript(runId: string) {
+  return writeJson<GenerationRun>(`/v1/runs/${runId}/regenerate-script`, {});
+}
+
+export async function approveStoryboard(runId: string) {
+  return writeJson<GenerationRun>(`/v1/runs/${runId}/approve-storyboard`, {});
+}
+
+export async function regenerateStoryboard(runId: string) {
+  return writeJson<GenerationRun>(`/v1/runs/${runId}/regenerate-storyboard`, {});
+}
+
+export async function listRunEvents(runId: string) {
+  return readJson<RunEvent[]>(`/v1/runs/${runId}/events`);
+}
+
+export async function listRunVariants(runId: string) {
+  return readJson<RenderedVariant[]>(`/v1/runs/${runId}/variants`);
 }

@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AetherAppShell } from "@/components/aether-app";
-import { EditorialMediaFrame, mediaForRun } from "@/components/media-system";
-import { commandStages, eventRows, outputsLibrary } from "@/components/site-data";
-import { getAdminSnapshot, getWorkspaceProjects } from "@/lib/aether-api";
+import {
+  getRun,
+  listRunEvents,
+  listRunVariants,
+  getWorkspaceProjects,
+} from "@/lib/aether-api";
 import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../../seo";
+import {
+  approveScriptAction,
+  approveStoryboardAction,
+  regenerateScriptAction,
+  regenerateStoryboardAction,
+} from "./actions";
 
 export const metadata: Metadata = createPrivatePageMetadata({
   title: "Command Center",
@@ -13,30 +22,57 @@ export const metadata: Metadata = createPrivatePageMetadata({
   canonicalPath: "/app/command-center",
 });
 
-export default async function CommandCenterPage() {
+export default async function CommandCenterPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ run?: string }>;
+}) {
   const session = await requireSession();
-  const metrics = await getAdminSnapshot();
+  const { run: runId } = await searchParams;
   const workspaceProjects = await getWorkspaceProjects(session.workspaceId);
   const leadProject = workspaceProjects[0];
-  const activeStage = commandStages.find((stage) => stage.status === "Live") ?? commandStages[2];
-  const briefSummary = leadProject
-    ? leadProject.description || "Brief queued for asset ingest and approval."
-    : "Reference command surface until your first run is approved.";
-  const assets = ["Lead pack shot", "Use-case frame", "Detail close"];
-  const approvals = ["Script pending", "Storyboard pending"];
+
+  const run = runId ? await getRun(runId) : null;
+  const events = runId ? (await listRunEvents(runId)) ?? [] : [];
+  const variants = runId ? (await listRunVariants(runId)) ?? [] : [];
+
+  if (!run) {
+    return (
+      <AetherAppShell
+        active="command"
+        session={session}
+        title="Command center"
+        subtitle="Manual approvals and run control."
+      >
+        <section className="aether-command-shell aether-command-shell--empty">
+          <div className="aether-panel">
+            <p className="aether-kicker">No active run</p>
+            <h2>Generate a run from a project brief.</h2>
+            <p>
+              Start in a project, capture the brief, then return here to approve the script and storyboard.
+            </p>
+            <Link href={leadProject ? `/app/projects/${leadProject.id}` : "/app/projects"} className="aether-btn aether-btn--primary">
+              {leadProject ? "Open project" : "Open projects"}
+            </Link>
+          </div>
+        </section>
+      </AetherAppShell>
+    );
+  }
+
+  const canApproveScript = run.status === "awaiting_script_approval";
+  const canApproveStoryboard = run.status === "awaiting_storyboard_approval";
 
   return (
     <AetherAppShell
       active="command"
-      flowStep="command"
       session={session}
-      projectHref={leadProject ? `/app/projects/${leadProject.id}` : "/app/projects/new"}
       title="Command center"
-      subtitle={leadProject ? `${leadProject.name} is ready to move through generation.` : "Reference command surface."}
+      subtitle={`Run ${run.id} · ${run.status.replace(/_/g, " ")}`}
       actions={
         <div className="aether-app__meta-pair">
-          <span>{metrics.overview.active_runs} active runs</span>
-          <span>{metrics.overview.queued_jobs} queued jobs</span>
+          <span>{run.stage.replace(/_/g, " ")}</span>
+          <span>{variants.length} outputs</span>
         </div>
       }
     >
@@ -45,33 +81,20 @@ export default async function CommandCenterPage() {
           <div className="aether-panel aether-command-brief">
             <div className="aether-command-brief__block">
               <p className="aether-kicker">Brief</p>
-              <strong>{leadProject?.name ?? "Reference run"}</strong>
-              <span>{briefSummary}</span>
+              <strong>{run.brief.objective}</strong>
+              <span>{run.brief.audience}</span>
             </div>
             <div className="aether-command-brief__block">
-              <p className="aether-kicker">Assets</p>
-              {assets.map((asset) => (
-                <div key={asset} className="aether-command-panel__row">
-                  <strong>{asset}</strong>
-                  <span>Queued</span>
-                </div>
-              ))}
+              <p className="aether-kicker">Tone</p>
+              <span>{run.brief.tone}</span>
+              <span>CTA: {run.brief.call_to_action}</span>
             </div>
             <div className="aether-command-brief__block">
               <p className="aether-kicker">Formats</p>
-              {["9:16", "1:1", "16:9"].map((format) => (
+              {run.brief.formats.map((format) => (
                 <div key={format} className="aether-command-panel__row">
-                  <strong>{format}</strong>
+                  <strong>{format.replace("r", "").replace("x", ":")}</strong>
                   <span>Planned</span>
-                </div>
-              ))}
-            </div>
-            <div className="aether-command-brief__block">
-              <p className="aether-kicker">Approvals</p>
-              {approvals.map((approval) => (
-                <div key={approval} className="aether-command-panel__row">
-                  <strong>{approval}</strong>
-                  <span>Waiting</span>
                 </div>
               ))}
             </div>
@@ -79,40 +102,74 @@ export default async function CommandCenterPage() {
         </aside>
 
         <section className="aether-command-shell__stage">
-          <article className="aether-command-stage">
-            <EditorialMediaFrame
-              asset={mediaForRun("aster-house-launch")}
-              aspect="wide"
-              className="aether-command-stage__frame"
-              motion
-              priority
-              sizes="(min-width: 1200px) 56vw, 100vw"
-            />
-            <div className="aether-command-stage__overlay">
-              <p className="aether-kicker">Active stage</p>
-              <strong>{activeStage.operational}</strong>
-              <span>{activeStage.note}</span>
+          <div className="aether-command-stage__spine">
+            <div className="aether-workspace-section__head">
+              <h2>Script draft</h2>
+              <span>{run.script ? `v${run.script.version}` : "Pending"}</span>
             </div>
-          </article>
+            {run.script ? (
+              <div className="aether-command-script">
+                <strong>{run.script.headline}</strong>
+                <p>{run.script.logline}</p>
+                <div className="aether-command-script__body">
+                  <p>{run.script.voiceover}</p>
+                </div>
+              </div>
+            ) : (
+              <p className="aether-muted">Script draft will appear after run creation.</p>
+            )}
+            <div className="aether-command-actions">
+              <form action={approveScriptAction}>
+                <input type="hidden" name="runId" value={run.id} />
+                <button type="submit" className="aether-btn aether-btn--primary" disabled={!canApproveScript}>
+                  Approve script
+                </button>
+              </form>
+              <form action={regenerateScriptAction}>
+                <input type="hidden" name="runId" value={run.id} />
+                <button type="submit" className="aether-btn aether-btn--secondary" disabled={!canApproveScript}>
+                  Regenerate
+                </button>
+              </form>
+            </div>
+          </div>
 
           <div className="aether-command-stage__spine">
             <div className="aether-workspace-section__head">
-              <h2>Stage spine</h2>
-              <span>{activeStage.progress}% complete</span>
+              <h2>Storyboard</h2>
+              <span>{run.storyboard ? `v${run.storyboard.version}` : "Pending"}</span>
             </div>
-            <div className="aether-stage-list">
-              {commandStages.slice(0, 5).map((stage) => (
-                <div key={stage.name} className="aether-stage-list__item">
-                  <div>
-                    <strong>{stage.operational}</strong>
-                    <p>{stage.note}</p>
+            {run.storyboard ? (
+              <div className="aether-stage-list">
+                {run.storyboard.scenes.map((scene) => (
+                  <div key={scene.id} className="aether-stage-list__item">
+                    <div>
+                      <strong>Scene {scene.index}</strong>
+                      <p>{scene.prompt}</p>
+                    </div>
+                    <div className="aether-stage-list__meta">
+                      <span>{scene.duration_seconds}s</span>
+                      <b>{scene.camera_direction}</b>
+                    </div>
                   </div>
-                  <div className="aether-stage-list__meta">
-                    <span>{stage.status}</span>
-                    <b>{stage.progress}%</b>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+            ) : (
+              <p className="aether-muted">Storyboard will populate once script is approved.</p>
+            )}
+            <div className="aether-command-actions">
+              <form action={approveStoryboardAction}>
+                <input type="hidden" name="runId" value={run.id} />
+                <button type="submit" className="aether-btn aether-btn--primary" disabled={!canApproveStoryboard}>
+                  Approve storyboard
+                </button>
+              </form>
+              <form action={regenerateStoryboardAction}>
+                <input type="hidden" name="runId" value={run.id} />
+                <button type="submit" className="aether-btn aether-btn--secondary" disabled={!canApproveStoryboard}>
+                  Regenerate
+                </button>
+              </form>
             </div>
           </div>
         </section>
@@ -121,39 +178,37 @@ export default async function CommandCenterPage() {
           <div className="aether-command-panel">
             <div className="aether-workspace-section__head">
               <h2>Output map</h2>
-              <span>{outputsLibrary.length} routes</span>
+              <span>{variants.length} variants</span>
             </div>
-            {outputsLibrary.map((output) => (
-              <div key={output.name} className="aether-command-panel__row">
-                <strong>{output.name}</strong>
-                <span>{output.status}</span>
-              </div>
-            ))}
-            <div className="aether-command-panel__note">
-              <strong>Recovery ready</strong>
-              <span>Still-led assembly keeps the run moving if a motion beat slips.</span>
-            </div>
+            {variants.length ? (
+              variants.map((variant) => (
+                <div key={variant.id} className="aether-command-panel__row">
+                  <strong>{variant.name}</strong>
+                  <span>{variant.aspect_ratio.replace("r", "").replace("x", ":")}</span>
+                </div>
+              ))
+            ) : (
+              <span className="aether-muted">Outputs appear after storyboard approval.</span>
+            )}
           </div>
           <div className="aether-command-panel">
             <div className="aether-workspace-section__head">
               <h2>Live feed</h2>
-              <span>Latest events</span>
+              <span>{events.length} events</span>
             </div>
             <div className="aether-event-feed">
-              {eventRows.slice(0, 3).map((event) => (
-                <div key={`${event.time}-${event.title}`} className="aether-event-feed__item">
-                  <span>{event.time}</span>
+              {events.slice(-4).map((event) => (
+                <div key={event.event_id} className="aether-event-feed__item">
+                  <span>{new Date(event.emitted_at).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" })}</span>
                   <div>
-                    <strong>{event.role}</strong>
-                    <p>{event.title}</p>
-                    <em>{event.note}</em>
+                    <strong>{event.actor}</strong>
+                    <p>{event.message}</p>
+                    <em>{event.stage.replace(/_/g, " ")}</em>
                   </div>
                 </div>
               ))}
+              {!events.length ? <p className="aether-muted">No events yet.</p> : null}
             </div>
-            <Link href="/sample-runs/cobalt-travel-charger" className="aether-inline-link">
-              Review sample run
-            </Link>
           </div>
         </aside>
       </section>

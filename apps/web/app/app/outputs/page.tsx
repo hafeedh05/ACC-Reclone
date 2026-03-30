@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { OutputsLibrarySurface } from "@/components/product-surfaces";
 import { AetherAppShell } from "@/components/aether-app";
-import { getWorkspaceProjects } from "@/lib/aether-api";
 import { requireSession } from "@/lib/auth";
 import { createPrivatePageMetadata } from "../../seo";
 
@@ -13,15 +12,11 @@ export const metadata: Metadata = createPrivatePageMetadata({
 
 export default async function OutputsPage() {
   const session = await requireSession();
-  const workspaceProjects = await getWorkspaceProjects(session.workspaceId);
-  const leadProject = workspaceProjects[0];
 
   return (
     <AetherAppShell
       active="outputs"
-      flowStep="outputs"
       session={session}
-      projectHref={leadProject ? `/app/projects/${leadProject.id}` : "/app/projects/new"}
       title="Outputs"
       subtitle="Deliverable variants grouped by intent and ratio."
     >

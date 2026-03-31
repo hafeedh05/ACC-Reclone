@@ -703,7 +703,14 @@ fn build_storyboard(brief: &CreativeBrief, script: &ScriptPackage, version: u32)
         "brand lockup",
         "closing frame",
     ];
-    let camera_notes = ["push in", "steady glide", "slow pan", "locked frame", "arc", "pull back"];
+    let camera_notes = [
+        "push in",
+        "steady glide",
+        "slow pan",
+        "locked frame",
+        "arc",
+        "pull back",
+    ];
 
     let scenes = durations
         .iter()

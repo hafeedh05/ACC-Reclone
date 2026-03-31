@@ -37,3 +37,7 @@ legacy/prototype/helper/kie/__pycache__/
 coverage/
 output/
 tmp/
+
+# Local generated media
+media/clip-*.mp4
+media/veo-clip-*.mp4

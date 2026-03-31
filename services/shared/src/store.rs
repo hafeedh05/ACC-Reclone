@@ -658,7 +658,13 @@ fn split_scene_durations(total_seconds: u32) -> Vec<u32> {
 
     let mut durations = Vec::new();
     for _ in 0..count {
-        let mut duration = base + if remainder > 0 { remainder -= 1; 1 } else { 0 };
+        let mut duration = base
+            + if remainder > 0 {
+                remainder -= 1;
+                1
+            } else {
+                0
+            };
         duration = duration.clamp(min, max);
         durations.push(duration);
     }

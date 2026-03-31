@@ -1,0 +1,31 @@
+{
+  "route": "/case-studies",
+  "label": "Case Studies",
+  "capturedAt": "2026-03-22T16:54:57.840Z",
+  "visibleWordCountAboveFold": 177,
+  "interactiveCountAboveFold": 10,
+  "navItemCount": 6,
+  "ctaCountAboveFold": 2,
+  "chipBadgeCountAboveFold": 10,
+  "borderedSurfaceCountAboveFold": 4,
+  "sectionCount": 2,
+  "repeatedLabelCount": 0,
+  "visiblePlaceholderOrScaffoldingTerms": [],
+  "motionElementCountPerViewport": {
+    "desktop-1440": 0,
+    "mobile-390": 0
+  },
+  "interactionInventory": [
+    "Ad Command CenterPrompt-first campaign production",
+    "How It Works",
+    "Sample Runs",
+    "Gallery",
+    "Pricing",
+    "Journal",
+    "Enterprise",
+    "See How It Works",
+    "Watch a Sample Run",
+    "Case StudyNorthstar turned a sparse asset set into a disciplined launch systemA small beauty asset library became a cleaner campaign package because the workflow protected the creative sequence before generation started.No large content shootPremium tone without overclaimingMultiple formats from a small source setMarch 16, 20267 min readAd Command CenterBeforeNorthstar needed a premium launch treatment without a large content shoot and with very limited source material.Workflow choiceStart with texture and proof instead of trying to overbuild the narrative.AfterApprovals moved earlier.Asset count4Pack shots and hand-held imagery were enough to stage the launch.Outputs4Performance, brand, feature, and platform cuts were all usable.Review path2 stepsScript and storyboard approvals stabilized the run."
+  ],
+  "consoleErrors": []
+}

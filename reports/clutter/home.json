@@ -1,0 +1,39 @@
+{
+  "route": "/",
+  "label": "Homepage",
+  "capturedAt": "2026-03-22T16:54:17.086Z",
+  "visibleWordCountAboveFold": 118,
+  "interactiveCountAboveFold": 18,
+  "navItemCount": 6,
+  "ctaCountAboveFold": 4,
+  "chipBadgeCountAboveFold": 4,
+  "borderedSurfaceCountAboveFold": 12,
+  "sectionCount": 9,
+  "repeatedLabelCount": 0,
+  "visiblePlaceholderOrScaffoldingTerms": [],
+  "motionElementCountPerViewport": {
+    "desktop-1440": 1,
+    "mobile-390": 0
+  },
+  "interactionInventory": [
+    "Ad Command CenterPrompt-first campaign production",
+    "How It Works",
+    "Sample Runs",
+    "Gallery",
+    "Pricing",
+    "Journal",
+    "Enterprise",
+    "See How It Works",
+    "Watch a Sample Run",
+    "01Brief",
+    "02Workflow",
+    "03Command Center",
+    "04Proof",
+    "See How It Works",
+    "Watch a Sample Run",
+    "Shape the creative",
+    "Track the run",
+    "Inspect proof"
+  ],
+  "consoleErrors": []
+}

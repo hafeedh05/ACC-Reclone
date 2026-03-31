@@ -1,0 +1,505 @@
+openapi: 3.1.0
+info:
+  title: Ad Command Center API
+  version: 0.1.0
+  description: Public API contract for projects, runs, approvals, event streaming, and variant delivery.
+servers:
+  - url: https://api.ad-command-center.dev
+    description: Production
+  - url: http://localhost:8080
+    description: Local development
+tags:
+  - name: Projects
+  - name: Runs
+  - name: Variants
+  - name: Admin
+paths:
+  /v1/projects:
+    get:
+      tags: [Projects]
+      summary: List projects
+      operationId: listProjects
+      responses:
+        '200':
+          description: Projects returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    post:
+      tags: [Projects]
+      summary: Create a project
+      operationId: createProject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProjectRequest'
+      responses:
+        '201':
+          description: Project created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+  /v1/projects/{project_id}/assets:prepare-upload:
+    post:
+      tags: [Projects]
+      summary: Create a signed upload intent
+      operationId: prepareAssetUpload
+      parameters:
+        - $ref: '#/components/parameters/ProjectId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrepareUploadRequest'
+      responses:
+        '200':
+          description: Upload prepared
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreparedUpload'
+  /v1/runs:
+    post:
+      tags: [Runs]
+      summary: Start a generation run
+      operationId: createRun
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRunRequest'
+      responses:
+        '202':
+          description: Run accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationRun'
+  /v1/runs/{run_id}:
+    get:
+      tags: [Runs]
+      summary: Get run snapshot
+      operationId: getRun
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Run snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationRun'
+  /v1/runs/{run_id}/stream:
+    get:
+      tags: [Runs]
+      summary: Stream run events
+      operationId: streamRunEvents
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Server-sent event stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+  /v1/runs/{run_id}/approve-script:
+    post:
+      tags: [Runs]
+      summary: Approve the current script package
+      operationId: approveRunScript
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Script approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationRun'
+  /v1/runs/{run_id}/regenerate-script:
+    post:
+      tags: [Runs]
+      summary: Regenerate the current script package
+      operationId: regenerateRunScript
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Script regenerated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationRun'
+  /v1/runs/{run_id}/approve-storyboard:
+    post:
+      tags: [Runs]
+      summary: Approve the current storyboard
+      operationId: approveRunStoryboard
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Storyboard approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationRun'
+  /v1/runs/{run_id}/regenerate-storyboard:
+    post:
+      tags: [Runs]
+      summary: Regenerate the storyboard
+      operationId: regenerateRunStoryboard
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Storyboard regenerated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerationRun'
+  /v1/runs/{run_id}/events:
+    get:
+      tags: [Runs]
+      summary: List emitted run events
+      operationId: listRunEvents
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Event history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RunEvent'
+  /v1/runs/{run_id}/variants:
+    get:
+      tags: [Variants]
+      summary: List generated variants
+      operationId: listRunVariants
+      parameters:
+        - $ref: '#/components/parameters/RunId'
+      responses:
+        '200':
+          description: Variant list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RenderedVariant'
+  /v1/variants/{variant_id}:publish:
+    post:
+      tags: [Variants]
+      summary: Publish a variant to the outputs library
+      operationId: publishVariant
+      parameters:
+        - $ref: '#/components/parameters/VariantId'
+      responses:
+        '200':
+          description: Variant published
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenderedVariant'
+  /v1/admin/overview:
+    get:
+      tags: [Admin]
+      summary: Get admin overview data
+      operationId: getAdminOverview
+      responses:
+        '200':
+          description: Overview returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminOverview'
+  /v1/admin/summary:
+    get:
+      tags: [Admin]
+      summary: Get admin summary counts
+      operationId: getAdminSummary
+      responses:
+        '200':
+          description: Summary returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminSummary'
+  /v1/admin/health:
+    get:
+      tags: [Admin]
+      summary: Health check
+      operationId: getAdminHealth
+      responses:
+        '200':
+          description: Health returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+components:
+  parameters:
+    ProjectId:
+      in: path
+      name: project_id
+      required: true
+      schema:
+        type: string
+    RunId:
+      in: path
+      name: run_id
+      required: true
+      schema:
+        type: string
+    VariantId:
+      in: path
+      name: variant_id
+      required: true
+      schema:
+        type: string
+  schemas:
+    CreateProjectRequest:
+      type: object
+      required: [workspace_id, name]
+      properties:
+        workspace_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    PrepareUploadRequest:
+      type: object
+      required: [filename, content_type]
+      properties:
+        filename:
+          type: string
+        content_type:
+          type: string
+    PreparedUpload:
+      type: object
+      required: [asset_id, upload_url, download_url]
+      properties:
+        asset_id:
+          type: string
+        upload_url:
+          type: string
+        download_url:
+          type: string
+    CreateRunRequest:
+      type: object
+      required: [project_id, objective, audience, tone, call_to_action, formats]
+      properties:
+        project_id:
+          type: string
+        objective:
+          type: string
+        audience:
+          type: string
+        tone:
+          type: string
+        call_to_action:
+          type: string
+        formats:
+          type: array
+          items:
+            $ref: '#/components/schemas/AspectRatio'
+    AspectRatio:
+      type: string
+      enum: [r16x9, r1x1, r9x16]
+    GenerationStage:
+      type: string
+      enum: [ingest, normalize, writers_room, storyboard, clip_generation, clip_qc, edit_planning, assembly, delivery]
+    RunStatus:
+      type: string
+      enum: [draft, awaiting_script_approval, awaiting_storyboard_approval, running, partial_success, completed, failed, cancelled]
+    Project:
+      type: object
+      required: [id, workspace_id, name, created_at, updated_at]
+      properties:
+        id:
+          type: string
+        workspace_id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    CreativeBrief:
+      type: object
+      required: [objective, audience, tone, call_to_action, formats]
+      properties:
+        objective:
+          type: string
+        audience:
+          type: string
+        tone:
+          type: string
+        call_to_action:
+          type: string
+        formats:
+          type: array
+          items:
+            $ref: '#/components/schemas/AspectRatio'
+    ScriptPackage:
+      type: object
+      required: [id, version, headline, logline, voiceover]
+      properties:
+        id:
+          type: string
+        version:
+          type: integer
+        headline:
+          type: string
+        logline:
+          type: string
+        voiceover:
+          type: string
+        on_screen_text:
+          type: array
+          items:
+            type: string
+    StoryboardDraft:
+      type: object
+      required: [id, version]
+      properties:
+        id:
+          type: string
+        version:
+          type: integer
+        scenes:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+    GenerationRun:
+      type: object
+      required: [id, project_id, workspace_id, status, stage, brief, created_at, updated_at]
+      properties:
+        id:
+          type: string
+        project_id:
+          type: string
+        workspace_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        stage:
+          $ref: '#/components/schemas/GenerationStage'
+        brief:
+          $ref: '#/components/schemas/CreativeBrief'
+        script:
+          $ref: '#/components/schemas/ScriptPackage'
+        storyboard:
+          $ref: '#/components/schemas/StoryboardDraft'
+        rendered_variants:
+          type: array
+          items:
+            $ref: '#/components/schemas/RenderedVariant'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      additionalProperties: true
+    RunEvent:
+      type: object
+      required: [event_id, run_id, project_id, stage, step, status, attempt, actor, artifact_ids, message, progress, emitted_at]
+      properties:
+        event_id:
+          type: string
+        run_id:
+          type: string
+        project_id:
+          type: string
+        stage:
+          $ref: '#/components/schemas/GenerationStage'
+        step:
+          type: string
+        status:
+          type: string
+        attempt:
+          type: integer
+        actor:
+          type: string
+        artifact_ids:
+          type: array
+          items:
+            type: string
+        message:
+          type: string
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100
+        emitted_at:
+          type: string
+          format: date-time
+        metrics:
+          type: object
+          additionalProperties: true
+    RenderedVariant:
+      type: object
+      required: [id, recipe_id, name, aspect_ratio, uri, thumbnail_uri, published]
+      properties:
+        id:
+          type: string
+        recipe_id:
+          type: string
+        name:
+          type: string
+        aspect_ratio:
+          $ref: '#/components/schemas/AspectRatio'
+        uri:
+          type: string
+        thumbnail_uri:
+          type: string
+        published:
+          type: boolean
+    AdminOverview:
+      type: object
+      required: [active_runs, queued_jobs, failed_jobs]
+      properties:
+        active_runs:
+          type: integer
+        queued_jobs:
+          type: integer
+        failed_jobs:
+          type: integer
+    AdminSummary:
+      type: object
+      required: [project_count, run_count, event_count, variant_count]
+      properties:
+        project_count:
+          type: integer
+        run_count:
+          type: integer
+        event_count:
+          type: integer
+        variant_count:
+          type: integer
+    HealthResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string

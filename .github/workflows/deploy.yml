@@ -1,0 +1,210 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: Deployment target
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+        default: dev
+      image_tag:
+        description: Container tag to deploy
+        required: false
+        default: latest
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  TF_STATE_BUCKET: ${{ vars.TF_STATE_BUCKET }}
+  WIF_PROVIDER: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  DEPLOYER_SERVICE_ACCOUNT: ${{ vars.GCP_DEPLOYER_SERVICE_ACCOUNT }}
+  ARTIFACT_REGISTRY_REPO: ad-command-center
+  REGISTRY_HOST: us-central1-docker.pkg.dev
+  TF_IN_AUTOMATION: true
+
+jobs:
+  build-images:
+    name: Build and push images
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.image_tag }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SERVICE_ACCOUNT }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGISTRY_HOST }} --quiet
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10.8.1"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install web dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Resolve image tag
+        id: meta
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            echo "image_tag=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          else
+            echo "image_tag=${{ inputs.image_tag }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build and push web
+        run: |
+          IMAGE="${REGISTRY_HOST}/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO}/web:${{ steps.meta.outputs.image_tag }}"
+          docker build -f apps/web/Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Build and push api
+        run: |
+          IMAGE="${REGISTRY_HOST}/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO}/api:${{ steps.meta.outputs.image_tag }}"
+          docker build -f services/api/Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Build and push orchestrator
+        run: |
+          IMAGE="${REGISTRY_HOST}/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO}/orchestrator:${{ steps.meta.outputs.image_tag }}"
+          docker build -f services/orchestrator/Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+
+      - name: Build and push workers
+        run: |
+          IMAGE="${REGISTRY_HOST}/${PROJECT_ID}/${ARTIFACT_REGISTRY_REPO}/workers:${{ steps.meta.outputs.image_tag }}"
+          docker build -f services/workers/Dockerfile -t "$IMAGE" .
+          docker push "$IMAGE"
+
+  deploy-dev:
+    name: Deploy dev
+    runs-on: ubuntu-latest
+    environment: dev
+    needs:
+      - build-images
+    if: github.event_name == 'push' || inputs.target_environment == 'dev' || inputs.target_environment == 'staging' || inputs.target_environment == 'prod'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SERVICE_ACCOUNT }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: infra
+        run: terraform init -reconfigure -backend-config="bucket=${TF_STATE_BUCKET}" -backend-config="prefix=ad-command-center/dev"
+
+      - name: Terraform plan
+        working-directory: infra
+        run: terraform plan -var-file=env/dev.tfvars -var="project_id=${PROJECT_ID}" -var="image_tag=${{ needs.build-images.outputs.image_tag }}"
+
+      - name: Terraform apply
+        working-directory: infra
+        run: terraform apply -auto-approve -var-file=env/dev.tfvars -var="project_id=${PROJECT_ID}" -var="image_tag=${{ needs.build-images.outputs.image_tag }}"
+
+  deploy-staging:
+    name: Deploy staging
+    runs-on: ubuntu-latest
+    environment: staging
+    needs:
+      - build-images
+      - deploy-dev
+    if: github.event_name == 'workflow_dispatch' && (inputs.target_environment == 'staging' || inputs.target_environment == 'prod')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SERVICE_ACCOUNT }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: infra
+        run: terraform init -reconfigure -backend-config="bucket=${TF_STATE_BUCKET}" -backend-config="prefix=ad-command-center/staging"
+
+      - name: Terraform plan
+        working-directory: infra
+        run: terraform plan -var-file=env/staging.tfvars -var="project_id=${PROJECT_ID}" -var="image_tag=${{ needs.build-images.outputs.image_tag }}"
+
+      - name: Terraform apply
+        working-directory: infra
+        run: terraform apply -auto-approve -var-file=env/staging.tfvars -var="project_id=${PROJECT_ID}" -var="image_tag=${{ needs.build-images.outputs.image_tag }}"
+
+  deploy-prod:
+    name: Deploy prod
+    runs-on: ubuntu-latest
+    environment: prod
+    needs:
+      - build-images
+      - deploy-staging
+    if: github.event_name == 'workflow_dispatch' && inputs.target_environment == 'prod'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WIF_PROVIDER }}
+          service_account: ${{ env.DEPLOYER_SERVICE_ACCOUNT }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform init
+        working-directory: infra
+        run: terraform init -reconfigure -backend-config="bucket=${TF_STATE_BUCKET}" -backend-config="prefix=ad-command-center/prod"
+
+      - name: Terraform plan
+        working-directory: infra
+        run: terraform plan -var-file=env/prod.tfvars -var="project_id=${PROJECT_ID}" -var="image_tag=${{ needs.build-images.outputs.image_tag }}"
+
+      - name: Terraform apply
+        working-directory: infra
+        run: terraform apply -auto-approve -var-file=env/prod.tfvars -var="project_id=${PROJECT_ID}" -var="image_tag=${{ needs.build-images.outputs.image_tag }}"

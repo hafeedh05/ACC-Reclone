@@ -1,4 +1,0 @@
-[workspace]
-members = ["shared", "api", "orchestrator", "workers"]
-resolver = "2"
-

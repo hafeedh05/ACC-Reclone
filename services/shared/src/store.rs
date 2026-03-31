@@ -668,7 +668,11 @@ fn split_scene_durations(total_seconds: u32) -> Vec<u32> {
     durations
 }
 
-fn build_storyboard(brief: &CreativeBrief, script: &ScriptPackage, version: u32) -> StoryboardDraft {
+fn build_storyboard(
+    brief: &CreativeBrief,
+    script: &ScriptPackage,
+    version: u32,
+) -> StoryboardDraft {
     let total_seconds = brief.duration_seconds.unwrap_or(8);
     let durations = split_scene_durations(total_seconds);
     let mut prompts: Vec<String> = Vec::new();
